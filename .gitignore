@@ -1,0 +1,7 @@
+build64_release/
+thirdparty/
+tools/
+*.swo
+*.swp
+blade-bin/
+blade-bin

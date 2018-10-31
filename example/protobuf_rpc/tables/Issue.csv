@@ -1,0 +1,5 @@
+序号,名字,英文名,描述,额外标记,房间buff,考验ID
+id,name,enlishName,desc,recode,buff,examID
+1,希望涌现,A Moment of Hope,这里瀰漫着详和，抗拒邪恶,祝福blessing,dice+1,0
+2,狂暴本质,Angry Being,你身旁的墙壁涌出大量黏液。,2,,1
+3,血腥影像,Bloody Vision,这房间沾满鲜血，天花滴血、墙身渗血、家具浸血。鲜血流至你的脚边……眨眼间全消失不见。,0,,2

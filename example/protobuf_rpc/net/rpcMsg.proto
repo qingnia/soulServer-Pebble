@@ -1,0 +1,44 @@
+syntax = "proto2";
+
+package example;
+
+//登陆协议
+message LoginInfo {
+    optional int32 roleid = 1;
+    optional int32 roomid = 2;
+}
+
+message LoginRet {
+    optional int32 status = 1;
+}
+
+message CalRequest {
+    optional int32 a = 1;
+    optional int32 b = 2;
+}
+
+message CalResponse {
+    optional int32 c = 1;
+}
+
+message StatusRequest {
+    optional int32 cmd = 1;
+}
+
+message StatusResponse {
+    optional int32 status = 1;
+}
+
+message moveRequest {
+    optional int32 direction = 1;
+}
+
+// �������
+service rpcMsg { // ��ʱֻ�ṩ�ӷ�����
+    // �ӷ�����
+    rpc add(CalRequest) returns (CalResponse); // �������������ĺ�
+    rpc login(LoginInfo) returns (LoginRet);
+    rpc modifyStatus(StatusRequest) returns (StatusResponse);
+    rpc move(moveRequest) returns (StatusResponse);
+}
+
