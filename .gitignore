@@ -1,5 +1,10 @@
 build64_release/
-thirdparty/
+thirdparty/gflags/
+thirdparty/gflags-2.0/
+thirdparty/hiredis/
+thirdparty/libev/
+thirdparty/rapidjson/
+thirdparty/zookeeper/
 tools/
 *.swo
 *.swp
