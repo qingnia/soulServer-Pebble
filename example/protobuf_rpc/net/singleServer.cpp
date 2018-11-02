@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Tencent is pleased to support the open source community by making Pebble available.
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance
@@ -46,21 +46,33 @@ singleServer* singleServer::getSingleServer()
     return ss;
 }
 
-int singleServer::setInputQueue(list< map<string, string> >* queue)
+int singleServer::setRecQueue(list< map<string, string> >* queue)
 {
-    this->inputQueue = queue;
+    this->recQueue = queue;
     return 0;
 }
 
-int singleServer::setInputMutex(mutex* mt)
+int singleServer::setRecMutex(mutex* mt)
 {
-	this->inputMutex = mt;
+	this->recMutex = mt;
+	return 0;
+}
+
+int singleServer::setRetQueue(list< map<string, string> >* queue)
+{
+	this->retQueue = queue;
+	return 0;
+}
+
+int singleServer::setRetMutex(mutex* mt)
+{
+	this->retMutex = mt;
 	return 0;
 }
 
 int singleServer::saveMsg(map<string, string> newMsg)
 {
-    inputQueue->push_back(newMsg);
+    recQueue->push_back(newMsg);
     return 0;
 }
 

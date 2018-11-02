@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Tencent is pleased to support the open source community by making Pebble available.
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance
@@ -103,6 +103,7 @@ int32_t IRpc::OnMessage(int64_t handle, const uint8_t* msg,
     int32_t ret = kRPC_UNKNOWN_TYPE;
     switch (head.m_message_type) {
         case kRPC_CALL:
+			//奇葩代码，如果没有过载，case会往下走，就执行ProcessRequest了
             if (is_overload != 0) {
                 ret = ResponseException(handle, kRPC_SYSTEM_OVERLOAD_BASE - is_overload, head);
                 RequestProcComplete(head.m_function_name, kRPC_SYSTEM_OVERLOAD_BASE - is_overload,
@@ -327,6 +328,7 @@ int32_t IRpc::ProcessRequest(int64_t handle, const RpcHead& rpc_head,
     return ProcessRequestImp(handle, rpc_head, buff, buff_len);
 }
 
+//RPC的实际路由代码，find后second就是回调函数
 int32_t IRpc::ProcessRequestImp(int64_t handle, const RpcHead& rpc_head,
     const uint8_t* buff, uint32_t buff_len) {
 
@@ -340,6 +342,7 @@ int32_t IRpc::ProcessRequestImp(int64_t handle, const RpcHead& rpc_head,
         return kRPC_UNSUPPORT_FUNCTION_NAME;
     }
 
+	//单向通知的话，就执行完返回，不需要一坨状态保留
     if (kRPC_ONEWAY == rpc_head.m_message_type) {
         cxx::function<int32_t(int32_t, const uint8_t*, uint32_t)> rsp; // NOLINT
         int32_t ret = (it->second)(buff, buff_len, rsp);
@@ -365,6 +368,7 @@ int32_t IRpc::ProcessRequestImp(int64_t handle, const RpcHead& rpc_head,
         &IRpc::SendResponse, this, session->m_session_id,
         cxx::placeholders::_1, cxx::placeholders::_2, cxx::placeholders::_3);
 
+	//传参包括消息，消息长度，回调函数
     return (it->second)(buff, buff_len, rsp);
 }
 

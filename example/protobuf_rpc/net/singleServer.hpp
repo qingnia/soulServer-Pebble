@@ -1,4 +1,4 @@
-//
+﻿//
 //  pebbleServer.hpp
 //  testC
 //
@@ -21,17 +21,22 @@ private:
     ~singleServer();
 
     static singleServer* ss;
-    list< map<string, string> > *inputQueue;
-	mutex* inputMutex;
+    list< map<string, string> > *recQueue;
+	mutex* recMutex;
 
+	list< map<string, string> > *retQueue;
+	mutex* retMutex;
 public:
     static singleServer* getSingleServer();
     int saveMsg(map<string, string>);
 
     int serverStart();
 
-    int setInputQueue(list< map<string, string> >*);
-	int setInputMutex(mutex*);
+    int setRecQueue(list< map<string, string> >*);
+	int setRecMutex(mutex*);
+
+	int setRetQueue(list< map<string, string> >*);
+	int setRetMutex(mutex*);
 
 };
 

@@ -1,4 +1,4 @@
-//  main.h
+﻿//  main.h
 //  testC
 //
 //  Created by 陈帅 on 2018/9/21.
@@ -12,15 +12,19 @@
 #include "gameEntity/gameMgr.h"
 #include "net/singleServer.hpp"
 
-std::list< map<string, string> > myList;
-std::mutex myMutex;
+std::list< map<string, string> > recList;
+std::list< map<string, string> > retList;
+std::mutex recMutex;
+std::mutex retMutex;
 
 void mainGame()
 {
         gameMgr* gm = gameMgr::getGameMgr();
         vector<int> roleIDList = {1001, 1002, 1003};
-        gm->setInputQueue(&myList);
-        gm->setInputMutex(&myMutex);
+        gm->setRecQueue(&recList);
+        gm->setRecMutex(&recMutex);
+		gm->setRetQueue(&retList);
+		gm->setRetMutex(&retMutex);
         gm->initNewMap(roleIDList);
         /*
         while (true)
@@ -36,8 +40,10 @@ void mainGame()
 void serverSocket(int max, int interval)
 {
         singleServer* ss = singleServer::getSingleServer();
-        ss->setInputQueue(&myList);
-        ss->setInputMutex(&myMutex);
+        ss->setRecQueue(&recList);
+        ss->setRecMutex(&recMutex);
+		ss->setRetQueue(&retList);
+		ss->setRetMutex(&retMutex);
         ss->serverStart();
 printf("4444444\n");
 

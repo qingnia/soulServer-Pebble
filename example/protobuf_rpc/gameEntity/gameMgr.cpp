@@ -23,15 +23,27 @@ gameMgr* gameMgr::getGameMgr()
 	return gm;
 }
 
-int gameMgr::setInputQueue(list< map<string, string> >* queue)
+int gameMgr::setRecQueue(list< map<string, string> >* queue)
 {
-	this->inputQueue = queue;
+	this->recQueue = queue;
 	return 0;
 }
 
-int gameMgr::setInputMutex(mutex* mt)
+int gameMgr::setRecMutex(mutex* mt)
 {
-	this->inputMutex = mt;
+	this->recMutex = mt;
+	return 0;
+}
+
+int gameMgr::setRetQueue(list< map<string, string> >* queue)
+{
+	this->retQueue = queue;
+	return 0;
+}
+
+int gameMgr::setRetMutex(mutex* mt)
+{
+	this->retMutex = mt;
 	return 0;
 }
 
@@ -133,22 +145,40 @@ int32_t gameMgr::inputRoleDir(int64_t handle, int32_t dir)
 
 map<string, string> gameMgr::getLegalInput(int msgID)
 {
-	std::lock_guard<std::mutex> guard(*inputMutex);
+	std::lock_guard<std::mutex> guard(*recMutex);
 	map<string, string> legalInput;
 	int tmpMsgID;
 	while(true)
 	{
-		legalInput = inputQueue->front();
+		legalInput = recQueue->front();
 		tmpMsgID = stringToNum<int>(legalInput["id"]);
 		if(tmpMsgID == msgID)
 		{
-			inputQueue->clear();
+			recQueue->clear();
 			break;
 		}
 	}
 	return legalInput;
 }
 
+//示例代码的发消息
+/**
+int __size = response.ByteSize();
+uint8_t* __buff = m_server->GetBuffer(__size);
+if (__buff == NULL) {
+	rsp(::pebble::kPEBBLE_RPC_INSUFFICIENT_MEMORY, NULL, 0);
+	return;
+}
+if (!response.SerializeToArray(__buff, __size)) {
+	rsp(::pebble::kPEBBLE_RPC_ENCODE_BODY_FAILED, NULL, 0);
+	return;
+}*/
+
+void gameMgr::setRetMsg(int size, uint8_t* buff)
+{
+	int32_t need_realloc = std::min(size + size, max_buff_size);
+	uint8_t* new_buff = (uint8_t*)realloc(m_buff, need_realloc);
+}
 void gameMgr::update()
 {
 	map<int, gameMap*>::iterator iter;

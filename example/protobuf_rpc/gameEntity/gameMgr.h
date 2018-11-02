@@ -13,12 +13,27 @@
 #include <mutex>
 #include <algorithm>
 #include "gameMap.h"
+#include "example/protobuf_rpc/net/rpcMsg.rpc.pb.h"
+#include "src/framework/rpc.h"
+
+struct needSaveMsg
+{
+	int64_t handle;
+	const pebble::RpcHead& rpc_head;
+	const uint8_t* buff;
+	uint32_t buff_len;
+	const pebble::OnRpcResponse& on_rsp;
+	int32_t timeout_ms;
+};
 
 class gameMgr
 {
 private:
-	list< map<string, string> >* inputQueue;
-	mutex* inputMutex;
+	list< map<string, string> >* recQueue;
+	mutex* recMutex;
+
+	list< map<string, string> >* retQueue;
+	mutex* retMutex;
 
 	static gameMgr* gm;
 	map<int32_t, gameMap*> id2Map;
@@ -48,8 +63,14 @@ public:
 	int32_t inputRoleDir(int64_t handle, int32_t dir);
 
 	map<string, string> getLegalInput(int msgID);
-	int setInputQueue(list< map<string, string> >*);
-	int setInputMutex(mutex*);
+	
+	void setRetMsg(int size, uint8_t* buff);
+
+	int setRecQueue(list< map<string, string> >*);
+	int setRecMutex(mutex*);
+
+	int setRetQueue(list< map<string, string> >*);
+	int setRetMutex(mutex*);
 	void update();
 };
 
