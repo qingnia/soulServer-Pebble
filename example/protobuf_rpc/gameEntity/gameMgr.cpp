@@ -23,7 +23,7 @@ gameMgr* gameMgr::getGameMgr()
 	return gm;
 }
 
-int gameMgr::setRecQueue(list< map<string, string> >* queue)
+int gameMgr::setRecQueue(list< map<string, string>* >* queue)
 {
 	this->recQueue = queue;
 	return 0;
@@ -35,7 +35,7 @@ int gameMgr::setRecMutex(mutex* mt)
 	return 0;
 }
 
-int gameMgr::setRetQueue(list< map<string, string> >* queue)
+int gameMgr::setRetQueue(list< needSaveMsg* >* queue)
 {
 	this->retQueue = queue;
 	return 0;
@@ -66,6 +66,13 @@ player gameMgr::getPlayer(int32_t roleID)
 	gameMap* map = getMap(mapID);
 	player p = map->getPlayer(roleID);
 	return p;
+}
+
+list<int32_t> gameMgr::getBroadcastRoleIDList(int32_t roleID)
+{
+	int32_t mapID = roleID2MapID[roleID];
+	gameMap* map = getMap(mapID);
+	return map->getRoleIDList();
 }
 
 map<int, int> gameMgr::choosePart(vector<int> roleIDList)
@@ -117,36 +124,37 @@ int32_t gameMgr::modifyRoleStatus(int32_t roleID, int32_t cmd)
 {
 	player p = getPlayer(roleID);
 	p.modifyStatus(cmd);
-	return ret;
+	return 0;
 }
 	
 int32_t gameMgr::inputRoleDir(int32_t roleID, int32_t dir)
 {
 	player p = getPlayer(roleID);
-	if (!p->isMyTurn())
+	if (!p.isMyTurn())
 	{
 		return -1;
 	}
 	p.modifyStatus(dir);
-	return ret;
+	return 0;
 }
 
 map<string, string> gameMgr::getLegalInput(int msgID)
 {
 	std::lock_guard<std::mutex> guard(*recMutex);
-	map<string, string> legalInput;
+	map<string, string>* legalInput;
 	int tmpMsgID;
 	while(true)
 	{
 		legalInput = recQueue->front();
-		tmpMsgID = stringToNum<int>(legalInput["id"]);
+		tmpMsgID = stringToNum<int>((*legalInput)["id"]);
 		if(tmpMsgID == msgID)
 		{
 			recQueue->clear();
 			break;
 		}
+		delete(legalInput);
 	}
-	return legalInput;
+	return *legalInput;
 }
 
 //示例代码的发消息
@@ -162,14 +170,13 @@ if (!response.SerializeToArray(__buff, __size)) {
 	return;
 }*/
 //框架只支持广播和单播，多播用单播实现，对房间内所有玩家发送
-void gameMgr::setRetMsg(string function, list<int_32_t> roleIDList, int size, uint8_t* buff)
+void gameMgr::setRetMsg(string function, list<int32_t> roleIDList, int size, uint8_t* buff)
 {
 	std::lock_guard<std::mutex> guard(*retMutex);
-	map<string, needSaveMsg*> msg = new map<string, needSaveMsg*>(function, nsm);
+	needSaveMsg* nsm = new needSaveMsg(function, roleIDList, buff, size);
+	//map<string, needSaveMsg*>* msg = new map<string, needSaveMsg* >(function, nsm);
 	
-	int64_t handle = this->getHandleByRoleID(*iter);
-	needSaveMsg* nsm = new needSaveMsg(roleIDLis, thandle, buff, size);
-	this->retQueue->push_back(msg);
+	this->retQueue->push_back(nsm);
 }
 void gameMgr::update()
 {

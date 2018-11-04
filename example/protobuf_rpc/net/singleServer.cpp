@@ -15,8 +15,6 @@
 #include <iostream>
 
 #include "singleServer.hpp"
-#include "server/pebble_server.h"
-#include "rpcMsg.hpp"
 
 #define ASSERT_EQ(expected, actual) \
     if ((expected) != (actual)) { \
@@ -42,6 +40,12 @@ singleServer::~singleServer()
 
 }
 
+pebble::PebbleRpc* singleServer::getBinaryRpc()
+{
+    pebble::PebbleRpc* rpc = server.GetPebbleRpc(pebble::kPEBBLE_RPC_BINARY);
+	return rpc;
+}
+
 singleServer* singleServer::getSingleServer()
 {
     return ss;
@@ -49,19 +53,20 @@ singleServer* singleServer::getSingleServer()
 
 int32_t singleServer::getLastMsgRoleID()
 {
-    int64_t handle = this->server->GetLastMessageInfo->_remote_handle;
+    int64_t handle = this->server.GetLastMessageInfo()->_remote_handle;
     return this->getRoleIDByHandle(handle);
 }
 
-void singleServer::bindRole2Handle(int32_t roleID, int64_t handle)
+void singleServer::bindRole2Handle(int32_t roleID)
 {
+    int64_t handle = this->server.GetLastMessageInfo()->_remote_handle;
     roleID2Handle[roleID] = handle;
     handle2RoleID[handle] = roleID;
 }
 
-int64_t singleServer::getHandleByRoleID(int32_t roleID);
+int64_t singleServer::getHandleByRoleID(int32_t roleID)
 {
-    map<int64_t, int32_t>::iterator iter = this->roleID2Handle.find(handle);
+    map<int32_t, int64_t>::iterator iter = this->roleID2Handle.find(roleID);
 	if (iter == this->roleID2Handle.end())
 	{
 		return -1;
@@ -79,7 +84,7 @@ int32_t singleServer::getRoleIDByHandle(int64_t handle)
 	return iter->second;
 }
 
-int singleServer::setRecQueue(list< map<string, string> >* queue)
+int singleServer::setRecQueue(list< map<string, string>* >* queue)
 {
     this->recQueue = queue;
     return 0;
@@ -91,7 +96,7 @@ int singleServer::setRecMutex(mutex* mt)
 	return 0;
 }
 
-int singleServer::setRetQueue(list< map<string, string> >* queue)
+int singleServer::setRetQueue(list<needSaveMsg*>* queue)
 {
 	this->retQueue = queue;
 	return 0;
@@ -103,34 +108,39 @@ int singleServer::setRetMutex(mutex* mt)
 	return 0;
 }
 
-int singleServer::saveMsg(map<string, string> newMsg)
+int singleServer::saveMsg(map<string, string>* newMsg)
 {
     recQueue->push_back(newMsg);
     return 0;
 }
 
-int32_t singleServer::sendMsg(int32_t roleID, int8_t* buff, int32_t buff_len)
+int32_t singleServer::sendMsg(int32_t roleID, uint8_t* buff, int32_t buff_len)
 {
     int64_t handle = this->getHandleByRoleID(roleID);
-    pebble::PebbleRpc* rpc = server.GetPebbleRpc(ProtocolType.kPEBBLE_RPC_BINARY);
-    RpcHead head = RpcHead();
-    int64_t handle = this->getHandleByRoleID(*roleIter);
-    rpc->SendRequestSync(handle, head, msgIter->buff, msgIter->buff_len, msgIter->on_rsp, 10);
+    pebble::PebbleRpc* rpc = server.GetPebbleRpc(pebble::kPEBBLE_RPC_BINARY);
+    pebble::RpcHead head;
+
+    ::pebble::OnRpcResponse on_rsp;
+    rpc->SendRequestSync(handle, head, buff, buff_len, on_rsp, 10);
+	return 0;
 }
 
-int32_t singleServer::On1sTimeout()
+int32_t On1sTimeout(singleServer* ss)
 {
-    std::lock_guard<std::mutex> guard(*retMutex);
-    pebble::PebbleRpc* rpc = server.GetPebbleRpc(ProtocolType.kPEBBLE_RPC_BINARY);
-    list< string, map<string, needSaveMsg*> >::iterator msgIter;
-    for(msgIter = this->retQueue->begin(); msgIter != this->retQueue->end(); msgIter++)
+    std::lock_guard<std::mutex> guard(*(ss->retMutex));
+    pebble::PebbleRpc* rpc = ss->getBinaryRpc();
+    list<needSaveMsg*>::iterator msgIter;
+	needSaveMsg* nsm;
+    for(msgIter = ss->retQueue->begin(); msgIter != ss->retQueue->end(); msgIter++)
     {
         list<int32_t>::iterator roleIter;
-        for(roleIter = msgIter->roleIDList.begin(); roleIter != msgIter->roleIDList.end(); roleIter++)
+	nsm = *msgIter;
+        for(roleIter = nsm->roleIDList.begin(); roleIter != nsm->roleIDList.end(); roleIter++)
         {
-            RpcHead head = RpcHead();
-            int64_t handle = this->getHandleByRoleID(*roleIter);
-            rpc->SendRequestSync(handle, head, msgIter->buff, msgIter->buff_len, msgIter->on_rsp, 10);
+            pebble::RpcHead head;
+            int64_t handle = ss->getHandleByRoleID(*roleIter);
+	    ::pebble::OnRpcResponse on_rsp;
+		rpc->SendRequestSync(handle, head, nsm->buff, nsm->buff_len, on_rsp, 10);
         }
     }
     return 0;
@@ -139,7 +149,7 @@ int32_t singleServer::On1sTimeout()
 void singleServer::setSendMsgTimer()
 {
     // 创建定时器，定时向客户端推消息
-    server.GetTimer()->StartTimer(1000, cxx::bind(On1sTimeout));
+    this->server.GetTimer()->StartTimer(1000, cxx::bind(On1sTimeout, this));
 }
 
 int singleServer::serverStart()
@@ -167,7 +177,7 @@ int singleServer::serverStart()
 
     // 添加服务
     rpcMsg rs;
-    rs._server = &server;
+    rs._server = this;
 
     ret = rpc->AddService(&rs);
     ASSERT_EQ(0, ret);

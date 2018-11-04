@@ -14,17 +14,19 @@
 #include "server/pebble_server.h"
 #include "../gameEntity/gameMgr.h"
 //#include "example/protobuf_rpc/gameEntity/gameMgr.hpp"
-#include "singleServer.hpp"
+#include "needSaveMsg.hpp"
 
+class singleServer;
 // Calculator服务接口的实现
 class rpcMsg : public ::example::rpcMsgServerInterface {
 public:
-    singleServer* ss;
-    pebble::PebbleServer* _server;
+    //singleServer* ss;
+    //pebble::PebbleServer* _server;
+	singleServer* _server;
     gameMgr* gm;
-    rpcMsg() : _server(NULL) {
+    rpcMsg() : _server() {
         gm = gameMgr::getGameMgr();
-        ss = singleServer::getSingleServer();
+        //_server = singleServer::getSingleServer();
     }
     virtual ~rpcMsg() {}
 
@@ -47,24 +49,25 @@ public:
 	//	6. 这个rsp实际是SendResponse(session_id, ret, buff, buff_len)
 
     virtual void login(const ::example::LoginInfo& loginInfo,
-        cxx::function<void(int32_t ret_code, const ::example::LoginRet& loginRet)>& rsp)
+        cxx::function<void(int32_t ret_code, const ::example::LoginRet& loginRet)>& rsp);
+/*
     {
         int32_t roleID = loginInfo.roleid();
         int32_t roomID = loginInfo.roomid();
 
         // 处理请求时记录请求的来源，用于反向RPC调用，不过注意这个handle是可能失效的
-        int64_t g_last_handle = _server->GetLastMessageInfo()->_remote_handle;
-        int32_t status = gm->roleLogin(roleID, roomID, g_last_handle);
+	_server->bindRole2Handle(roleID);
+        int32_t status = gm->roleLogin(roleID, roomID);
 
         std::cout << "receive rpc loginInfo: " << roleID << " + " << roomID << " = " << status << std::endl;
         ::example::LoginRet loginRet;
         loginRet.set_status(status);
         rsp(pebble::kRPC_SUCCESS, loginRet);
     }
-
+*/
     virtual void add(const ::example::CalRequest& request,
-        cxx::function<void(int32_t ret_code, const ::example::CalResponse& response)>& rsp)
-    {
+        cxx::function<void(int32_t ret_code, const ::example::CalResponse& response)>& rsp);
+  /*  {
         int32_t a = request.a();
         int32_t b = request.b();
         int32_t c = a + b;
@@ -73,13 +76,13 @@ public:
         response.set_c(c);
         rsp(pebble::kRPC_SUCCESS, response);
     }
-
+*/
     virtual void modifyStatus(const ::example::StatusRequest& statusReq,
-        cxx::function<void(int32_t ret_code, const ::example::StatusResponse& ret)>& rsp)
-    {
+        cxx::function<void(int32_t ret_code, const ::example::StatusResponse& ret)>& rsp);
+  /*  {
         int32_t cmd = statusReq.cmd();
-        int64_t g_last_handle = _server->GetLastMessageInfo()->_remote_handle;
-        gm->modifyRoleStatus(g_last_handle, cmd);
+        int32_t roleID = _server->getLastMsgRoleID();
+        gm->modifyRoleStatus(roleID, cmd);
 
 	    int32_t status = 0;
 
@@ -88,10 +91,10 @@ public:
         ret.set_status(status);
         rsp(pebble::kRPC_SUCCESS, ret);
     }
-
+*/
     virtual void move(const ::example::moveRequest& moveCMD,
-        cxx::function<void(int32_t ret_code, const ::example::StatusResponse& ret)>& rsp)
-    {
+        cxx::function<void(int32_t ret_code, const ::example::StatusResponse& ret)>& rsp);
+  /*  {
         int32_t dir = moveCMD.direction();
         int32_t roleID = _server->getLastMsgRoleID();
         gm->inputRoleDir(roleID, dir);
@@ -103,36 +106,35 @@ public:
         ret.set_status(status);
         rsp(pebble::kRPC_SUCCESS, ret);
     }
-
-    virtual void chat(const ::example::chat& chatInfo,
-        cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp)
-    {
+*/
+    virtual void chat(const ::example::chatBroadcast& chatInfo,
+        cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp);
+  /*  {
         string mySaid = chatInfo.said();
-        int64_t g_last_handle = _server->GetLastMessageInfo()->_remote_handle;
-        roleID = _server->getRoleIDByHandle(g_last_handle);
+        int32_t roleID = _server->getLastMsgRoleID();
 
         //消息层直接拿到同房玩家列表，转发，效率更高
-        RpcHead head = RpcHead();
-        ::example::chat sendChat;
-        ret.set_said(mySaid);
+        pebble::RpcHead head;
+        ::example::chatBroadcast sendChat;
+        sendChat.set_said(mySaid);
         int __size = sendChat.ByteSize();
-        uint8_t *__buff = m_server->GetBuffer(__size);
-        sendChat.SerializeToArray(__buff, __size))
+	pebble::PebbleRpc* rpc = _server->getBinaryRpc();
+        uint8_t *__buff = rpc->GetBuffer(__size);
+        sendChat.SerializeToArray(__buff, __size);
 
-        list<int32_t> roleIDList = gm->getBroadcastRoleList(roleID);
+        list<int32_t> roleIDList = gm->getBroadcastRoleIDList(roleID);
         list<int32_t>::iterator iter;
         for(iter = roleIDList.begin(); iter != roleIDList.end(); iter++)
         {
-            int64_t handle = _server->getHandleByRoleID(*iter);
             _server->sendMsg(*iter, __buff, __size);
         }
 
 	    int32_t status = 0;
 
-        std::cout << "receive rpc dir: " << dir << std::endl;
-        ::example::StatusResponse ret;
+        std::cout << "receive rpc role: " << roleID << "say: " << mySaid << std::endl;
+        ::example::commonResponse ret;
         ret.set_status(status);
         rsp(pebble::kRPC_SUCCESS, ret);
-    }
+    }*/
 };
 #endif

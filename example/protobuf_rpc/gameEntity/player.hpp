@@ -17,6 +17,7 @@
 #include "resCard.h"
 #include "roomCard.h"
 
+class gameMap;
 class gameMgr;
 using namespace std;
 class player {

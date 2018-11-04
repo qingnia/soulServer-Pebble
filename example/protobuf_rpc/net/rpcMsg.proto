@@ -13,9 +13,8 @@ message LoginRet {
 }
 
 //聊天协议
-message chat {
-    optional int32 roleid = 1;
-    optional string said = 2;
+message chatBroadcast {
+    optional string said = 1;
 }
 
 message CalRequest {
@@ -39,6 +38,7 @@ message moveRequest {
     optional int32 direction = 1;
 }
 
+
 message commonResponse {
     optional int32 status = 1;
 }
@@ -49,6 +49,6 @@ service rpcMsg { // ��ʱֻ�ṩ�ӷ�����
     rpc login(LoginInfo) returns (LoginRet);
     rpc modifyStatus(StatusRequest) returns (StatusResponse);
     rpc move(moveRequest) returns (StatusResponse);
-    rpc chat(chat) returns (commonResponse);
+    rpc chat(chatBroadcast) returns (commonResponse);
 }
 

@@ -12,8 +12,8 @@
 #include "gameEntity/gameMgr.h"
 #include "net/singleServer.hpp"
 
-std::list< map<string, string> > recList;
-std::list< map<string, string> > retList;
+std::list< map<string, string>* > recList;
+std::list<needSaveMsg*> retList;
 std::mutex recMutex;
 std::mutex retMutex;
 

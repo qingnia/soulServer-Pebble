@@ -12,6 +12,9 @@
 #include <map>
 #include <mutex>
 #include "needSaveMsg.hpp"
+#include "server/pebble_server.h"
+#include "server/pebble.h"
+#include "rpcMsg.hpp"
 
 using namespace std;
 
@@ -27,31 +30,32 @@ private:
     pebble::PebbleServer server;
 
     static singleServer* ss;
-    list< map<string, string> > *recQueue;
+    list< map<string, string>* > *recQueue;
 	mutex* recMutex;
 
-	list< map<string, needSaveMsg*> > *retQueue;
-	mutex* retMutex;
 
     void setSendMsgTimer();
-    int32_t On1sTimeout();
 public:
+	list<needSaveMsg*> *retQueue;
+	mutex* retMutex;
+
+    pebble::PebbleRpc* getBinaryRpc();
     int32_t getLastMsgRoleID();
 
-    void bindRole2Handle(int32_t roleID, int64_t handle);
+    void bindRole2Handle(int32_t roleID);
 	int64_t getHandleByRoleID(int32_t roleID);
-    int32_t singleServer::getRoleIDByHandle(int64_t handle);
+    int32_t getRoleIDByHandle(int64_t handle);
 
-    int32_t sendMsg(int32_t roleID, int8_t* buff, int32_t buff_len);
+    int32_t sendMsg(int32_t roleID, uint8_t* buff, int32_t buff_len);
     static singleServer* getSingleServer();
-    int saveMsg(map<string, string>);
+    int saveMsg(map<string, string>*);
 
     int serverStart();
 
-    int setRecQueue(list< map<string, string> >*);
+    int setRecQueue(list< map<string, string>* >*);
 	int setRecMutex(mutex*);
 
-	int setRetQueue(list< map<string, string> >*);
+	int setRetQueue(list<needSaveMsg*>*);
 	int setRetMutex(mutex*);
 
 };

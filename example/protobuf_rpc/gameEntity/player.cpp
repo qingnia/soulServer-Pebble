@@ -7,6 +7,7 @@
 
 #include "player.hpp"
 #include "gameMgr.h"
+#include "gameMap.h"
 
 /***************************内部常用函数**********************************/
 gameMap* player::getMyMap()

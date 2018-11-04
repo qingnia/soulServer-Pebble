@@ -32,10 +32,6 @@ gen_rule(
 cc_library(
     name = 'rpcMsg',
     srcs = [
-        'net/rpcMsg.pb.cc',
-        'net/rpcMsg.rpc.pb.cc',
-	'gameEntity/gameMgr.cpp',
-	'gameEntity/gameMap.cpp',
 	'gameEntity/player.cpp',
 	'gameEntity/card.cpp',
 	'gameEntity/resCard.cpp',
@@ -47,6 +43,11 @@ cc_library(
 	'utils/config.cpp',
 	'utils/commonFun.cpp',
 	'utils/log.cpp',
+	'gameEntity/gameMap.cpp',
+        'net/rpcMsg.pb.cc',
+        'net/rpcMsg.rpc.pb.cc',
+        'net/rpcMsg.cpp',
+	'gameEntity/gameMgr.cpp',
     ],
     incs = [
         '../../thirdparty/protobuf/include/',
@@ -92,8 +93,10 @@ cc_binary(
         'main.cpp', 
     ],
     incs = [
+        '../../thirdparty/protobuf/include/',
     ],
     deps = [
+        ':rpcMsg',
         ':singleServer',
 	'#pthread'
     ],
