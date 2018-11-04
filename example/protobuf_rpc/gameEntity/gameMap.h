@@ -21,6 +21,7 @@
 
 class gameMap{
     int m_id, m_width, m_length, m_height, m_infoNum, m_process;
+    int32_t actionRoleID;
     
     list<action>::iterator nextAction;
 
@@ -43,6 +44,8 @@ class gameMap{
     //等待输入函数
     position inputPosition();
 public:
+    int32_t getActionRoleID();
+
 	gameMap();
     gameMap(int mapID, map<int, int> roleID2PartID);
 
@@ -60,6 +63,7 @@ public:
 
 	list<int> getCanAttackRoleIDList(player*);
     int run();
+    void newRun();
 
     bool unravelRiddle(position, int playerID);
     bool tryEnd();

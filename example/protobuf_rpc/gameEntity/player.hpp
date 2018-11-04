@@ -26,6 +26,7 @@ class player {
     string name;
     int age, moveNum, m_floor;
     int m_id, m_mapID, m_roleID;
+    bool actionDone;
     
     map<examType, int> et2level;
     map<examType, vector<int> > etLevel2value;
@@ -47,13 +48,18 @@ public:
     player(int32_t roleID, int32_t mapID);
     player(int roleID, int mapID, map<string, string>);
 
-    int getID(), getRoleID();
+    gameMap* getMyMap();
+
+    int getID(), getRoleID(), getMapID();
     roomCard* getMyRoom();
 
 //    oper getOperate();
+    bool isMyTurn();
     int start();
 	int move();
     int stop();
+
+    bool isActionDone();
 
     int attack(int id);
     int useSkill(int id);

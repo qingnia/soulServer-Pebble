@@ -81,7 +81,7 @@ public:
         int64_t g_last_handle = _server->GetLastMessageInfo()->_remote_handle;
         gm->modifyRoleStatus(g_last_handle, cmd);
 
-	int32_t status = 0;
+	    int32_t status = 0;
 
         std::cout << "receive rpc cmd: " << cmd << std::endl;
         ::example::StatusResponse ret;
@@ -93,15 +93,46 @@ public:
         cxx::function<void(int32_t ret_code, const ::example::StatusResponse& ret)>& rsp)
     {
         int32_t dir = moveCMD.direction();
-        int64_t g_last_handle = _server->GetLastMessageInfo()->_remote_handle;
-        gm->inputRoleDir(g_last_handle, dir);
+        int32_t roleID = _server->getLastMsgRoleID();
+        gm->inputRoleDir(roleID, dir);
 
-	int32_t status = 0;
+	    int32_t status = 0;
 
         std::cout << "receive rpc dir: " << dir << std::endl;
         ::example::StatusResponse ret;
         ret.set_status(status);
         rsp(pebble::kRPC_SUCCESS, ret);
-    } 
+    }
+
+    virtual void chat(const ::example::chat& chatInfo,
+        cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp)
+    {
+        string mySaid = chatInfo.said();
+        int64_t g_last_handle = _server->GetLastMessageInfo()->_remote_handle;
+        roleID = _server->getRoleIDByHandle(g_last_handle);
+
+        //消息层直接拿到同房玩家列表，转发，效率更高
+        RpcHead head = RpcHead();
+        ::example::chat sendChat;
+        ret.set_said(mySaid);
+        int __size = sendChat.ByteSize();
+        uint8_t *__buff = m_server->GetBuffer(__size);
+        sendChat.SerializeToArray(__buff, __size))
+
+        list<int32_t> roleIDList = gm->getBroadcastRoleList(roleID);
+        list<int32_t>::iterator iter;
+        for(iter = roleIDList.begin(); iter != roleIDList.end(); iter++)
+        {
+            int64_t handle = _server->getHandleByRoleID(*iter);
+            _server->sendMsg(*iter, __buff, __size);
+        }
+
+	    int32_t status = 0;
+
+        std::cout << "receive rpc dir: " << dir << std::endl;
+        ::example::StatusResponse ret;
+        ret.set_status(status);
+        rsp(pebble::kRPC_SUCCESS, ret);
+    }
 };
 #endif

@@ -68,17 +68,6 @@ player gameMgr::getPlayer(int32_t roleID)
 	return p;
 }
 
-int32_t gameMgr::getPlayerByHandle(int64_t handle, player& p)
-{
-	map<int64_t, int32_t>::iterator iter = this->handle2Role.find(handle);
-	if (iter == this->handle2Role.end())
-	{
-		return -1;
-	}
-	p = getPlayer(iter->second);
-	return 0;
-}
-
 map<int, int> gameMgr::choosePart(vector<int> roleIDList)
 {
 	map<int, int> roleID2Character;
@@ -117,28 +106,27 @@ gameMap* gameMgr::initNewMap(vector<int> roleIDList)
 	return nullptr;
 }
 
-int32_t gameMgr::roleLogin(int32_t roleID, int32_t mapID, int64_t handle)
+int32_t gameMgr::roleLogin(int32_t roleID, int32_t mapID)
 {
-	roleID2MapID[roleID] = mapID;
 	gameMap* map = getMap(mapID);
 	int ret = map->addNewPlayer(roleID);
-	
-	role2Handle[roleID] = handle;
 	return ret;
 }
 	
-int32_t gameMgr::modifyRoleStatus(int64_t handle, int32_t cmd)
+int32_t gameMgr::modifyRoleStatus(int32_t roleID, int32_t cmd)
 {
-	player p = player();
-	int32_t ret = getPlayerByHandle(handle, p);
+	player p = getPlayer(roleID);
 	p.modifyStatus(cmd);
 	return ret;
 }
 	
-int32_t gameMgr::inputRoleDir(int64_t handle, int32_t dir)
+int32_t gameMgr::inputRoleDir(int32_t roleID, int32_t dir)
 {
-	player p = player();
-	int32_t ret = getPlayerByHandle(handle, p);
+	player p = getPlayer(roleID);
+	if (!p->isMyTurn())
+	{
+		return -1;
+	}
 	p.modifyStatus(dir);
 	return ret;
 }
@@ -173,11 +161,15 @@ if (!response.SerializeToArray(__buff, __size)) {
 	rsp(::pebble::kPEBBLE_RPC_ENCODE_BODY_FAILED, NULL, 0);
 	return;
 }*/
-
-void gameMgr::setRetMsg(int size, uint8_t* buff)
+//框架只支持广播和单播，多播用单播实现，对房间内所有玩家发送
+void gameMgr::setRetMsg(string function, list<int_32_t> roleIDList, int size, uint8_t* buff)
 {
-	int32_t need_realloc = std::min(size + size, max_buff_size);
-	uint8_t* new_buff = (uint8_t*)realloc(m_buff, need_realloc);
+	std::lock_guard<std::mutex> guard(*retMutex);
+	map<string, needSaveMsg*> msg = new map<string, needSaveMsg*>(function, nsm);
+	
+	int64_t handle = this->getHandleByRoleID(*iter);
+	needSaveMsg* nsm = new needSaveMsg(roleIDLis, thandle, buff, size);
+	this->retQueue->push_back(msg);
 }
 void gameMgr::update()
 {

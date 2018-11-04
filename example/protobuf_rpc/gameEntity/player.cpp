@@ -7,14 +7,28 @@
 
 #include "player.hpp"
 #include "gameMgr.h"
-#include "gameMap.h"
 
 /***************************内部常用函数**********************************/
-gameMap* getMyMap(int mapID)
+gameMap* player::getMyMap()
 {
 	gameMgr* gm = gameMgr::getGameMgr();
-	gameMap* myMap = gm->getMap(mapID);
+	gameMap* myMap = gm->getMap(this->m_mapID);
 	return myMap;
+}
+
+bool player::isActionDone()
+{
+	return this->actionDone;
+}
+
+bool player::isMyTurn()
+{
+	gameMap* map = getMyMap();
+	if (map->getActionRoleID() == this->m_roleID)
+	{
+		return true;
+	}
+	return false;
 }
 
 /***************************内部常用函数**********************************/
@@ -23,6 +37,7 @@ player::player()
 	this->moveNum = 0;
 	this->m_floor = 1;
     this->pos = position(50, 50);
+	this->actionDone = false;
 }
 
 player::player(int32_t roleID, int32_t mapID)
@@ -30,6 +45,7 @@ player::player(int32_t roleID, int32_t mapID)
 	this->m_roleID = roleID;
 	this->m_mapID = mapID;
 	this->m_ps = psEnter;
+	this->actionDone = false;
 }
 
 player::player(int roleID, int mapID, map<string, string> playerConfig)
@@ -241,7 +257,7 @@ int player::excutePunish(examType et, int num)
 
 bool player::getReality()
 {
-	gameMap* myMap = getMyMap(this->m_mapID);
+	gameMap* myMap = getMyMap();
     if (myMap->getProcess() > 0)
     {
         return true;
@@ -282,7 +298,7 @@ bool player::enterRoom(roomCard* room, bool isNewRoom)
 	}
 	else
 	{
-		gameMap* myMap = getMyMap(this->m_mapID);
+		gameMap* myMap = getMyMap();
 		list<int> canAttackList = myMap->getCanAttackRoleIDList(this);
 		if (canAttackList.size() > 0)
 		{
@@ -350,7 +366,7 @@ int player::move()
 		{
 			break;
 		}
-		gameMap* myMap = getMyMap(this->m_mapID);
+		gameMap* myMap = getMyMap();
 		roomCard* thisRoom = myMap->getRoom(this->pos);
 
 		//检查这个位置从当前房间能不能通过
@@ -385,6 +401,7 @@ int player::stop()
 	}
 	//移动结束后把行动力恢复
 	this->moveNum = 0;
+	this->actionDone = true;
 	return 0;
 }
 
@@ -392,7 +409,7 @@ int player::moveTo(direction dir)
 {
 	stringstream ss;
 
-	gameMap* myMap = getMyMap(this->m_mapID);
+	gameMap* myMap = getMyMap();
 	position* nextPos = (this->pos).getNeibourPos(dir);
 	roomCard* nextRoom = myMap->getRoom(*nextPos);
 
@@ -447,7 +464,7 @@ int player::changeNewRoomRotation(direction fromDir, roomCard* room)
 
 int player::gainNewItem(configType ct)
 {
-	gameMap* myMap = getMyMap(this->m_mapID);
+	gameMap* myMap = getMyMap();
 	issueCard* newIssue;
 	resCard* newRes;
 	resCard* newInfo;
@@ -498,7 +515,7 @@ int player::getRoleID()
 
 roomCard* player::getMyRoom()
 {
-	gameMap* myMap = getMyMap(this->m_mapID);
+	gameMap* myMap = getMyMap();
 	roomCard* room = myMap->getRoom(this->pos);
 	return room;
 }
@@ -519,7 +536,7 @@ int player::incrETLevel(examType et, int num)
 		ss << "玩家" << this->m_roleID << getETString(et) << "变为0，死亡！";
 		logInfo(ss.str());
 		//死亡
-		gameMap* myMap = getMyMap(this->m_mapID);
+		gameMap* myMap = getMyMap();
 		myMap->tryEnd();
 	}
 	return this->et2level[et];

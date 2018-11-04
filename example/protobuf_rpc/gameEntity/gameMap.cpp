@@ -9,10 +9,16 @@
 
 gameMap::gameMap()
 {
+    this->actionRoleID = 0;
 }
 
 gameMap::~gameMap()
 {
+}
+
+int32_t gameMap::getActionRoleID()
+{
+    return this->actionRoleID;
 }
 
 int32_t gameMap::addNewPlayer(int32_t roleID)
@@ -295,6 +301,34 @@ int gameMap::run()
         iter->stop();
     }
     return 0;
+}
+
+//这游戏更接近棋牌，系统控制当前行动玩家，然后响应玩家输入即可
+void gameMap::newRun()
+{
+    while(true)
+    {
+	    stringstream ss;
+        //不停检查玩家状态，直到所有玩家都标记已行动
+        list<player>::iterator iter;
+        //开始阶段
+        ss << "新一轮开始，开始阶段："; 
+	    logInfo(ss.str());
+        ss.clear();
+        for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
+        {
+            if (!iter->isActionDone())
+            {
+                this->actionRoleID = iter->getID();
+                break;
+            }
+        }
+        if (iter == this->playerList.end())
+        {
+            this->actionRoleID = this->playerList.begin()->getID();
+        }
+    }
+    return;
 }
 
 position gameMap::inputPosition()

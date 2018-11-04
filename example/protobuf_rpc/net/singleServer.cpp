@@ -33,7 +33,8 @@ singleServer* singleServer::ss = new singleServer();
 
 singleServer::singleServer()
 {
-
+    // 初始化PebbleServer
+    server = pebble::PebbleServer();
 }
 
 singleServer::~singleServer()
@@ -44,6 +45,38 @@ singleServer::~singleServer()
 singleServer* singleServer::getSingleServer()
 {
     return ss;
+}
+
+int32_t singleServer::getLastMsgRoleID()
+{
+    int64_t handle = this->server->GetLastMessageInfo->_remote_handle;
+    return this->getRoleIDByHandle(handle);
+}
+
+void singleServer::bindRole2Handle(int32_t roleID, int64_t handle)
+{
+    roleID2Handle[roleID] = handle;
+    handle2RoleID[handle] = roleID;
+}
+
+int64_t singleServer::getHandleByRoleID(int32_t roleID);
+{
+    map<int64_t, int32_t>::iterator iter = this->roleID2Handle.find(handle);
+	if (iter == this->roleID2Handle.end())
+	{
+		return -1;
+	}	
+	return iter->second;
+}
+
+int32_t singleServer::getRoleIDByHandle(int64_t handle)
+{
+	map<int64_t, int32_t>::iterator iter = this->handle2RoleID.find(handle);
+	if (iter == this->handle2RoleID.end())
+	{
+		return -1;
+	}
+	return iter->second;
 }
 
 int singleServer::setRecQueue(list< map<string, string> >* queue)
@@ -76,6 +109,39 @@ int singleServer::saveMsg(map<string, string> newMsg)
     return 0;
 }
 
+int32_t singleServer::sendMsg(int32_t roleID, int8_t* buff, int32_t buff_len)
+{
+    int64_t handle = this->getHandleByRoleID(roleID);
+    pebble::PebbleRpc* rpc = server.GetPebbleRpc(ProtocolType.kPEBBLE_RPC_BINARY);
+    RpcHead head = RpcHead();
+    int64_t handle = this->getHandleByRoleID(*roleIter);
+    rpc->SendRequestSync(handle, head, msgIter->buff, msgIter->buff_len, msgIter->on_rsp, 10);
+}
+
+int32_t singleServer::On1sTimeout()
+{
+    std::lock_guard<std::mutex> guard(*retMutex);
+    pebble::PebbleRpc* rpc = server.GetPebbleRpc(ProtocolType.kPEBBLE_RPC_BINARY);
+    list< string, map<string, needSaveMsg*> >::iterator msgIter;
+    for(msgIter = this->retQueue->begin(); msgIter != this->retQueue->end(); msgIter++)
+    {
+        list<int32_t>::iterator roleIter;
+        for(roleIter = msgIter->roleIDList.begin(); roleIter != msgIter->roleIDList.end(); roleIter++)
+        {
+            RpcHead head = RpcHead();
+            int64_t handle = this->getHandleByRoleID(*roleIter);
+            rpc->SendRequestSync(handle, head, msgIter->buff, msgIter->buff_len, msgIter->on_rsp, 10);
+        }
+    }
+    return 0;
+}
+
+void singleServer::setSendMsgTimer()
+{
+    // 创建定时器，定时向客户端推消息
+    server.GetTimer()->StartTimer(1000, cxx::bind(On1sTimeout));
+}
+
 int singleServer::serverStart()
 {
     int argc;
@@ -85,8 +151,6 @@ int singleServer::serverStart()
     std::string url("tcp://0.0.0.0:9000");
     if (argc > 1) url.assign(argv[1]);
 
-    // 初始化PebbleServer
-    pebble::PebbleServer server;
     int ret = server.Init();
     ASSERT_EQ(0, ret);
 
