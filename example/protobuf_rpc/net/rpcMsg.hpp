@@ -107,7 +107,7 @@ public:
         rsp(pebble::kRPC_SUCCESS, ret);
     }
 */
-    virtual void chat(const ::example::chatBroadcast& chatInfo,
+    virtual void chat(const ::example::chatReceive& chatInfo,
         cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp);
   /*  {
         string mySaid = chatInfo.said();

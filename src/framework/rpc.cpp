@@ -184,12 +184,16 @@ int32_t IRpc::SendRequest(int64_t handle,
         ResponseProcComplete(rpc_head.m_function_name, kRPC_SEND_FAILED, 0);
         return ret;
     }
+printf("++++++++send\n");
 
     // ONEWAY请求
     if (!on_rsp) {
+printf("++++++++return \n");
         ResponseProcComplete(rpc_head.m_function_name, kRPC_SUCCESS, 0);
+printf("++++++++returnnnnnnnn \n");
         return kRPC_SUCCESS;
     }
+printf("++++++++continueeeee \n");
 
     // 保持会话
     cxx::shared_ptr<RpcSession> session(new RpcSession());

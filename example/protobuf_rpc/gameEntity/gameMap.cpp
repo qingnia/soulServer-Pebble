@@ -23,8 +23,12 @@ int32_t gameMap::getActionRoleID()
 
 int32_t gameMap::addNewPlayer(int32_t roleID)
 {
-    player p = player(roleID, this->m_id);
-    playerList.push_back(p);
+    player p(roleID, this->m_id);
+    this->playerList.push_back(p);
+
+    stringstream ss;
+    ss<<"新玩家进入 roleid:" << roleID;
+    logInfo(ss.str());
     return 0;
 }
 
@@ -120,11 +124,11 @@ int gameMap::initActionList()
     return 0;
 }
 
-gameMap::gameMap(int mapID, map<int, int> roleID2PartID)
+bool gameMap::init(int mapID, map<int, int> roleID2PartID)
 {
     if(this->pos2room[50][50])
     {
-		return;
+		return true;
     }
 
     if (roleID2PartID.size() <= 0)
@@ -166,6 +170,7 @@ gameMap::gameMap(int mapID, map<int, int> roleID2PartID)
     this->initPlayerList(roleID2PartID);
     this->initCardList();
 	this->initActionList();
+	return true;
 }
 
 roomCard* gameMap::getRoomByID(int roomID)
@@ -197,7 +202,7 @@ list<int32_t> gameMap::getRoleIDList()
     list<player>::iterator iter;
     for(iter = playerList.begin(); iter != playerList.end(); iter++)
     {
-        l.push_back(iter->getID());
+        l.push_back(iter->getRoleID());
     }
     return l;
 }

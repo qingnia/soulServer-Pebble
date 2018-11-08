@@ -114,14 +114,28 @@ int singleServer::saveMsg(map<string, string>* newMsg)
     return 0;
 }
 
-int32_t singleServer::sendMsg(int32_t roleID, uint8_t* buff, int32_t buff_len)
+int32_t commonCallBack(int32_t ret, const uint8_t* buff, uint32_t buff_len)
+{
+	printf("聊天消息回调\n");
+	return 0;
+}
+
+int32_t singleServer::sendMsg(string function, int32_t roleID, uint8_t* buff, int32_t buff_len)
 {
     int64_t handle = this->getHandleByRoleID(roleID);
     pebble::PebbleRpc* rpc = server.GetPebbleRpc(pebble::kPEBBLE_RPC_BINARY);
-    pebble::RpcHead head;
+    stringstream ss;
+    ss<<"rpcMsg:" << function;
+std::cout << ss.str() << endl;
 
-    ::pebble::OnRpcResponse on_rsp;
-    rpc->SendRequestSync(handle, head, buff, buff_len, on_rsp, 10);
+    ::pebble::RpcHead __head;
+    __head.m_function_name.assign(ss.str());
+    __head.m_message_type = ::pebble::kRPC_ONEWAY;
+    __head.m_session_id = 0;
+
+	//这里的rsp是消息发送后util调用的回调函数，sendrequest本身的回调是util里定义的response，因此这里不能传空
+    ::pebble::OnRpcResponse on_rsp = cxx::bind(commonCallBack, cxx::placeholders::_1, cxx::placeholders::_2, cxx::placeholders::_3);
+    rpc->SendRequestSync(handle, __head, buff, buff_len, on_rsp, 10);
 	return 0;
 }
 

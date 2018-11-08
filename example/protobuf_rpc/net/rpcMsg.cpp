@@ -16,11 +16,13 @@ void rpcMsg::login(const ::example::LoginInfo& loginInfo,
 	int32_t roleID = loginInfo.roleid();
 	int32_t roomID = loginInfo.roomid();
 
+	std::cout << "receive rpc loginInfo: " << roleID << " + " << roomID << std::endl;
 	// 处理请求时记录请求的来源，用于反向RPC调用，不过注意这个handle是可能失效的
 	_server->bindRole2Handle(roleID);
+	std::cout << "bind success" << roomID << std::endl;
 	int32_t status = gm->roleLogin(roleID, roomID);
+	std::cout << "login success" << roomID << std::endl;
 
-	std::cout << "receive rpc loginInfo: " << roleID << " + " << roomID << " = " << status << std::endl;
 	::example::LoginRet loginRet;
 	loginRet.set_status(status);
 	rsp(pebble::kRPC_SUCCESS, loginRet);
@@ -61,11 +63,13 @@ void rpcMsg::move(const ::example::moveRequest& moveCMD,
 	gm->inputRoleDir(roleID, dir);
 }
 
-void rpcMsg::chat(const ::example::chatBroadcast& chatInfo,
+void rpcMsg::chat(const ::example::chatReceive& chatInfo,
 		cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp)
 {
 	string mySaid = chatInfo.said();
 	int32_t roleID = _server->getLastMsgRoleID();
+
+	std::cout << "receive rpc role: " << roleID << "say: " << mySaid << std::endl;
 
 	//消息层直接拿到同房玩家列表，转发，效率更高
 	pebble::RpcHead head;
@@ -76,11 +80,18 @@ void rpcMsg::chat(const ::example::chatBroadcast& chatInfo,
 	uint8_t *__buff = rpc->GetBuffer(__size);
 	sendChat.SerializeToArray(__buff, __size);
 
+for(int i = 0; i < (int)__size; i++)
+{
+printf("______send Chat:---%d\n", int(__buff[i]));
+}
+
+	std::cout << "ssssssssssssssss " << mySaid << std::endl;
+
 	list<int32_t> roleIDList = gm->getBroadcastRoleIDList(roleID);
 	list<int32_t>::iterator iter;
 	for(iter = roleIDList.begin(); iter != roleIDList.end(); iter++)
 	{
-		_server->sendMsg(*iter, __buff, __size);
+		_server->sendMsg("chatBroad", *iter, __buff, __size);
 	}
 
 	int32_t status = 0;

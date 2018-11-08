@@ -26,7 +26,8 @@ class player {
 
     string name;
     int age, moveNum, m_floor;
-    int m_id, m_mapID, m_roleID;
+    int m_id;
+	int32_t m_roleID, m_mapID;
     bool actionDone;
     
     map<examType, int> et2level;
@@ -51,7 +52,8 @@ public:
 
     gameMap* getMyMap();
 
-    int getID(), getRoleID(), getMapID();
+    int getID();
+	int32_t getRoleID(), getMapID();
     roomCard* getMyRoom();
 
 //    oper getOperate();

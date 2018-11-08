@@ -47,7 +47,7 @@ public:
     int32_t getActionRoleID();
 
 	gameMap();
-    gameMap(int mapID, map<int, int> roleID2PartID);
+    bool init(int mapID, map<int, int> roleID2PartID);
 
     int32_t addNewPlayer(int32_t roleID);
     list<int32_t> getRoleIDList();

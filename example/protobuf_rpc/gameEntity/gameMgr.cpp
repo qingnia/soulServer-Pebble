@@ -62,7 +62,7 @@ gameMap* gameMgr::getMap(int32_t mapID)
 
 player gameMgr::getPlayer(int32_t roleID)
 {
-	int32_t mapID = roleID2MapID[roleID];
+	int32_t mapID = this->roleID2MapID[roleID];
 	gameMap* map = getMap(mapID);
 	player p = map->getPlayer(roleID);
 	return p;
@@ -70,8 +70,9 @@ player gameMgr::getPlayer(int32_t roleID)
 
 list<int32_t> gameMgr::getBroadcastRoleIDList(int32_t roleID)
 {
-	int32_t mapID = roleID2MapID[roleID];
-	gameMap* map = getMap(mapID);
+	int32_t mapID = this->roleID2MapID[roleID];
+printf("role: %d, map: %d\n", (int)roleID, (int)mapID);
+	gameMap* map = this->getMap(mapID);
 	return map->getRoleIDList();
 }
 
@@ -107,7 +108,8 @@ gameMap* gameMgr::initNewMap(vector<int> roleIDList)
 {
 	gm->mapIncrValue++;
 	map<int, int> roleID2Part = this->choosePart(roleIDList);	
-	gameMap* newMap = new gameMap(gm->mapIncrValue, roleID2Part);
+	gameMap* newMap = new gameMap();
+	newMap->init(gm->mapIncrValue, roleID2Part);
 	gm->id2Map.insert(pair<int, gameMap*>(gm->mapIncrValue, newMap));
 	
 	return nullptr;
@@ -116,7 +118,13 @@ gameMap* gameMgr::initNewMap(vector<int> roleIDList)
 int32_t gameMgr::roleLogin(int32_t roleID, int32_t mapID)
 {
 	gameMap* map = getMap(mapID);
+	if (map == nullptr)
+	{
+		map = new gameMap();
+	}
+	roleID2MapID[roleID] = mapID;
 	int ret = map->addNewPlayer(roleID);
+	this->id2Map[mapID] = map;
 	return ret;
 }
 	

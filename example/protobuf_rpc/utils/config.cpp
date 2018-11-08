@@ -15,13 +15,14 @@ config::config()
 	//this->resConfig = readCsvData("example/protobuf_rpc/tables/Res.csv");
 	//this->infoConfig = readCsvData("example/protobuf_rpc/tables/Info.csv");
 	//this->examConfig = readCsvData("example/protobuf_rpc/tables/Examine.csv");
+	//this->examConfig = readCsvData("example/protobuf_rpc/tables/Player.csv");
 	//this->playerConfig = readCsvData("../tables/Player.csv");
-	this->roomConfig = readCsvData("/home/qingniao/Pebble/peb_old/Pebble-master/example/protobuf_rpc/tables/Room.csv");
-	this->issueConfig = readCsvData("/home/qingniao/Pebble/peb_old/Pebble-master/example/protobuf_rpc/tables/Issue.csv");
-	this->resConfig = readCsvData("/home/qingniao/Pebble/peb_old/Pebble-master/example/protobuf_rpc/tables/Res.csv");
-	this->infoConfig = readCsvData("/home/qingniao/Pebble/peb_old/Pebble-master/example/protobuf_rpc/tables/Info.csv");
-	this->examConfig = readCsvData("/home/qingniao/Pebble/peb_old/Pebble-master/example/protobuf_rpc/tables/Examine.csv");
-	this->playerConfig = readCsvData("/home/qingniao/Pebble/peb_old/Pebble-master/example/protobuf_rpc/tables/Player.csv");
+	this->roomConfig = readCsvData("/home/qingniao/Pebble/example/protobuf_rpc/tables/Room.csv");
+	this->issueConfig = readCsvData("/home/qingniao/Pebble/example/protobuf_rpc/tables/Issue.csv");
+	this->resConfig = readCsvData("/home/qingniao/Pebble/example/protobuf_rpc/tables/Res.csv");
+	this->infoConfig = readCsvData("/home/qingniao/Pebble/example/protobuf_rpc/tables/Info.csv");
+	this->examConfig = readCsvData("/home/qingniao/Pebble/example/protobuf_rpc/tables/Examine.csv");
+	this->playerConfig = readCsvData("/home/qingniao/Pebble/example/protobuf_rpc/tables/Player.csv");
 }
 
 config::~config()

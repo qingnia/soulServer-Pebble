@@ -46,7 +46,7 @@ public:
 	int64_t getHandleByRoleID(int32_t roleID);
     int32_t getRoleIDByHandle(int64_t handle);
 
-    int32_t sendMsg(int32_t roleID, uint8_t* buff, int32_t buff_len);
+    int32_t sendMsg(string function, int32_t roleID, uint8_t* buff, int32_t buff_len);
     static singleServer* getSingleServer();
     int saveMsg(map<string, string>*);
 

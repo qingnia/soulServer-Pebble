@@ -10,3 +10,4 @@ tools/
 *.swp
 blade-bin/
 blade-bin
+*.dblite

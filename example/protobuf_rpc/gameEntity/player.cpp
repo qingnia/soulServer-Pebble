@@ -509,7 +509,7 @@ int player::getID()
     return this->m_id;
 }
 
-int player::getRoleID()
+int32_t player::getRoleID()
 {
 	return this->m_roleID;
 }
