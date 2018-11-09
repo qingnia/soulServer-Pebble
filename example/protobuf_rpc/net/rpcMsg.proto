@@ -55,7 +55,7 @@ service rpcMsg { // ��ʱֻ�ṩ�ӷ�����
     rpc modifyStatus(StatusRequest) returns (StatusResponse);
     rpc move(moveRequest) returns (StatusResponse);
     rpc chat(chatReceive) returns (commonResponse);
-}
     //以下是服务器主动发给客户端的消息
-    //rpc chatBroad(chatBroadcast) returns (commonResponse);
+    rpc chatBroad(chatBroadcast) returns (commonResponse);
+}
 

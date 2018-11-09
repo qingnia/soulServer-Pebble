@@ -109,6 +109,9 @@ public:
 */
     virtual void chat(const ::example::chatReceive& chatInfo,
         cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp);
+
+    virtual void chatBroad(const ::example::chatBroadcast& chatInfo,
+        cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp);
   /*  {
         string mySaid = chatInfo.said();
         int32_t roleID = _server->getLastMsgRoleID();

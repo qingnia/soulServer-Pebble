@@ -275,6 +275,8 @@ int32_t IRpc::SendResponse(uint64_t session_id, int32_t ret,
 int32_t IRpc::SendMessage(int64_t handle, const RpcHead& rpc_head,
     const uint8_t* buff, uint32_t buff_len) {
     int32_t head_len = HeadEncode(rpc_head, m_rpc_head_buff, sizeof(m_rpc_head_buff));
+
+printf("------------------ head len: %d \n", (int)head_len);
     if (head_len < 0) {
         PLOG_ERROR_N_EVERY_SECOND(1, "encode head failed(%d)", head_len);
         return kRPC_ENCODE_FAILED;

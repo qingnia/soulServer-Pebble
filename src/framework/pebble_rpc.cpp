@@ -25,6 +25,8 @@
 
 namespace pebble {
 
+//此处需格外留意，二进制和json都是thriftRpc，thrift结构使二进制的，换成PB以后就变成PB结构了
+//取RPC实例的时候要指定PB而不是二进制
 PebbleRpc::PebbleRpc(CodeType code_type, CoroutineSchedule* coroutine_schedule) {
     m_rpc_util = new RpcUtil(this, coroutine_schedule);
     m_rpc_plugin = NULL;
@@ -160,6 +162,7 @@ void PebbleRpc::SendRequestParallel(int64_t handle,
 int32_t PebbleRpc::HeadEncode(const RpcHead& rpc_head, uint8_t* buff, uint32_t buff_len) {
     if (m_rpc_plugin) {
         int len = m_rpc_plugin->HeadEncode(rpc_head, buff, buff_len);
+printf("------------------thrift len: %d\n", len);
         if (m_code_type != kCODE_JSON) {
             return len;
         }

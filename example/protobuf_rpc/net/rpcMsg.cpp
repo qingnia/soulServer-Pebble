@@ -95,9 +95,12 @@ printf("______send Chat:---%d\n", int(__buff[i]));
 	}
 
 	int32_t status = 0;
-
-	std::cout << "receive rpc role: " << roleID << "say: " << mySaid << std::endl;
 	::example::commonResponse ret;
 	ret.set_status(status);
 	rsp(pebble::kRPC_SUCCESS, ret);
+}
+
+void rpcMsg::chatBroad(const ::example::chatBroadcast& chatInfo,
+        cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp)
+{
 }

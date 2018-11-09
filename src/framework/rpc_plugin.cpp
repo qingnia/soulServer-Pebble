@@ -46,6 +46,8 @@ int32_t ProtoBufRpcPlugin::HeadEncode(const RpcHead& rpc_head, uint8_t* buff, ui
         pb_head.session_id      = rpc_head.m_session_id;
         pb_head.function_name   = rpc_head.m_function_name;
 
+std::cout << "==========proto head type: " << rpc_head.m_message_type << "session:" << rpc_head.m_session_id << "function:" << rpc_head.m_function_name << std::endl;
+
         // 2. 序列化ProtoBufRpcHead，考虑到性能不使用write(buff, bufflen)接口
         len = pb_head.write(encoder);
     } catch (TException e) {
@@ -119,6 +121,7 @@ int32_t ThriftRpcPlugin::HeadEncode(const RpcHead& rpc_head, uint8_t* buff, uint
     (static_cast<dr::transport::TMemoryBuffer*>(encoder->getTransport().get()))->
         resetBuffer(buff, buff_len, dr::transport::TMemoryBuffer::OBSERVE);
 
+std::cout << "==========thrift head type: " << rpc_head.m_message_type << "session:" << rpc_head.m_session_id << "function:" << rpc_head.m_function_name << std::endl;
     int32_t len = -1;
     try {
         len = encoder->writeMessageBegin(rpc_head.m_function_name,
