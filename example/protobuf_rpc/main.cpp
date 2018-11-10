@@ -17,9 +17,8 @@ std::list<needSaveMsg*> retList;
 std::mutex recMutex;
 std::mutex retMutex;
 
-void mainGame()
+void mainGame(gameMgr* gm)
 {
-        gameMgr* gm = gameMgr::getGameMgr();
         vector<int> roleIDList = {1001, 1002, 1003};
         gm->setRecQueue(&recList);
         gm->setRecMutex(&recMutex);
@@ -37,9 +36,8 @@ void mainGame()
         }*/
 }
 
-void serverSocket(int max, int interval)
+void serverSocket(singleServer* ss, int max, int interval)
 {
-        singleServer* ss = singleServer::getSingleServer();
         ss->setRecQueue(&recList);
         ss->setRecMutex(&recMutex);
 		ss->setRetQueue(&retList);
@@ -59,12 +57,15 @@ printf("4444444\n");
 
 int main()
 {
-        int max = 15;
-printf("sssssssssss\n");
-        std::thread t1(serverSocket, max, 1);
-        std::thread t2(mainGame);
-        t1.join();
-        t2.join();
+	gameMgr* gm = gameMgr::getGameMgr();
+	singleServer* ss = singleServer::getSingleServer();
+	gm->ss = ss;
+
+	int max = 15;
+	std::thread t1(serverSocket, ss, max, 1);
+	std::thread t2(mainGame, gm);
+	t1.join();
+	t2.join();
 
         return 0;
 

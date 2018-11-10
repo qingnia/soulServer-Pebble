@@ -1,4 +1,4 @@
-//
+﻿//
 //  rpcMsg.cpp
 //  testC
 //
@@ -9,9 +9,8 @@
 #include "singleServer.hpp"
 
 
-
 void rpcMsg::login(const ::example::LoginInfo& loginInfo,
-		cxx::function<void(int32_t ret_code, const ::example::LoginRet& loginRet)>& rsp)
+		cxx::function<void(int32_t ret_code, const ::example::commonResponse& loginRet)>& rsp)
 {
 	int32_t roleID = loginInfo.roleid();
 	int32_t roomID = loginInfo.roomid();
@@ -23,7 +22,7 @@ void rpcMsg::login(const ::example::LoginInfo& loginInfo,
 	int32_t status = gm->roleLogin(roleID, roomID);
 	std::cout << "login success" << roomID << std::endl;
 
-	::example::LoginRet loginRet;
+	::example::commonResponse loginRet;
 	loginRet.set_status(status);
 	rsp(pebble::kRPC_SUCCESS, loginRet);
 }
@@ -40,18 +39,37 @@ void rpcMsg::add(const ::example::CalRequest& request,
 	rsp(pebble::kRPC_SUCCESS, response);
 }
 
-void rpcMsg::modifyStatus(const ::example::StatusRequest& statusReq,
-		cxx::function<void(int32_t ret_code, const ::example::StatusResponse& ret)>& rsp)
+void rpcMsg::modifyStatus(const ::example::StatusReceive& statusReq,
+		cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp)
 {
 	int32_t cmd = statusReq.cmd();
 	int32_t roleID = _server->getLastMsgRoleID();
-	gm->modifyRoleStatus(roleID, cmd);
+	retStatus rs = gm->modifyRoleStatus(roleID, cmd);
+	std::cout << "receive rpc cmd: " << cmd << ", rs:" << rs << std::endl;
 
-	int32_t status = 0;
+	//如果状态修改成功了，要向所有人更新，如果是start，要通知所有人开始游戏
+	if (rs == rsSuccess)
+	{
+		std::cout << "status modify send to all " << std::endl;
+		//消息层直接拿到同房玩家列表，转发，效率更高
+		::example::statusBroadcast sendStatus;
+		sendStatus.set_roleID(roleID);
+		sendStatus.set_cmd(cmd);
+		int __size = sendStatus.ByteSize();
+		pebble::PebbleRpc* rpc = _server->getBinaryRpc();
+		uint8_t *__buff = rpc->GetBuffer(__size);
+		sendStatus.SerializeToArray(__buff, __size);
 
-	std::cout << "receive rpc cmd: " << cmd << std::endl;
-	::example::StatusResponse ret;
-	ret.set_status(status);
+		list<int32_t> roleIDList = gm->getBroadcastRoleIDList(roleID);
+		list<int32_t>::iterator iter;
+		for (iter = roleIDList.begin(); iter != roleIDList.end(); iter++)
+		{
+			_server->sendMsg("statusBroad", *iter, __buff, __size);
+		}
+	}
+
+	::example::commonResponse ret;
+	ret.set_status(rs);
 	rsp(pebble::kRPC_SUCCESS, ret);
 }
 
@@ -63,6 +81,7 @@ void rpcMsg::move(const ::example::moveRequest& moveCMD,
 	gm->inputRoleDir(roleID, dir);
 }
 
+
 void rpcMsg::chat(const ::example::chatReceive& chatInfo,
 		cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp)
 {
@@ -72,8 +91,8 @@ void rpcMsg::chat(const ::example::chatReceive& chatInfo,
 	std::cout << "receive rpc role: " << roleID << "say: " << mySaid << std::endl;
 
 	//消息层直接拿到同房玩家列表，转发，效率更高
-	pebble::RpcHead head;
 	::example::chatBroadcast sendChat;
+	sendChat.set_roleID(roleID);
 	sendChat.set_said(mySaid);
 	int __size = sendChat.ByteSize();
 	pebble::PebbleRpc* rpc = _server->getBinaryRpc();

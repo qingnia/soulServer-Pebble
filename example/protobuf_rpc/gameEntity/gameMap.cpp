@@ -21,15 +21,19 @@ int32_t gameMap::getActionRoleID()
     return this->actionRoleID;
 }
 
-int32_t gameMap::addNewPlayer(int32_t roleID)
+retStatus gameMap::addNewPlayer(int32_t roleID)
 {
+	if (this->actionRoleID > 0)
+	{
+		return rsFail;
+	}
     player p(roleID, this->m_id);
     this->playerList.push_back(p);
 
     stringstream ss;
     ss<<"新玩家进入 roleid:" << roleID;
     logInfo(ss.str());
-    return 0;
+    return rsSuccess;
 }
 
 int gameMap::initPlayerList(map<int, int> roleID2PartID)
@@ -311,29 +315,25 @@ int gameMap::run()
 //这游戏更接近棋牌，系统控制当前行动玩家，然后响应玩家输入即可
 void gameMap::newRun()
 {
-    while(true)
-    {
-	    stringstream ss;
-        //不停检查玩家状态，直到所有玩家都标记已行动
-        list<player>::iterator iter;
-        //开始阶段
-        ss << "新一轮开始，开始阶段："; 
-	    logInfo(ss.str());
-        ss.clear();
-        for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
-        {
-            if (!iter->isActionDone())
-            {
-                this->actionRoleID = iter->getID();
-                break;
-            }
-        }
-        if (iter == this->playerList.end())
-        {
-            this->actionRoleID = this->playerList.begin()->getID();
-        }
-    }
-    return;
+	//定时器只需要检查玩家状态就行
+	//当所有玩家都标记已行动，就开始本轮结算，然后开始新一轮
+	stringstream ss;
+	list<player>::iterator iter;
+	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
+	{
+		if (!iter->isActionDone())
+		{
+			this->actionRoleID = iter->getID();
+			break;
+		}
+	}
+	if (iter == this->playerList.end())
+	{
+		this->actionRoleID = this->playerList.begin()->getRoleID();
+		//开始阶段
+		ss << "新一轮开始";
+		logInfo(ss.str());
+	}
 }
 
 position gameMap::inputPosition()
@@ -390,4 +390,43 @@ list<int> gameMap::getCanAttackRoleIDList(player* p)
 		}
 	}
 	return roleIDList;
+}
+
+retStatus gameMap::tryStart()
+{
+	logStream << "尝试开始游戏";
+	logInfo(logStream.str());
+	logStream.clear();
+	list<player>::iterator iter;
+	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
+	{
+		if (iter->getStatus() != psReady)
+		{
+			return rsFail;
+		}
+	}
+
+	int first = random(this->playerList.size());
+	int index;
+	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
+	{
+		if (index < first)
+		{
+			iter->actionDone = true;
+		}
+		else if (index == first)
+		{
+			iter->actionDone = false;
+			this->actionRoleID = iter->getRoleID();
+		}
+		else
+		{
+			iter->actionDone = false;
+		}
+		iter->modifyStatus(psStart);
+		logStream << "游戏开始了";
+		logInfo(logStream.str());
+		logStream.clear();
+	}
+	return rsSuccess;
 }

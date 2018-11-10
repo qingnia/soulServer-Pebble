@@ -13,6 +13,7 @@
 #include <mutex>
 #include <algorithm>
 #include "gameMap.h"
+#include "../net/singleServer.hpp"
 #include "../net/needSaveMsg.hpp"
 
 class gameMgr
@@ -33,7 +34,11 @@ private:
 	int mapIncrValue;
 
 	map<int, int> choosePart(vector<int> roleIDList);
+
+	//直接申请个流，免得每次打日志都要声明
+	stringstream logStream;
 public:
+	singleServer* ss;
 	~gameMgr();
 	static gameMgr* getGameMgr();
 
@@ -51,7 +56,10 @@ public:
 
 	map<string, string> getLegalInput(int msgID);
 	
+	//异步
 	void setRetMsg(string function, list<int32_t> roleIDList, int size, uint8_t* buff);
+	//同步
+	void broadcastMsg(string function, list<int32_t> roleIDList, uint8_t* buff, int32_t buff_len);
 
 	int setRecQueue(list< map<string, string>* >*);
 	int setRecMutex(mutex*);

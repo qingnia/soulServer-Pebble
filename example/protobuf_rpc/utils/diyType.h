@@ -84,5 +84,12 @@ enum playerStatus
 	psEnter,
 	psReady,
 	psStart,
+	psDead,
+};
+
+enum retStatus
+{
+	rsSuccess,
+	rsFail,
 };
 #endif

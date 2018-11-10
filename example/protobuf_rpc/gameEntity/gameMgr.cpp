@@ -123,7 +123,7 @@ int32_t gameMgr::roleLogin(int32_t roleID, int32_t mapID)
 		map = new gameMap();
 	}
 	roleID2MapID[roleID] = mapID;
-	int ret = map->addNewPlayer(roleID);
+	retStatus ret = map->addNewPlayer(roleID);
 	this->id2Map[mapID] = map;
 	return ret;
 }
@@ -131,8 +131,8 @@ int32_t gameMgr::roleLogin(int32_t roleID, int32_t mapID)
 int32_t gameMgr::modifyRoleStatus(int32_t roleID, int32_t cmd)
 {
 	player p = getPlayer(roleID);
-	p.modifyStatus(cmd);
-	return 0;
+	retStatus rs = p.modifyStatus(cmd);
+	return rs;
 }
 	
 int32_t gameMgr::inputRoleDir(int32_t roleID, int32_t dir)
@@ -165,6 +165,7 @@ map<string, string> gameMgr::getLegalInput(int msgID)
 	return *legalInput;
 }
 
+
 //示例代码的发消息
 /**
 int __size = response.ByteSize();
@@ -186,13 +187,22 @@ void gameMgr::setRetMsg(string function, list<int32_t> roleIDList, int size, uin
 	
 	this->retQueue->push_back(nsm);
 }
+
+void gameMgr::broadcastMsg(string function, list<int32_t> roleIDList, uint8_t* buff, int32_t buff_len)
+{
+	ss->broadcastMsg(function, roleIDList, buff, buff_len);
+}
+
 void gameMgr::update()
 {
 	map<int, gameMap*>::iterator iter;
 	for (iter = gm->id2Map.begin(); iter != gm->id2Map.end(); iter++)
 	{
 		gameMap* thisMap = iter->second;
-		thisMap->run();
+		if (thisMap->getActionRoleID() > 0)
+		{
+			thisMap->newRun();
+		}
 	}
 
 	return;

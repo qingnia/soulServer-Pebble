@@ -142,6 +142,17 @@ std::cout << ss.str() << endl;
 	return 0;
 }
 
+
+retStatus singleServer::broadcastMsg(string function, list<int32_t> roleIDList, uint8_t* buff, int32_t buff_len)
+{
+	list<int32_t>::iterator iter;
+	for (iter = roleIDList.begin(); iter != roleIDList.end(); iter++)
+	{
+		this->sendMsg(function, *iter, buff, buff_len);
+	}
+	return rsSuccess;
+}
+
 int32_t On1sTimeout(singleServer* ss)
 {
     std::lock_guard<std::mutex> guard(*(ss->retMutex));

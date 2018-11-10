@@ -9,7 +9,7 @@
 #include "gameMgr.h"
 #include "gameMap.h"
 
-/***************************内部常用函数**********************************/
+/***************************内部常用函数begin**********************************/
 gameMap* player::getMyMap()
 {
 	gameMgr* gm = gameMgr::getGameMgr();
@@ -32,7 +32,7 @@ bool player::isMyTurn()
 	return false;
 }
 
-/***************************内部常用函数**********************************/
+/***************************内部常用函数end**********************************/
 player::player()
 {
 	this->moveNum = 0;
@@ -514,6 +514,11 @@ int32_t player::getRoleID()
 	return this->m_roleID;
 }
 
+playerStatus player::getStatus()
+{
+	return this->m_ps;
+}
+
 roomCard* player::getMyRoom()
 {
 	gameMap* myMap = getMyMap();
@@ -602,19 +607,33 @@ int player::useWeapon()
 }
 /************************攻击相关**************************************/
 
-int32_t player::modifyStatus(int32_t status)
+retStatus player::modifyStatus(int32_t status)
 {
 	playerStatus ps = (playerStatus)status;
+	retStatus rs = rsFail;
 	switch(ps)
 	{
 	case psReady:
-		this->m_ps = ps;
+		if (this->m_ps == psEnter)
+		{
+			rs = rsSuccess;
+			this->m_ps = ps;
+		}
+		break;
+	case psEnter:
+		if (this->m_ps == psReady)
+		{
+			rs = rsSuccess;
+			this->m_ps = ps;
+		}
 		break;
 	case psStart:
 		//需要所有人都准备好才能开始
+		gameMap* myMap = getMyMap();
+		rs = myMap->tryStart();
 		break;
 	default:
 		break;
 	}
-return 0;
+	return rs;
 }

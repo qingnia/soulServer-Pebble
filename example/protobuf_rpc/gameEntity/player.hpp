@@ -28,7 +28,6 @@ class player {
     int age, moveNum, m_floor;
     int m_id;
 	int32_t m_roleID, m_mapID;
-    bool actionDone;
     
     map<examType, int> et2level;
     map<examType, vector<int> > etLevel2value;
@@ -55,6 +54,7 @@ public:
     int getID();
 	int32_t getRoleID(), getMapID();
     roomCard* getMyRoom();
+	bool actionDone;
 
 //    oper getOperate();
     bool isMyTurn();
@@ -82,7 +82,8 @@ public:
     int changeNewRoomRotation(direction, roomCard*);
 
     ////////////组队房///////////////
-    int32_t modifyStatus(int32_t);
+	playerStatus getStatus();
+    retStatus modifyStatus(int32_t);
 };
 
 #endif /* player_hpp */

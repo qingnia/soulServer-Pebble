@@ -11,6 +11,7 @@
 #include <list>
 #include <map>
 #include <mutex>
+#include "../utils/diyType.h"
 #include "needSaveMsg.hpp"
 #include "server/pebble_server.h"
 #include "server/pebble.h"
@@ -47,6 +48,7 @@ public:
     int32_t getRoleIDByHandle(int64_t handle);
 
     int32_t sendMsg(string function, int32_t roleID, uint8_t* buff, int32_t buff_len);
+	retStatus broadcastMsg(string function, list<int32_t> roleIDList, uint8_t* buff, int32_t buff_len);
     static singleServer* getSingleServer();
     int saveMsg(map<string, string>*);
 

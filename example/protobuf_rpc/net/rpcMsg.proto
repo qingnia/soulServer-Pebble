@@ -1,4 +1,4 @@
-syntax = "proto2";
+﻿syntax = "proto2";
 
 package example;
 
@@ -8,10 +8,6 @@ message LoginInfo {
     optional int32 roomid = 2;
 }
 
-message LoginRet {
-    optional int32 status = 1;
-}
-
 //聊天接收协议
 message chatReceive {
     optional string said = 1;
@@ -19,7 +15,8 @@ message chatReceive {
 
 //聊天转发协议
 message chatBroadcast {
-    optional string said = 1;
+    optional int32 roleID = 1;
+    optional string said = 2;
 }
 
 message CalRequest {
@@ -31,12 +28,12 @@ message CalResponse {
     optional int32 c = 1;
 }
 
-message StatusRequest {
+message StatusReceive {
     optional int32 cmd = 1;
 }
-
-message StatusResponse {
-    optional int32 status = 1;
+message statusBroadcast {
+    optional int32 roleID = 1;
+    optional int32 cmd = 2;
 }
 
 message moveRequest {
@@ -51,11 +48,12 @@ message commonResponse {
 service rpcMsg { // ��ʱֻ�ṩ�ӷ�����
     // �ӷ�����
     rpc add(CalRequest) returns (CalResponse); // �������������ĺ�
-    rpc login(LoginInfo) returns (LoginRet);
-    rpc modifyStatus(StatusRequest) returns (StatusResponse);
+    rpc login(LoginInfo) returns (commonResponse);
+    rpc modifyStatus(StatusReceive) returns (commonResponse);
     rpc move(moveRequest) returns (StatusResponse);
     rpc chat(chatReceive) returns (commonResponse);
-    //以下是服务器主动发给客户端的消息
-    rpc chatBroad(chatBroadcast) returns (commonResponse);
 }
 
+
+//以下是服务器主动发给客户端的消息
+//rpc chatBroad(chatBroadcast) returns (commonResponse);
