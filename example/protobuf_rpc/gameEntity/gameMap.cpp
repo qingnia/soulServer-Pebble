@@ -21,7 +21,7 @@ int32_t gameMap::getActionRoleID()
     return this->actionRoleID;
 }
 
-retStatus gameMap::addNewPlayer(int32_t roleID)
+retStatus gameMap::addNewPlayer(int32_t roleID, list<playerBaseInfo>& baseInfos)
 {
 	if (this->actionRoleID > 0)
 	{
@@ -31,8 +31,18 @@ retStatus gameMap::addNewPlayer(int32_t roleID)
     this->playerList.push_back(p);
 
     stringstream ss;
-    ss<<"新玩家进入 roleid:" << roleID;
+    ss<<"新玩家进入 roleid:" << roleID << "ret:" << rsSuccess;
     logInfo(ss.str());
+
+	list<player>::iterator iter;
+	for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
+	{
+		playerBaseInfo p;
+		p.roleID = iter->getRoleID();
+		p.name = iter->getName();
+		p.ps = iter->getStatus();
+		baseInfos.push_back(p);
+	}
     return rsSuccess;
 }
 
@@ -407,7 +417,7 @@ retStatus gameMap::tryStart()
 	}
 
 	int first = random(this->playerList.size());
-	int index;
+	int index = 0;
 	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
 	{
 		if (index < first)
@@ -424,6 +434,7 @@ retStatus gameMap::tryStart()
 			iter->actionDone = false;
 		}
 		iter->modifyStatus(psStart);
+		index++;
 		logStream << "游戏开始了";
 		logInfo(logStream.str());
 		logStream.clear();

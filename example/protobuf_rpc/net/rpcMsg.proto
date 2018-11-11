@@ -1,11 +1,25 @@
-﻿syntax = "proto2";
+syntax = "proto2";
 
 package example;
+
+/***复杂类型定义start****/
+message baseInfo{
+	optional int32 roleid = 1;
+	optional string name = 2;
+	optional int32 status = 3;
+}
+/***复杂类型定义end******/
 
 //登陆协议
 message LoginInfo {
     optional int32 roleid = 1;
     optional int32 roomid = 2;
+}
+
+//进准备房间后要先同步所有已有玩家的信息
+message playersInfo{
+	optional commonResponse cr = 1;
+	repeated baseInfo baseInfos = 2;
 }
 
 //聊天接收协议
@@ -48,9 +62,9 @@ message commonResponse {
 service rpcMsg { // ��ʱֻ�ṩ�ӷ�����
     // �ӷ�����
     rpc add(CalRequest) returns (CalResponse); // �������������ĺ�
-    rpc login(LoginInfo) returns (commonResponse);
+    rpc login(LoginInfo) returns (playersInfo);
     rpc modifyStatus(StatusReceive) returns (commonResponse);
-    rpc move(moveRequest) returns (StatusResponse);
+    rpc move(moveRequest) returns (commonResponse);
     rpc chat(chatReceive) returns (commonResponse);
 }
 

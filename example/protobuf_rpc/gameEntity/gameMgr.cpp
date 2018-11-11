@@ -6,6 +6,7 @@
 //
 
 #include "gameMgr.h"
+#include "../net/singleServer.hpp"
 
 gameMgr* gameMgr::gm = new gameMgr();
 
@@ -115,7 +116,7 @@ gameMap* gameMgr::initNewMap(vector<int> roleIDList)
 	return nullptr;
 }
 
-int32_t gameMgr::roleLogin(int32_t roleID, int32_t mapID)
+retStatus gameMgr::roleLogin(int32_t roleID, int32_t mapID, list<playerBaseInfo>& baseInfos)
 {
 	gameMap* map = getMap(mapID);
 	if (map == nullptr)
@@ -123,12 +124,13 @@ int32_t gameMgr::roleLogin(int32_t roleID, int32_t mapID)
 		map = new gameMap();
 	}
 	roleID2MapID[roleID] = mapID;
-	retStatus ret = map->addNewPlayer(roleID);
+	retStatus ret = map->addNewPlayer(roleID, baseInfos);
+cout << "gm login ret:" << ret << endl;
 	this->id2Map[mapID] = map;
 	return ret;
 }
 	
-int32_t gameMgr::modifyRoleStatus(int32_t roleID, int32_t cmd)
+retStatus gameMgr::modifyRoleStatus(int32_t roleID, int32_t cmd)
 {
 	player p = getPlayer(roleID);
 	retStatus rs = p.modifyStatus(cmd);

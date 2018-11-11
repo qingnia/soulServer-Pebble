@@ -13,9 +13,10 @@
 #include <mutex>
 #include <algorithm>
 #include "gameMap.h"
-#include "../net/singleServer.hpp"
 #include "../net/needSaveMsg.hpp"
 
+class rpcMsg;
+class singleServer;
 class gameMgr
 {
 private:
@@ -47,11 +48,11 @@ public:
 
 	player getPlayer(int32_t roleID);
 
-	int32_t roleLogin(int32_t roleID, int32_t mapID);
+	retStatus roleLogin(int32_t roleID, int32_t mapID, list<playerBaseInfo>&);
 
 	list<int32_t> getBroadcastRoleIDList(int32_t roleID);
 
-	int32_t modifyRoleStatus(int32_t roleID, int32_t cmd);
+	retStatus modifyRoleStatus(int32_t roleID, int32_t cmd);
 	int32_t inputRoleDir(int32_t roleID, int32_t dir);
 
 	map<string, string> getLegalInput(int msgID);

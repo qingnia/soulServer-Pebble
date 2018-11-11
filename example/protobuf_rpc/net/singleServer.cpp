@@ -13,6 +13,7 @@
 
 #include <cstdio>
 #include <iostream>
+#include <sstream>
 
 #include "singleServer.hpp"
 

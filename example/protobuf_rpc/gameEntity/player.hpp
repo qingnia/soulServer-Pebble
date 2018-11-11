@@ -24,7 +24,7 @@ class player {
     playerStatus m_ps;
     position pos;
 
-    string name;
+    string m_name;
     int age, moveNum, m_floor;
     int m_id;
 	int32_t m_roleID, m_mapID;
@@ -53,6 +53,7 @@ public:
 
     int getID();
 	int32_t getRoleID(), getMapID();
+	string getName();
     roomCard* getMyRoom();
 	bool actionDone;
 

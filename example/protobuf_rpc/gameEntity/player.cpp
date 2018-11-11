@@ -47,6 +47,7 @@ player::player(int32_t roleID, int32_t mapID)
 	this->m_mapID = mapID;
 	this->m_ps = psEnter;
 	this->actionDone = false;
+	this->m_name = "";
 }
 
 player::player(int roleID, int mapID, map<string, string> playerConfig)
@@ -514,6 +515,11 @@ int32_t player::getRoleID()
 	return this->m_roleID;
 }
 
+string player::getName()
+{
+	return this->m_name;
+}
+
 playerStatus player::getStatus()
 {
 	return this->m_ps;
@@ -611,6 +617,7 @@ retStatus player::modifyStatus(int32_t status)
 {
 	playerStatus ps = (playerStatus)status;
 	retStatus rs = rsFail;
+	gameMap* myMap = getMyMap();
 	switch(ps)
 	{
 	case psReady:
@@ -629,7 +636,6 @@ retStatus player::modifyStatus(int32_t status)
 		break;
 	case psStart:
 		//需要所有人都准备好才能开始
-		gameMap* myMap = getMyMap();
 		rs = myMap->tryStart();
 		break;
 	default:

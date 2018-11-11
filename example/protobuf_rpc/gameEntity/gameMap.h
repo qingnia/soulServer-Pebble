@@ -20,6 +20,13 @@
 #include "../utils/commonFun.h"
 #include "example/protobuf_rpc/net/rpcMsg.rpc.pb.h"
 
+struct playerBaseInfo
+{
+	int32_t roleID;
+	string name;
+	playerStatus ps;
+};
+
 class gameMap{
     int m_id, m_width, m_length, m_height, m_infoNum, m_process;
     int32_t actionRoleID;
@@ -53,7 +60,7 @@ public:
 	gameMap();
     bool init(int mapID, map<int, int> roleID2PartID);
 
-    retStatus addNewPlayer(int32_t roleID);
+    retStatus addNewPlayer(int32_t roleID, list<playerBaseInfo>&);
     list<int32_t> getRoleIDList();
 
     roomCard* getRoom(position pos);

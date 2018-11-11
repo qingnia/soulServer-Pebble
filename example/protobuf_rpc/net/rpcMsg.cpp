@@ -7,10 +7,15 @@
 
 #include "rpcMsg.hpp"
 #include "singleServer.hpp"
+#include "../gameEntity/gameMgr.h"
 
+void rpcMsg::init()
+{
+        this->gm = gameMgr::getGameMgr();
+}
 
 void rpcMsg::login(const ::example::LoginInfo& loginInfo,
-		cxx::function<void(int32_t ret_code, const ::example::commonResponse& loginRet)>& rsp)
+		cxx::function<void(int32_t ret_code, const ::example::playersInfo& loginRet)>& rsp)
 {
 	int32_t roleID = loginInfo.roleid();
 	int32_t roomID = loginInfo.roomid();
@@ -19,11 +24,32 @@ void rpcMsg::login(const ::example::LoginInfo& loginInfo,
 	// 处理请求时记录请求的来源，用于反向RPC调用，不过注意这个handle是可能失效的
 	_server->bindRole2Handle(roleID);
 	std::cout << "bind success" << roomID << std::endl;
-	int32_t status = gm->roleLogin(roleID, roomID);
-	std::cout << "login success" << roomID << std::endl;
 
-	::example::commonResponse loginRet;
-	loginRet.set_status(status);
+	list<playerBaseInfo> baseInfos;
+	retStatus status = gm->roleLogin(roleID, roomID, baseInfos);
+	std::cout << "login success, status:" << status << "roomID:" << roomID << std::endl;
+
+	//登陆的返回做一次修改，如果登陆成功，就将当前房间内的所有玩家同步给客户端
+	
+	::example::playersInfo loginRet;
+	::example::commonResponse* cr;
+	cr = loginRet.mutable_cr();
+	cr->set_status(status);
+	if (status == rsSuccess)
+	{
+		list<playerBaseInfo>::iterator iter;
+		for(iter = baseInfos.begin(); iter != baseInfos.end(); iter++)
+		{
+			::example::baseInfo* playerBaseInfo = loginRet.add_baseinfos();
+			if (!playerBaseInfo)
+			{
+				return;
+			}
+			playerBaseInfo->set_roleid(iter->roleID);
+			playerBaseInfo->set_name(iter->name);
+			playerBaseInfo->set_status(iter->ps);
+		}
+	}
 	rsp(pebble::kRPC_SUCCESS, loginRet);
 }
 
@@ -53,7 +79,7 @@ void rpcMsg::modifyStatus(const ::example::StatusReceive& statusReq,
 		std::cout << "status modify send to all " << std::endl;
 		//消息层直接拿到同房玩家列表，转发，效率更高
 		::example::statusBroadcast sendStatus;
-		sendStatus.set_roleID(roleID);
+		sendStatus.set_roleid(roleID);
 		sendStatus.set_cmd(cmd);
 		int __size = sendStatus.ByteSize();
 		pebble::PebbleRpc* rpc = _server->getBinaryRpc();
@@ -74,7 +100,7 @@ void rpcMsg::modifyStatus(const ::example::StatusReceive& statusReq,
 }
 
 void rpcMsg::move(const ::example::moveRequest& moveCMD,
-		cxx::function<void(int32_t ret_code, const ::example::StatusResponse& ret)>& rsp)
+		cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp)
 {
 	int32_t dir = moveCMD.direction();
 	int32_t roleID = _server->getLastMsgRoleID();
@@ -92,7 +118,7 @@ void rpcMsg::chat(const ::example::chatReceive& chatInfo,
 
 	//消息层直接拿到同房玩家列表，转发，效率更高
 	::example::chatBroadcast sendChat;
-	sendChat.set_roleID(roleID);
+	sendChat.set_roleid(roleID);
 	sendChat.set_said(mySaid);
 	int __size = sendChat.ByteSize();
 	pebble::PebbleRpc* rpc = _server->getBinaryRpc();

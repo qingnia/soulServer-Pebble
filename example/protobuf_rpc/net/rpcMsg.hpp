@@ -12,10 +12,10 @@
 
 #include "example/protobuf_rpc/net/rpcMsg.rpc.pb.h"
 #include "server/pebble_server.h"
-#include "../gameEntity/gameMgr.h"
 #include "needSaveMsg.hpp"
 
 class singleServer;
+class gameMgr;
 // Calculator服务接口的实现
 class rpcMsg : public ::example::rpcMsgServerInterface {
 public:
@@ -24,9 +24,10 @@ public:
 	singleServer* _server;
     gameMgr* gm;
     rpcMsg() : _server() {
-        gm = gameMgr::getGameMgr();
+	this->init();
         //_server = singleServer::getSingleServer();
     }
+	void init();
     virtual ~rpcMsg() {}
 
 	//每个service都会被拆分成一个process，一个return，整理在__rpcMsgSkeleton类
@@ -48,7 +49,7 @@ public:
 	//	6. 这个rsp实际是SendResponse(session_id, ret, buff, buff_len)
 
     virtual void login(const ::example::LoginInfo& loginInfo,
-        cxx::function<void(int32_t ret_code, const ::example::commonResponse& loginRet)>& rsp);
+        cxx::function<void(int32_t ret_code, const ::example::playersInfo& loginRet)>& rsp);
 
     virtual void add(const ::example::CalRequest& request,
         cxx::function<void(int32_t ret_code, const ::example::CalResponse& response)>& rsp);
@@ -57,7 +58,7 @@ public:
         cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp);
 
     virtual void move(const ::example::moveRequest& moveCMD,
-        cxx::function<void(int32_t ret_code, const ::example::StatusResponse& ret)>& rsp);
+        cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp);
 
     virtual void chat(const ::example::chatReceive& chatInfo,
         cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp);
