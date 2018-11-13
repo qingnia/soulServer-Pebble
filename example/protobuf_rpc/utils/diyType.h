@@ -84,6 +84,7 @@ enum playerStatus
 	psEnter,
 	psReady,
 	psStart,
+	psIngame,
 	psDead,
 };
 

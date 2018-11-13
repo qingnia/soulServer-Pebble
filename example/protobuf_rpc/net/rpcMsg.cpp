@@ -26,7 +26,8 @@ void rpcMsg::login(const ::example::LoginInfo& loginInfo,
 	std::cout << "bind success" << roomID << std::endl;
 
 	list<playerBaseInfo> baseInfos;
-	retStatus status = gm->roleLogin(roleID, roomID, baseInfos);
+	int32_t roomHolder;
+	retStatus status = gm->roleLogin(roleID, roomID, baseInfos, roomHolder);
 	std::cout << "login success, status:" << status << "roomID:" << roomID << std::endl;
 
 	//登陆的返回做一次修改，如果登陆成功，就将当前房间内的所有玩家同步给客户端
@@ -37,6 +38,7 @@ void rpcMsg::login(const ::example::LoginInfo& loginInfo,
 	cr->set_status(status);
 	if (status == rsSuccess)
 	{
+		loginRet.set_roomholder(roomHolder);
 		list<playerBaseInfo>::iterator iter;
 		for(iter = baseInfos.begin(); iter != baseInfos.end(); iter++)
 		{
@@ -70,6 +72,7 @@ void rpcMsg::modifyStatus(const ::example::StatusReceive& statusReq,
 {
 	int32_t cmd = statusReq.cmd();
 	int32_t roleID = _server->getLastMsgRoleID();
+	std::cout << "receive rpc cmd: " << cmd << std::endl;
 	retStatus rs = gm->modifyRoleStatus(roleID, cmd);
 	std::cout << "receive rpc cmd: " << cmd << ", rs:" << rs << std::endl;
 

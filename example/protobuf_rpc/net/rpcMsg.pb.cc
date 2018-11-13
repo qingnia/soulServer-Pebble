@@ -20,12 +20,18 @@ namespace example {
 
 namespace {
 
+const ::google::protobuf::Descriptor* baseInfo_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  baseInfo_reflection_ = NULL;
 const ::google::protobuf::Descriptor* LoginInfo_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   LoginInfo_reflection_ = NULL;
-const ::google::protobuf::Descriptor* LoginRet_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* playersInfo_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  LoginRet_reflection_ = NULL;
+  playersInfo_reflection_ = NULL;
+const ::google::protobuf::Descriptor* chatReceive_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  chatReceive_reflection_ = NULL;
 const ::google::protobuf::Descriptor* chatBroadcast_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   chatBroadcast_reflection_ = NULL;
@@ -35,12 +41,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* CalResponse_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   CalResponse_reflection_ = NULL;
-const ::google::protobuf::Descriptor* StatusRequest_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* StatusReceive_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  StatusRequest_reflection_ = NULL;
-const ::google::protobuf::Descriptor* StatusResponse_descriptor_ = NULL;
+  StatusReceive_reflection_ = NULL;
+const ::google::protobuf::Descriptor* statusBroadcast_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  StatusResponse_reflection_ = NULL;
+  statusBroadcast_reflection_ = NULL;
 const ::google::protobuf::Descriptor* moveRequest_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   moveRequest_reflection_ = NULL;
@@ -57,7 +63,24 @@ void protobuf_AssignDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto() {
     ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "example/protobuf_rpc/net/rpcMsg.proto");
   GOOGLE_CHECK(file != NULL);
-  LoginInfo_descriptor_ = file->message_type(0);
+  baseInfo_descriptor_ = file->message_type(0);
+  static const int baseInfo_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(baseInfo, roleid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(baseInfo, name_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(baseInfo, status_),
+  };
+  baseInfo_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      baseInfo_descriptor_,
+      baseInfo::default_instance_,
+      baseInfo_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(baseInfo, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(baseInfo, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(baseInfo));
+  LoginInfo_descriptor_ = file->message_type(1);
   static const int LoginInfo_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginInfo, roleid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginInfo, roomid_),
@@ -73,23 +96,41 @@ void protobuf_AssignDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LoginInfo));
-  LoginRet_descriptor_ = file->message_type(1);
-  static const int LoginRet_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginRet, status_),
+  playersInfo_descriptor_ = file->message_type(2);
+  static const int playersInfo_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(playersInfo, cr_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(playersInfo, roomholder_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(playersInfo, baseinfos_),
   };
-  LoginRet_reflection_ =
+  playersInfo_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      LoginRet_descriptor_,
-      LoginRet::default_instance_,
-      LoginRet_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginRet, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginRet, _unknown_fields_),
+      playersInfo_descriptor_,
+      playersInfo::default_instance_,
+      playersInfo_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(playersInfo, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(playersInfo, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(LoginRet));
-  chatBroadcast_descriptor_ = file->message_type(2);
-  static const int chatBroadcast_offsets_[1] = {
+      sizeof(playersInfo));
+  chatReceive_descriptor_ = file->message_type(3);
+  static const int chatReceive_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(chatReceive, said_),
+  };
+  chatReceive_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      chatReceive_descriptor_,
+      chatReceive::default_instance_,
+      chatReceive_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(chatReceive, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(chatReceive, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(chatReceive));
+  chatBroadcast_descriptor_ = file->message_type(4);
+  static const int chatBroadcast_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(chatBroadcast, roleid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(chatBroadcast, said_),
   };
   chatBroadcast_reflection_ =
@@ -103,7 +144,7 @@ void protobuf_AssignDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(chatBroadcast));
-  CalRequest_descriptor_ = file->message_type(3);
+  CalRequest_descriptor_ = file->message_type(5);
   static const int CalRequest_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CalRequest, a_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CalRequest, b_),
@@ -119,7 +160,7 @@ void protobuf_AssignDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CalRequest));
-  CalResponse_descriptor_ = file->message_type(4);
+  CalResponse_descriptor_ = file->message_type(6);
   static const int CalResponse_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CalResponse, c_),
   };
@@ -134,37 +175,38 @@ void protobuf_AssignDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CalResponse));
-  StatusRequest_descriptor_ = file->message_type(5);
-  static const int StatusRequest_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StatusRequest, cmd_),
+  StatusReceive_descriptor_ = file->message_type(7);
+  static const int StatusReceive_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StatusReceive, cmd_),
   };
-  StatusRequest_reflection_ =
+  StatusReceive_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      StatusRequest_descriptor_,
-      StatusRequest::default_instance_,
-      StatusRequest_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StatusRequest, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StatusRequest, _unknown_fields_),
+      StatusReceive_descriptor_,
+      StatusReceive::default_instance_,
+      StatusReceive_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StatusReceive, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StatusReceive, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(StatusRequest));
-  StatusResponse_descriptor_ = file->message_type(6);
-  static const int StatusResponse_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StatusResponse, status_),
+      sizeof(StatusReceive));
+  statusBroadcast_descriptor_ = file->message_type(8);
+  static const int statusBroadcast_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(statusBroadcast, roleid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(statusBroadcast, cmd_),
   };
-  StatusResponse_reflection_ =
+  statusBroadcast_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      StatusResponse_descriptor_,
-      StatusResponse::default_instance_,
-      StatusResponse_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StatusResponse, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StatusResponse, _unknown_fields_),
+      statusBroadcast_descriptor_,
+      statusBroadcast::default_instance_,
+      statusBroadcast_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(statusBroadcast, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(statusBroadcast, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(StatusResponse));
-  moveRequest_descriptor_ = file->message_type(7);
+      sizeof(statusBroadcast));
+  moveRequest_descriptor_ = file->message_type(9);
   static const int moveRequest_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(moveRequest, direction_),
   };
@@ -179,7 +221,7 @@ void protobuf_AssignDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(moveRequest));
-  commonResponse_descriptor_ = file->message_type(8);
+  commonResponse_descriptor_ = file->message_type(10);
   static const int commonResponse_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(commonResponse, status_),
   };
@@ -207,9 +249,13 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    baseInfo_descriptor_, &baseInfo::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     LoginInfo_descriptor_, &LoginInfo::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    LoginRet_descriptor_, &LoginRet::default_instance());
+    playersInfo_descriptor_, &playersInfo::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    chatReceive_descriptor_, &chatReceive::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     chatBroadcast_descriptor_, &chatBroadcast::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -217,9 +263,9 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     CalResponse_descriptor_, &CalResponse::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    StatusRequest_descriptor_, &StatusRequest::default_instance());
+    StatusReceive_descriptor_, &StatusReceive::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    StatusResponse_descriptor_, &StatusResponse::default_instance());
+    statusBroadcast_descriptor_, &statusBroadcast::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     moveRequest_descriptor_, &moveRequest::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -229,20 +275,24 @@ void protobuf_RegisterTypes(const ::std::string&) {
 }  // namespace
 
 void protobuf_ShutdownFile_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto() {
+  delete baseInfo::default_instance_;
+  delete baseInfo_reflection_;
   delete LoginInfo::default_instance_;
   delete LoginInfo_reflection_;
-  delete LoginRet::default_instance_;
-  delete LoginRet_reflection_;
+  delete playersInfo::default_instance_;
+  delete playersInfo_reflection_;
+  delete chatReceive::default_instance_;
+  delete chatReceive_reflection_;
   delete chatBroadcast::default_instance_;
   delete chatBroadcast_reflection_;
   delete CalRequest::default_instance_;
   delete CalRequest_reflection_;
   delete CalResponse::default_instance_;
   delete CalResponse_reflection_;
-  delete StatusRequest::default_instance_;
-  delete StatusRequest_reflection_;
-  delete StatusResponse::default_instance_;
-  delete StatusResponse_reflection_;
+  delete StatusReceive::default_instance_;
+  delete StatusReceive_reflection_;
+  delete statusBroadcast::default_instance_;
+  delete statusBroadcast_reflection_;
   delete moveRequest::default_instance_;
   delete moveRequest_reflection_;
   delete commonResponse::default_instance_;
@@ -257,39 +307,48 @@ void protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n%example/protobuf_rpc/net/rpcMsg.proto\022"
-    "\007example\"+\n\tLoginInfo\022\016\n\006roleid\030\001 \001(\005\022\016\n"
-    "\006roomid\030\002 \001(\005\"\032\n\010LoginRet\022\016\n\006status\030\001 \001("
-    "\005\"\035\n\rchatBroadcast\022\014\n\004said\030\001 \001(\t\"\"\n\nCalR"
-    "equest\022\t\n\001a\030\001 \001(\005\022\t\n\001b\030\002 \001(\005\"\030\n\013CalRespo"
-    "nse\022\t\n\001c\030\001 \001(\005\"\034\n\rStatusRequest\022\013\n\003cmd\030\001"
-    " \001(\005\" \n\016StatusResponse\022\016\n\006status\030\001 \001(\005\" "
-    "\n\013moveRequest\022\021\n\tdirection\030\001 \001(\005\" \n\016comm"
-    "onResponse\022\016\n\006status\030\001 \001(\0052\233\002\n\006rpcMsg\0220\n"
-    "\003add\022\023.example.CalRequest\032\024.example.CalR"
-    "esponse\022.\n\005login\022\022.example.LoginInfo\032\021.e"
-    "xample.LoginRet\022\?\n\014modifyStatus\022\026.exampl"
-    "e.StatusRequest\032\027.example.StatusResponse"
-    "\0225\n\004move\022\024.example.moveRequest\032\027.example"
-    ".StatusResponse\0227\n\004chat\022\026.example.chatBr"
-    "oadcast\032\027.example.commonResponse", 632);
+    "\007example\"8\n\010baseInfo\022\016\n\006roleid\030\001 \001(\005\022\014\n\004"
+    "name\030\002 \001(\t\022\016\n\006status\030\003 \001(\005\"+\n\tLoginInfo\022"
+    "\016\n\006roleid\030\001 \001(\005\022\016\n\006roomid\030\002 \001(\005\"l\n\013playe"
+    "rsInfo\022#\n\002cr\030\001 \001(\0132\027.example.commonRespo"
+    "nse\022\022\n\nroomHolder\030\002 \001(\005\022$\n\tbaseInfos\030\003 \003"
+    "(\0132\021.example.baseInfo\"\033\n\013chatReceive\022\014\n\004"
+    "said\030\001 \001(\t\"-\n\rchatBroadcast\022\016\n\006roleID\030\001 "
+    "\001(\005\022\014\n\004said\030\002 \001(\t\"\"\n\nCalRequest\022\t\n\001a\030\001 \001"
+    "(\005\022\t\n\001b\030\002 \001(\005\"\030\n\013CalResponse\022\t\n\001c\030\001 \001(\005\""
+    "\034\n\rStatusReceive\022\013\n\003cmd\030\001 \001(\005\".\n\017statusB"
+    "roadcast\022\016\n\006roleID\030\001 \001(\005\022\013\n\003cmd\030\002 \001(\005\" \n"
+    "\013moveRequest\022\021\n\tdirection\030\001 \001(\005\" \n\016commo"
+    "nResponse\022\016\n\006status\030\001 \001(\0052\234\002\n\006rpcMsg\0220\n\003"
+    "add\022\023.example.CalRequest\032\024.example.CalRe"
+    "sponse\0221\n\005login\022\022.example.LoginInfo\032\024.ex"
+    "ample.playersInfo\022\?\n\014modifyStatus\022\026.exam"
+    "ple.StatusReceive\032\027.example.commonRespon"
+    "se\0225\n\004move\022\024.example.moveRequest\032\027.examp"
+    "le.commonResponse\0225\n\004chat\022\024.example.chat"
+    "Receive\032\027.example.commonResponse", 832);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "example/protobuf_rpc/net/rpcMsg.proto", &protobuf_RegisterTypes);
+  baseInfo::default_instance_ = new baseInfo();
   LoginInfo::default_instance_ = new LoginInfo();
-  LoginRet::default_instance_ = new LoginRet();
+  playersInfo::default_instance_ = new playersInfo();
+  chatReceive::default_instance_ = new chatReceive();
   chatBroadcast::default_instance_ = new chatBroadcast();
   CalRequest::default_instance_ = new CalRequest();
   CalResponse::default_instance_ = new CalResponse();
-  StatusRequest::default_instance_ = new StatusRequest();
-  StatusResponse::default_instance_ = new StatusResponse();
+  StatusReceive::default_instance_ = new StatusReceive();
+  statusBroadcast::default_instance_ = new statusBroadcast();
   moveRequest::default_instance_ = new moveRequest();
   commonResponse::default_instance_ = new commonResponse();
+  baseInfo::default_instance_->InitAsDefaultInstance();
   LoginInfo::default_instance_->InitAsDefaultInstance();
-  LoginRet::default_instance_->InitAsDefaultInstance();
+  playersInfo::default_instance_->InitAsDefaultInstance();
+  chatReceive::default_instance_->InitAsDefaultInstance();
   chatBroadcast::default_instance_->InitAsDefaultInstance();
   CalRequest::default_instance_->InitAsDefaultInstance();
   CalResponse::default_instance_->InitAsDefaultInstance();
-  StatusRequest::default_instance_->InitAsDefaultInstance();
-  StatusResponse::default_instance_->InitAsDefaultInstance();
+  StatusReceive::default_instance_->InitAsDefaultInstance();
+  statusBroadcast::default_instance_->InitAsDefaultInstance();
   moveRequest::default_instance_->InitAsDefaultInstance();
   commonResponse::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto);
@@ -301,6 +360,342 @@ struct StaticDescriptorInitializer_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2epro
     protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
   }
 } static_descriptor_initializer_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto_;
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int baseInfo::kRoleidFieldNumber;
+const int baseInfo::kNameFieldNumber;
+const int baseInfo::kStatusFieldNumber;
+#endif  // !_MSC_VER
+
+baseInfo::baseInfo()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:example.baseInfo)
+}
+
+void baseInfo::InitAsDefaultInstance() {
+}
+
+baseInfo::baseInfo(const baseInfo& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:example.baseInfo)
+}
+
+void baseInfo::SharedCtor() {
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  roleid_ = 0;
+  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  status_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+baseInfo::~baseInfo() {
+  // @@protoc_insertion_point(destructor:example.baseInfo)
+  SharedDtor();
+}
+
+void baseInfo::SharedDtor() {
+  if (name_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete name_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void baseInfo::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* baseInfo::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return baseInfo_descriptor_;
+}
+
+const baseInfo& baseInfo::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
+  return *default_instance_;
+}
+
+baseInfo* baseInfo::default_instance_ = NULL;
+
+baseInfo* baseInfo::New() const {
+  return new baseInfo;
+}
+
+void baseInfo::Clear() {
+#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
+  &reinterpret_cast<baseInfo*>(16)->f) - \
+   reinterpret_cast<char*>(16))
+
+#define ZR_(first, last) do {                              \
+    size_t f = OFFSET_OF_FIELD_(first);                    \
+    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
+    ::memset(&first, 0, n);                                \
+  } while (0)
+
+  if (_has_bits_[0 / 32] & 7) {
+    ZR_(roleid_, status_);
+    if (has_name()) {
+      if (name_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+        name_->clear();
+      }
+    }
+  }
+
+#undef OFFSET_OF_FIELD_
+#undef ZR_
+
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool baseInfo::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:example.baseInfo)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional int32 roleid = 1;
+      case 1: {
+        if (tag == 8) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &roleid_)));
+          set_has_roleid();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_name;
+        break;
+      }
+
+      // optional string name = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_name:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+            this->name().data(), this->name().length(),
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "name");
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(24)) goto parse_status;
+        break;
+      }
+
+      // optional int32 status = 3;
+      case 3: {
+        if (tag == 24) {
+         parse_status:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &status_)));
+          set_has_status();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:example.baseInfo)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:example.baseInfo)
+  return false;
+#undef DO_
+}
+
+void baseInfo::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:example.baseInfo)
+  // optional int32 roleid = 1;
+  if (has_roleid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->roleid(), output);
+  }
+
+  // optional string name = 2;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "name");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->name(), output);
+  }
+
+  // optional int32 status = 3;
+  if (has_status()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->status(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:example.baseInfo)
+}
+
+::google::protobuf::uint8* baseInfo::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:example.baseInfo)
+  // optional int32 roleid = 1;
+  if (has_roleid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->roleid(), target);
+  }
+
+  // optional string name = 2;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "name");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->name(), target);
+  }
+
+  // optional int32 status = 3;
+  if (has_status()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->status(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:example.baseInfo)
+  return target;
+}
+
+int baseInfo::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional int32 roleid = 1;
+    if (has_roleid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->roleid());
+    }
+
+    // optional string name = 2;
+    if (has_name()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->name());
+    }
+
+    // optional int32 status = 3;
+    if (has_status()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->status());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void baseInfo::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const baseInfo* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const baseInfo*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void baseInfo::MergeFrom(const baseInfo& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_roleid()) {
+      set_roleid(from.roleid());
+    }
+    if (from.has_name()) {
+      set_name(from.name());
+    }
+    if (from.has_status()) {
+      set_status(from.status());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void baseInfo::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void baseInfo::CopyFrom(const baseInfo& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool baseInfo::IsInitialized() const {
+
+  return true;
+}
+
+void baseInfo::Swap(baseInfo* other) {
+  if (other != this) {
+    std::swap(roleid_, other->roleid_);
+    std::swap(name_, other->name_);
+    std::swap(status_, other->status_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata baseInfo::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = baseInfo_descriptor_;
+  metadata.reflection = baseInfo_reflection_;
+  return metadata;
+}
+
 
 // ===================================================================
 
@@ -579,85 +974,402 @@ void LoginInfo::Swap(LoginInfo* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int LoginRet::kStatusFieldNumber;
+const int playersInfo::kCrFieldNumber;
+const int playersInfo::kRoomHolderFieldNumber;
+const int playersInfo::kBaseInfosFieldNumber;
 #endif  // !_MSC_VER
 
-LoginRet::LoginRet()
+playersInfo::playersInfo()
   : ::google::protobuf::Message() {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:example.LoginRet)
+  // @@protoc_insertion_point(constructor:example.playersInfo)
 }
 
-void LoginRet::InitAsDefaultInstance() {
+void playersInfo::InitAsDefaultInstance() {
+  cr_ = const_cast< ::example::commonResponse*>(&::example::commonResponse::default_instance());
 }
 
-LoginRet::LoginRet(const LoginRet& from)
+playersInfo::playersInfo(const playersInfo& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:example.LoginRet)
+  // @@protoc_insertion_point(copy_constructor:example.playersInfo)
 }
 
-void LoginRet::SharedCtor() {
+void playersInfo::SharedCtor() {
   _cached_size_ = 0;
-  status_ = 0;
+  cr_ = NULL;
+  roomholder_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-LoginRet::~LoginRet() {
-  // @@protoc_insertion_point(destructor:example.LoginRet)
+playersInfo::~playersInfo() {
+  // @@protoc_insertion_point(destructor:example.playersInfo)
   SharedDtor();
 }
 
-void LoginRet::SharedDtor() {
+void playersInfo::SharedDtor() {
   if (this != default_instance_) {
+    delete cr_;
   }
 }
 
-void LoginRet::SetCachedSize(int size) const {
+void playersInfo::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* LoginRet::descriptor() {
+const ::google::protobuf::Descriptor* playersInfo::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return LoginRet_descriptor_;
+  return playersInfo_descriptor_;
 }
 
-const LoginRet& LoginRet::default_instance() {
+const playersInfo& playersInfo::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
   return *default_instance_;
 }
 
-LoginRet* LoginRet::default_instance_ = NULL;
+playersInfo* playersInfo::default_instance_ = NULL;
 
-LoginRet* LoginRet::New() const {
-  return new LoginRet;
+playersInfo* playersInfo::New() const {
+  return new playersInfo;
 }
 
-void LoginRet::Clear() {
-  status_ = 0;
+void playersInfo::Clear() {
+  if (_has_bits_[0 / 32] & 3) {
+    if (has_cr()) {
+      if (cr_ != NULL) cr_->::example::commonResponse::Clear();
+    }
+    roomholder_ = 0;
+  }
+  baseinfos_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool LoginRet::MergePartialFromCodedStream(
+bool playersInfo::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:example.LoginRet)
+  // @@protoc_insertion_point(parse_start:example.playersInfo)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional int32 status = 1;
+      // optional .example.commonResponse cr = 1;
       case 1: {
-        if (tag == 8) {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_cr()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(16)) goto parse_roomHolder;
+        break;
+      }
+
+      // optional int32 roomHolder = 2;
+      case 2: {
+        if (tag == 16) {
+         parse_roomHolder:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &status_)));
-          set_has_status();
+                 input, &roomholder_)));
+          set_has_roomholder();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_baseInfos;
+        break;
+      }
+
+      // repeated .example.baseInfo baseInfos = 3;
+      case 3: {
+        if (tag == 26) {
+         parse_baseInfos:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_baseinfos()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_baseInfos;
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:example.playersInfo)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:example.playersInfo)
+  return false;
+#undef DO_
+}
+
+void playersInfo::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:example.playersInfo)
+  // optional .example.commonResponse cr = 1;
+  if (has_cr()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->cr(), output);
+  }
+
+  // optional int32 roomHolder = 2;
+  if (has_roomholder()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->roomholder(), output);
+  }
+
+  // repeated .example.baseInfo baseInfos = 3;
+  for (int i = 0; i < this->baseinfos_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      3, this->baseinfos(i), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:example.playersInfo)
+}
+
+::google::protobuf::uint8* playersInfo::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:example.playersInfo)
+  // optional .example.commonResponse cr = 1;
+  if (has_cr()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, this->cr(), target);
+  }
+
+  // optional int32 roomHolder = 2;
+  if (has_roomholder()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->roomholder(), target);
+  }
+
+  // repeated .example.baseInfo baseInfos = 3;
+  for (int i = 0; i < this->baseinfos_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        3, this->baseinfos(i), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:example.playersInfo)
+  return target;
+}
+
+int playersInfo::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional .example.commonResponse cr = 1;
+    if (has_cr()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->cr());
+    }
+
+    // optional int32 roomHolder = 2;
+    if (has_roomholder()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->roomholder());
+    }
+
+  }
+  // repeated .example.baseInfo baseInfos = 3;
+  total_size += 1 * this->baseinfos_size();
+  for (int i = 0; i < this->baseinfos_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->baseinfos(i));
+  }
+
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void playersInfo::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const playersInfo* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const playersInfo*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void playersInfo::MergeFrom(const playersInfo& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  baseinfos_.MergeFrom(from.baseinfos_);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_cr()) {
+      mutable_cr()->::example::commonResponse::MergeFrom(from.cr());
+    }
+    if (from.has_roomholder()) {
+      set_roomholder(from.roomholder());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void playersInfo::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void playersInfo::CopyFrom(const playersInfo& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool playersInfo::IsInitialized() const {
+
+  return true;
+}
+
+void playersInfo::Swap(playersInfo* other) {
+  if (other != this) {
+    std::swap(cr_, other->cr_);
+    std::swap(roomholder_, other->roomholder_);
+    baseinfos_.Swap(&other->baseinfos_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata playersInfo::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = playersInfo_descriptor_;
+  metadata.reflection = playersInfo_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int chatReceive::kSaidFieldNumber;
+#endif  // !_MSC_VER
+
+chatReceive::chatReceive()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:example.chatReceive)
+}
+
+void chatReceive::InitAsDefaultInstance() {
+}
+
+chatReceive::chatReceive(const chatReceive& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:example.chatReceive)
+}
+
+void chatReceive::SharedCtor() {
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  said_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+chatReceive::~chatReceive() {
+  // @@protoc_insertion_point(destructor:example.chatReceive)
+  SharedDtor();
+}
+
+void chatReceive::SharedDtor() {
+  if (said_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete said_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void chatReceive::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* chatReceive::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return chatReceive_descriptor_;
+}
+
+const chatReceive& chatReceive::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
+  return *default_instance_;
+}
+
+chatReceive* chatReceive::default_instance_ = NULL;
+
+chatReceive* chatReceive::New() const {
+  return new chatReceive;
+}
+
+void chatReceive::Clear() {
+  if (has_said()) {
+    if (said_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+      said_->clear();
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool chatReceive::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:example.chatReceive)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string said = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_said()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+            this->said().data(), this->said().length(),
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "said");
         } else {
           goto handle_unusual;
         }
@@ -679,54 +1391,65 @@ bool LoginRet::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:example.LoginRet)
+  // @@protoc_insertion_point(parse_success:example.chatReceive)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:example.LoginRet)
+  // @@protoc_insertion_point(parse_failure:example.chatReceive)
   return false;
 #undef DO_
 }
 
-void LoginRet::SerializeWithCachedSizes(
+void chatReceive::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:example.LoginRet)
-  // optional int32 status = 1;
-  if (has_status()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->status(), output);
+  // @@protoc_insertion_point(serialize_start:example.chatReceive)
+  // optional string said = 1;
+  if (has_said()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->said().data(), this->said().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "said");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->said(), output);
   }
 
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:example.LoginRet)
+  // @@protoc_insertion_point(serialize_end:example.chatReceive)
 }
 
-::google::protobuf::uint8* LoginRet::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* chatReceive::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:example.LoginRet)
-  // optional int32 status = 1;
-  if (has_status()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->status(), target);
+  // @@protoc_insertion_point(serialize_to_array_start:example.chatReceive)
+  // optional string said = 1;
+  if (has_said()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->said().data(), this->said().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "said");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->said(), target);
   }
 
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:example.LoginRet)
+  // @@protoc_insertion_point(serialize_to_array_end:example.chatReceive)
   return target;
 }
 
-int LoginRet::ByteSize() const {
+int chatReceive::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional int32 status = 1;
-    if (has_status()) {
+    // optional string said = 1;
+    if (has_said()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->status());
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->said());
     }
 
   }
@@ -741,10 +1464,10 @@ int LoginRet::ByteSize() const {
   return total_size;
 }
 
-void LoginRet::MergeFrom(const ::google::protobuf::Message& from) {
+void chatReceive::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const LoginRet* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const LoginRet*>(
+  const chatReceive* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const chatReceive*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -753,47 +1476,47 @@ void LoginRet::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void LoginRet::MergeFrom(const LoginRet& from) {
+void chatReceive::MergeFrom(const chatReceive& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_status()) {
-      set_status(from.status());
+    if (from.has_said()) {
+      set_said(from.said());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void LoginRet::CopyFrom(const ::google::protobuf::Message& from) {
+void chatReceive::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void LoginRet::CopyFrom(const LoginRet& from) {
+void chatReceive::CopyFrom(const chatReceive& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool LoginRet::IsInitialized() const {
+bool chatReceive::IsInitialized() const {
 
   return true;
 }
 
-void LoginRet::Swap(LoginRet* other) {
+void chatReceive::Swap(chatReceive* other) {
   if (other != this) {
-    std::swap(status_, other->status_);
+    std::swap(said_, other->said_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
 }
 
-::google::protobuf::Metadata LoginRet::GetMetadata() const {
+::google::protobuf::Metadata chatReceive::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = LoginRet_descriptor_;
-  metadata.reflection = LoginRet_reflection_;
+  metadata.descriptor = chatReceive_descriptor_;
+  metadata.reflection = chatReceive_reflection_;
   return metadata;
 }
 
@@ -801,6 +1524,7 @@ void LoginRet::Swap(LoginRet* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int chatBroadcast::kRoleIDFieldNumber;
 const int chatBroadcast::kSaidFieldNumber;
 #endif  // !_MSC_VER
 
@@ -823,6 +1547,7 @@ chatBroadcast::chatBroadcast(const chatBroadcast& from)
 void chatBroadcast::SharedCtor() {
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
+  roleid_ = 0;
   said_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -862,9 +1587,12 @@ chatBroadcast* chatBroadcast::New() const {
 }
 
 void chatBroadcast::Clear() {
-  if (has_said()) {
-    if (said_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-      said_->clear();
+  if (_has_bits_[0 / 32] & 3) {
+    roleid_ = 0;
+    if (has_said()) {
+      if (said_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+        said_->clear();
+      }
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -881,9 +1609,24 @@ bool chatBroadcast::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string said = 1;
+      // optional int32 roleID = 1;
       case 1: {
-        if (tag == 10) {
+        if (tag == 8) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &roleid_)));
+          set_has_roleid();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_said;
+        break;
+      }
+
+      // optional string said = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_said:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_said()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
@@ -922,14 +1665,19 @@ failure:
 void chatBroadcast::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:example.chatBroadcast)
-  // optional string said = 1;
+  // optional int32 roleID = 1;
+  if (has_roleid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->roleid(), output);
+  }
+
+  // optional string said = 2;
   if (has_said()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->said().data(), this->said().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE,
       "said");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->said(), output);
+      2, this->said(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -942,7 +1690,12 @@ void chatBroadcast::SerializeWithCachedSizes(
 ::google::protobuf::uint8* chatBroadcast::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:example.chatBroadcast)
-  // optional string said = 1;
+  // optional int32 roleID = 1;
+  if (has_roleid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->roleid(), target);
+  }
+
+  // optional string said = 2;
   if (has_said()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->said().data(), this->said().length(),
@@ -950,7 +1703,7 @@ void chatBroadcast::SerializeWithCachedSizes(
       "said");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->said(), target);
+        2, this->said(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -965,7 +1718,14 @@ int chatBroadcast::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional string said = 1;
+    // optional int32 roleID = 1;
+    if (has_roleid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->roleid());
+    }
+
+    // optional string said = 2;
     if (has_said()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -999,6 +1759,9 @@ void chatBroadcast::MergeFrom(const ::google::protobuf::Message& from) {
 void chatBroadcast::MergeFrom(const chatBroadcast& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_roleid()) {
+      set_roleid(from.roleid());
+    }
     if (from.has_said()) {
       set_said(from.said());
     }
@@ -1025,6 +1788,7 @@ bool chatBroadcast::IsInitialized() const {
 
 void chatBroadcast::Swap(chatBroadcast* other) {
   if (other != this) {
+    std::swap(roleid_, other->roleid_);
     std::swap(said_, other->said_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -1540,73 +2304,73 @@ void CalResponse::Swap(CalResponse* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int StatusRequest::kCmdFieldNumber;
+const int StatusReceive::kCmdFieldNumber;
 #endif  // !_MSC_VER
 
-StatusRequest::StatusRequest()
+StatusReceive::StatusReceive()
   : ::google::protobuf::Message() {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:example.StatusRequest)
+  // @@protoc_insertion_point(constructor:example.StatusReceive)
 }
 
-void StatusRequest::InitAsDefaultInstance() {
+void StatusReceive::InitAsDefaultInstance() {
 }
 
-StatusRequest::StatusRequest(const StatusRequest& from)
+StatusReceive::StatusReceive(const StatusReceive& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:example.StatusRequest)
+  // @@protoc_insertion_point(copy_constructor:example.StatusReceive)
 }
 
-void StatusRequest::SharedCtor() {
+void StatusReceive::SharedCtor() {
   _cached_size_ = 0;
   cmd_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-StatusRequest::~StatusRequest() {
-  // @@protoc_insertion_point(destructor:example.StatusRequest)
+StatusReceive::~StatusReceive() {
+  // @@protoc_insertion_point(destructor:example.StatusReceive)
   SharedDtor();
 }
 
-void StatusRequest::SharedDtor() {
+void StatusReceive::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void StatusRequest::SetCachedSize(int size) const {
+void StatusReceive::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* StatusRequest::descriptor() {
+const ::google::protobuf::Descriptor* StatusReceive::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return StatusRequest_descriptor_;
+  return StatusReceive_descriptor_;
 }
 
-const StatusRequest& StatusRequest::default_instance() {
+const StatusReceive& StatusReceive::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
   return *default_instance_;
 }
 
-StatusRequest* StatusRequest::default_instance_ = NULL;
+StatusReceive* StatusReceive::default_instance_ = NULL;
 
-StatusRequest* StatusRequest::New() const {
-  return new StatusRequest;
+StatusReceive* StatusReceive::New() const {
+  return new StatusReceive;
 }
 
-void StatusRequest::Clear() {
+void StatusReceive::Clear() {
   cmd_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool StatusRequest::MergePartialFromCodedStream(
+bool StatusReceive::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:example.StatusRequest)
+  // @@protoc_insertion_point(parse_start:example.StatusReceive)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
@@ -1640,17 +2404,17 @@ bool StatusRequest::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:example.StatusRequest)
+  // @@protoc_insertion_point(parse_success:example.StatusReceive)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:example.StatusRequest)
+  // @@protoc_insertion_point(parse_failure:example.StatusReceive)
   return false;
 #undef DO_
 }
 
-void StatusRequest::SerializeWithCachedSizes(
+void StatusReceive::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:example.StatusRequest)
+  // @@protoc_insertion_point(serialize_start:example.StatusReceive)
   // optional int32 cmd = 1;
   if (has_cmd()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->cmd(), output);
@@ -1660,12 +2424,12 @@ void StatusRequest::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:example.StatusRequest)
+  // @@protoc_insertion_point(serialize_end:example.StatusReceive)
 }
 
-::google::protobuf::uint8* StatusRequest::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* StatusReceive::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:example.StatusRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:example.StatusReceive)
   // optional int32 cmd = 1;
   if (has_cmd()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->cmd(), target);
@@ -1675,11 +2439,11 @@ void StatusRequest::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:example.StatusRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:example.StatusReceive)
   return target;
 }
 
-int StatusRequest::ByteSize() const {
+int StatusReceive::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -1702,10 +2466,10 @@ int StatusRequest::ByteSize() const {
   return total_size;
 }
 
-void StatusRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void StatusReceive::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const StatusRequest* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const StatusRequest*>(
+  const StatusReceive* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const StatusReceive*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1714,7 +2478,7 @@ void StatusRequest::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void StatusRequest::MergeFrom(const StatusRequest& from) {
+void StatusReceive::MergeFrom(const StatusReceive& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_cmd()) {
@@ -1724,24 +2488,24 @@ void StatusRequest::MergeFrom(const StatusRequest& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void StatusRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void StatusReceive::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void StatusRequest::CopyFrom(const StatusRequest& from) {
+void StatusReceive::CopyFrom(const StatusReceive& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool StatusRequest::IsInitialized() const {
+bool StatusReceive::IsInitialized() const {
 
   return true;
 }
 
-void StatusRequest::Swap(StatusRequest* other) {
+void StatusReceive::Swap(StatusReceive* other) {
   if (other != this) {
     std::swap(cmd_, other->cmd_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
@@ -1750,11 +2514,11 @@ void StatusRequest::Swap(StatusRequest* other) {
   }
 }
 
-::google::protobuf::Metadata StatusRequest::GetMetadata() const {
+::google::protobuf::Metadata StatusReceive::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = StatusRequest_descriptor_;
-  metadata.reflection = StatusRequest_reflection_;
+  metadata.descriptor = StatusReceive_descriptor_;
+  metadata.reflection = StatusReceive_reflection_;
   return metadata;
 }
 
@@ -1762,85 +2526,116 @@ void StatusRequest::Swap(StatusRequest* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int StatusResponse::kStatusFieldNumber;
+const int statusBroadcast::kRoleIDFieldNumber;
+const int statusBroadcast::kCmdFieldNumber;
 #endif  // !_MSC_VER
 
-StatusResponse::StatusResponse()
+statusBroadcast::statusBroadcast()
   : ::google::protobuf::Message() {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:example.StatusResponse)
+  // @@protoc_insertion_point(constructor:example.statusBroadcast)
 }
 
-void StatusResponse::InitAsDefaultInstance() {
+void statusBroadcast::InitAsDefaultInstance() {
 }
 
-StatusResponse::StatusResponse(const StatusResponse& from)
+statusBroadcast::statusBroadcast(const statusBroadcast& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:example.StatusResponse)
+  // @@protoc_insertion_point(copy_constructor:example.statusBroadcast)
 }
 
-void StatusResponse::SharedCtor() {
+void statusBroadcast::SharedCtor() {
   _cached_size_ = 0;
-  status_ = 0;
+  roleid_ = 0;
+  cmd_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-StatusResponse::~StatusResponse() {
-  // @@protoc_insertion_point(destructor:example.StatusResponse)
+statusBroadcast::~statusBroadcast() {
+  // @@protoc_insertion_point(destructor:example.statusBroadcast)
   SharedDtor();
 }
 
-void StatusResponse::SharedDtor() {
+void statusBroadcast::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void StatusResponse::SetCachedSize(int size) const {
+void statusBroadcast::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* StatusResponse::descriptor() {
+const ::google::protobuf::Descriptor* statusBroadcast::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return StatusResponse_descriptor_;
+  return statusBroadcast_descriptor_;
 }
 
-const StatusResponse& StatusResponse::default_instance() {
+const statusBroadcast& statusBroadcast::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
   return *default_instance_;
 }
 
-StatusResponse* StatusResponse::default_instance_ = NULL;
+statusBroadcast* statusBroadcast::default_instance_ = NULL;
 
-StatusResponse* StatusResponse::New() const {
-  return new StatusResponse;
+statusBroadcast* statusBroadcast::New() const {
+  return new statusBroadcast;
 }
 
-void StatusResponse::Clear() {
-  status_ = 0;
+void statusBroadcast::Clear() {
+#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
+  &reinterpret_cast<statusBroadcast*>(16)->f) - \
+   reinterpret_cast<char*>(16))
+
+#define ZR_(first, last) do {                              \
+    size_t f = OFFSET_OF_FIELD_(first);                    \
+    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
+    ::memset(&first, 0, n);                                \
+  } while (0)
+
+  ZR_(roleid_, cmd_);
+
+#undef OFFSET_OF_FIELD_
+#undef ZR_
+
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool StatusResponse::MergePartialFromCodedStream(
+bool statusBroadcast::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:example.StatusResponse)
+  // @@protoc_insertion_point(parse_start:example.statusBroadcast)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional int32 status = 1;
+      // optional int32 roleID = 1;
       case 1: {
         if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &status_)));
-          set_has_status();
+                 input, &roleid_)));
+          set_has_roleid();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(16)) goto parse_cmd;
+        break;
+      }
+
+      // optional int32 cmd = 2;
+      case 2: {
+        if (tag == 16) {
+         parse_cmd:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &cmd_)));
+          set_has_cmd();
         } else {
           goto handle_unusual;
         }
@@ -1862,54 +2657,71 @@ bool StatusResponse::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:example.StatusResponse)
+  // @@protoc_insertion_point(parse_success:example.statusBroadcast)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:example.StatusResponse)
+  // @@protoc_insertion_point(parse_failure:example.statusBroadcast)
   return false;
 #undef DO_
 }
 
-void StatusResponse::SerializeWithCachedSizes(
+void statusBroadcast::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:example.StatusResponse)
-  // optional int32 status = 1;
-  if (has_status()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->status(), output);
+  // @@protoc_insertion_point(serialize_start:example.statusBroadcast)
+  // optional int32 roleID = 1;
+  if (has_roleid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->roleid(), output);
+  }
+
+  // optional int32 cmd = 2;
+  if (has_cmd()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->cmd(), output);
   }
 
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:example.StatusResponse)
+  // @@protoc_insertion_point(serialize_end:example.statusBroadcast)
 }
 
-::google::protobuf::uint8* StatusResponse::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* statusBroadcast::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:example.StatusResponse)
-  // optional int32 status = 1;
-  if (has_status()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->status(), target);
+  // @@protoc_insertion_point(serialize_to_array_start:example.statusBroadcast)
+  // optional int32 roleID = 1;
+  if (has_roleid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->roleid(), target);
+  }
+
+  // optional int32 cmd = 2;
+  if (has_cmd()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->cmd(), target);
   }
 
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:example.StatusResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:example.statusBroadcast)
   return target;
 }
 
-int StatusResponse::ByteSize() const {
+int statusBroadcast::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional int32 status = 1;
-    if (has_status()) {
+    // optional int32 roleID = 1;
+    if (has_roleid()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->status());
+          this->roleid());
+    }
+
+    // optional int32 cmd = 2;
+    if (has_cmd()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->cmd());
     }
 
   }
@@ -1924,10 +2736,10 @@ int StatusResponse::ByteSize() const {
   return total_size;
 }
 
-void StatusResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void statusBroadcast::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const StatusResponse* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const StatusResponse*>(
+  const statusBroadcast* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const statusBroadcast*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1936,47 +2748,51 @@ void StatusResponse::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void StatusResponse::MergeFrom(const StatusResponse& from) {
+void statusBroadcast::MergeFrom(const statusBroadcast& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_status()) {
-      set_status(from.status());
+    if (from.has_roleid()) {
+      set_roleid(from.roleid());
+    }
+    if (from.has_cmd()) {
+      set_cmd(from.cmd());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void StatusResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void statusBroadcast::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void StatusResponse::CopyFrom(const StatusResponse& from) {
+void statusBroadcast::CopyFrom(const statusBroadcast& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool StatusResponse::IsInitialized() const {
+bool statusBroadcast::IsInitialized() const {
 
   return true;
 }
 
-void StatusResponse::Swap(StatusResponse* other) {
+void statusBroadcast::Swap(statusBroadcast* other) {
   if (other != this) {
-    std::swap(status_, other->status_);
+    std::swap(roleid_, other->roleid_);
+    std::swap(cmd_, other->cmd_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
 }
 
-::google::protobuf::Metadata StatusResponse::GetMetadata() const {
+::google::protobuf::Metadata statusBroadcast::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = StatusResponse_descriptor_;
-  metadata.reflection = StatusResponse_reflection_;
+  metadata.descriptor = statusBroadcast_descriptor_;
+  metadata.reflection = statusBroadcast_reflection_;
   return metadata;
 }
 

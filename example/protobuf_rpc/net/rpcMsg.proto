@@ -20,7 +20,8 @@ message LoginInfo {
 //进准备房间后要先同步所有已有玩家的信息
 message playersInfo{
 	optional commonResponse cr = 1;
-	repeated baseInfo baseInfos = 2;
+	optional int32 roomHolder = 2;
+	repeated baseInfo baseInfos = 3;
 }
 
 //聊天接收协议

@@ -140,7 +140,7 @@ void rpcMsgClient::add(const ::example::CalRequest& request, const cxx::function
 
 }
 
-int32_t rpcMsgClient::login(const ::example::LoginInfo& request, ::example::LoginRet* response) {
+int32_t rpcMsgClient::login(const ::example::LoginInfo& request, ::example::playersInfo* response) {
     ::pebble::RpcHead __head;
     __head.m_function_name.assign("rpcMsg:login");
     __head.m_message_type = ::pebble::kRPC_CALL;
@@ -166,7 +166,7 @@ int32_t rpcMsgClient::login(const ::example::LoginInfo& request, ::example::Logi
 
 }
 
-int32_t rpcMsgClient::Parallellogin(const ::example::LoginInfo& request, int32_t* ret_code, ::example::LoginRet* response, uint32_t* num_called, uint32_t* num_parallel) {
+int32_t rpcMsgClient::Parallellogin(const ::example::LoginInfo& request, int32_t* ret_code, ::example::playersInfo* response, uint32_t* num_called, uint32_t* num_parallel) {
     ::pebble::RpcHead __head;
     __head.m_function_name.assign("rpcMsg:login");
     __head.m_message_type = ::pebble::kRPC_CALL;
@@ -195,7 +195,7 @@ int32_t rpcMsgClient::Parallellogin(const ::example::LoginInfo& request, int32_t
     return *ret_code;
 }
 
-void rpcMsgClient::login(const ::example::LoginInfo& request, const cxx::function<void(int32_t ret_code, const ::example::LoginRet& response)>& cb) {
+void rpcMsgClient::login(const ::example::LoginInfo& request, const cxx::function<void(int32_t ret_code, const ::example::playersInfo& response)>& cb) {
     ::pebble::RpcHead __head;
     __head.m_function_name.assign("rpcMsg:login");
     __head.m_message_type = ::pebble::kRPC_CALL;
@@ -204,13 +204,13 @@ void rpcMsgClient::login(const ::example::LoginInfo& request, const cxx::functio
     int __size = request.ByteSize();
     uint8_t* __buff = m_imp->m_client->GetBuffer(__size);
     if (__buff == NULL) {
-        ::example::LoginRet __response;
+        ::example::playersInfo __response;
         cb(::pebble::kPEBBLE_RPC_INSUFFICIENT_MEMORY, __response);
         return;
     }
 
     if (!request.SerializeToArray(__buff, __size)) {
-        ::example::LoginRet __response;
+        ::example::playersInfo __response;
         cb(::pebble::kRPC_ENCODE_FAILED, __response);
         return;
     }
@@ -220,14 +220,14 @@ void rpcMsgClient::login(const ::example::LoginInfo& request, const cxx::functio
             cxx::placeholders::_1, cxx::placeholders::_2, cxx::placeholders::_3, cb);
         int32_t __ret = m_imp->m_client->SendRequest(m_imp->GetHandle(), __head, __buff, __size, on_rsp, m_imp->m_methods["login"]);
         if (__ret != ::pebble::kRPC_SUCCESS) {
-            ::example::LoginRet __response;
+            ::example::playersInfo __response;
             cb(__ret, __response);
             return;
         }
     } else {
         int32_t __ret = m_imp->m_client->BroadcastRequest(m_imp->m_channel_name, __head, __buff, __size);
         if (__ret != ::pebble::kRPC_SUCCESS) {
-            ::example::LoginRet __response;
+            ::example::playersInfo __response;
             cb(__ret, __response);
             return;
         }
@@ -235,7 +235,7 @@ void rpcMsgClient::login(const ::example::LoginInfo& request, const cxx::functio
 
 }
 
-int32_t rpcMsgClient::modifyStatus(const ::example::StatusRequest& request, ::example::StatusResponse* response) {
+int32_t rpcMsgClient::modifyStatus(const ::example::StatusReceive& request, ::example::commonResponse* response) {
     ::pebble::RpcHead __head;
     __head.m_function_name.assign("rpcMsg:modifyStatus");
     __head.m_message_type = ::pebble::kRPC_CALL;
@@ -261,7 +261,7 @@ int32_t rpcMsgClient::modifyStatus(const ::example::StatusRequest& request, ::ex
 
 }
 
-int32_t rpcMsgClient::ParallelmodifyStatus(const ::example::StatusRequest& request, int32_t* ret_code, ::example::StatusResponse* response, uint32_t* num_called, uint32_t* num_parallel) {
+int32_t rpcMsgClient::ParallelmodifyStatus(const ::example::StatusReceive& request, int32_t* ret_code, ::example::commonResponse* response, uint32_t* num_called, uint32_t* num_parallel) {
     ::pebble::RpcHead __head;
     __head.m_function_name.assign("rpcMsg:modifyStatus");
     __head.m_message_type = ::pebble::kRPC_CALL;
@@ -290,7 +290,7 @@ int32_t rpcMsgClient::ParallelmodifyStatus(const ::example::StatusRequest& reque
     return *ret_code;
 }
 
-void rpcMsgClient::modifyStatus(const ::example::StatusRequest& request, const cxx::function<void(int32_t ret_code, const ::example::StatusResponse& response)>& cb) {
+void rpcMsgClient::modifyStatus(const ::example::StatusReceive& request, const cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)>& cb) {
     ::pebble::RpcHead __head;
     __head.m_function_name.assign("rpcMsg:modifyStatus");
     __head.m_message_type = ::pebble::kRPC_CALL;
@@ -299,13 +299,13 @@ void rpcMsgClient::modifyStatus(const ::example::StatusRequest& request, const c
     int __size = request.ByteSize();
     uint8_t* __buff = m_imp->m_client->GetBuffer(__size);
     if (__buff == NULL) {
-        ::example::StatusResponse __response;
+        ::example::commonResponse __response;
         cb(::pebble::kPEBBLE_RPC_INSUFFICIENT_MEMORY, __response);
         return;
     }
 
     if (!request.SerializeToArray(__buff, __size)) {
-        ::example::StatusResponse __response;
+        ::example::commonResponse __response;
         cb(::pebble::kRPC_ENCODE_FAILED, __response);
         return;
     }
@@ -315,14 +315,14 @@ void rpcMsgClient::modifyStatus(const ::example::StatusRequest& request, const c
             cxx::placeholders::_1, cxx::placeholders::_2, cxx::placeholders::_3, cb);
         int32_t __ret = m_imp->m_client->SendRequest(m_imp->GetHandle(), __head, __buff, __size, on_rsp, m_imp->m_methods["modifyStatus"]);
         if (__ret != ::pebble::kRPC_SUCCESS) {
-            ::example::StatusResponse __response;
+            ::example::commonResponse __response;
             cb(__ret, __response);
             return;
         }
     } else {
         int32_t __ret = m_imp->m_client->BroadcastRequest(m_imp->m_channel_name, __head, __buff, __size);
         if (__ret != ::pebble::kRPC_SUCCESS) {
-            ::example::StatusResponse __response;
+            ::example::commonResponse __response;
             cb(__ret, __response);
             return;
         }
@@ -330,7 +330,7 @@ void rpcMsgClient::modifyStatus(const ::example::StatusRequest& request, const c
 
 }
 
-int32_t rpcMsgClient::move(const ::example::moveRequest& request, ::example::StatusResponse* response) {
+int32_t rpcMsgClient::move(const ::example::moveRequest& request, ::example::commonResponse* response) {
     ::pebble::RpcHead __head;
     __head.m_function_name.assign("rpcMsg:move");
     __head.m_message_type = ::pebble::kRPC_CALL;
@@ -356,7 +356,7 @@ int32_t rpcMsgClient::move(const ::example::moveRequest& request, ::example::Sta
 
 }
 
-int32_t rpcMsgClient::Parallelmove(const ::example::moveRequest& request, int32_t* ret_code, ::example::StatusResponse* response, uint32_t* num_called, uint32_t* num_parallel) {
+int32_t rpcMsgClient::Parallelmove(const ::example::moveRequest& request, int32_t* ret_code, ::example::commonResponse* response, uint32_t* num_called, uint32_t* num_parallel) {
     ::pebble::RpcHead __head;
     __head.m_function_name.assign("rpcMsg:move");
     __head.m_message_type = ::pebble::kRPC_CALL;
@@ -385,7 +385,7 @@ int32_t rpcMsgClient::Parallelmove(const ::example::moveRequest& request, int32_
     return *ret_code;
 }
 
-void rpcMsgClient::move(const ::example::moveRequest& request, const cxx::function<void(int32_t ret_code, const ::example::StatusResponse& response)>& cb) {
+void rpcMsgClient::move(const ::example::moveRequest& request, const cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)>& cb) {
     ::pebble::RpcHead __head;
     __head.m_function_name.assign("rpcMsg:move");
     __head.m_message_type = ::pebble::kRPC_CALL;
@@ -394,13 +394,13 @@ void rpcMsgClient::move(const ::example::moveRequest& request, const cxx::functi
     int __size = request.ByteSize();
     uint8_t* __buff = m_imp->m_client->GetBuffer(__size);
     if (__buff == NULL) {
-        ::example::StatusResponse __response;
+        ::example::commonResponse __response;
         cb(::pebble::kPEBBLE_RPC_INSUFFICIENT_MEMORY, __response);
         return;
     }
 
     if (!request.SerializeToArray(__buff, __size)) {
-        ::example::StatusResponse __response;
+        ::example::commonResponse __response;
         cb(::pebble::kRPC_ENCODE_FAILED, __response);
         return;
     }
@@ -410,14 +410,14 @@ void rpcMsgClient::move(const ::example::moveRequest& request, const cxx::functi
             cxx::placeholders::_1, cxx::placeholders::_2, cxx::placeholders::_3, cb);
         int32_t __ret = m_imp->m_client->SendRequest(m_imp->GetHandle(), __head, __buff, __size, on_rsp, m_imp->m_methods["move"]);
         if (__ret != ::pebble::kRPC_SUCCESS) {
-            ::example::StatusResponse __response;
+            ::example::commonResponse __response;
             cb(__ret, __response);
             return;
         }
     } else {
         int32_t __ret = m_imp->m_client->BroadcastRequest(m_imp->m_channel_name, __head, __buff, __size);
         if (__ret != ::pebble::kRPC_SUCCESS) {
-            ::example::StatusResponse __response;
+            ::example::commonResponse __response;
             cb(__ret, __response);
             return;
         }
@@ -425,7 +425,7 @@ void rpcMsgClient::move(const ::example::moveRequest& request, const cxx::functi
 
 }
 
-int32_t rpcMsgClient::chat(const ::example::chatBroadcast& request, ::example::commonResponse* response) {
+int32_t rpcMsgClient::chat(const ::example::chatReceive& request, ::example::commonResponse* response) {
     ::pebble::RpcHead __head;
     __head.m_function_name.assign("rpcMsg:chat");
     __head.m_message_type = ::pebble::kRPC_CALL;
@@ -451,7 +451,7 @@ int32_t rpcMsgClient::chat(const ::example::chatBroadcast& request, ::example::c
 
 }
 
-int32_t rpcMsgClient::Parallelchat(const ::example::chatBroadcast& request, int32_t* ret_code, ::example::commonResponse* response, uint32_t* num_called, uint32_t* num_parallel) {
+int32_t rpcMsgClient::Parallelchat(const ::example::chatReceive& request, int32_t* ret_code, ::example::commonResponse* response, uint32_t* num_called, uint32_t* num_parallel) {
     ::pebble::RpcHead __head;
     __head.m_function_name.assign("rpcMsg:chat");
     __head.m_message_type = ::pebble::kRPC_CALL;
@@ -480,7 +480,7 @@ int32_t rpcMsgClient::Parallelchat(const ::example::chatBroadcast& request, int3
     return *ret_code;
 }
 
-void rpcMsgClient::chat(const ::example::chatBroadcast& request, const cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)>& cb) {
+void rpcMsgClient::chat(const ::example::chatReceive& request, const cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)>& cb) {
     ::pebble::RpcHead __head;
     __head.m_function_name.assign("rpcMsg:chat");
     __head.m_message_type = ::pebble::kRPC_CALL;
@@ -575,7 +575,7 @@ int32_t rpcMsgClientImp::recv_add(int32_t ret, const uint8_t* buff, uint32_t buf
     return ret != ::pebble::kRPC_SUCCESS ? ret : ::pebble::kRPC_SUCCESS;
 }
 
-int32_t rpcMsgClientImp::recv_login_sync(int32_t ret, const uint8_t* buff, uint32_t buff_len, ::example::LoginRet* response) {
+int32_t rpcMsgClientImp::recv_login_sync(int32_t ret, const uint8_t* buff, uint32_t buff_len, ::example::playersInfo* response) {
     if (ret != ::pebble::kRPC_SUCCESS) {
         if (0 == buff_len) {
             return ret;
@@ -589,13 +589,13 @@ int32_t rpcMsgClientImp::recv_login_sync(int32_t ret, const uint8_t* buff, uint3
     return ret != ::pebble::kRPC_SUCCESS ? ret : ::pebble::kRPC_SUCCESS;
 }
 
-int32_t rpcMsgClientImp::recv_login_parallel(int32_t ret, const uint8_t* buff, uint32_t buff_len, int32_t* ret_code, ::example::LoginRet* response) {
+int32_t rpcMsgClientImp::recv_login_parallel(int32_t ret, const uint8_t* buff, uint32_t buff_len, int32_t* ret_code, ::example::playersInfo* response) {
     *ret_code = recv_login_sync(ret, buff, buff_len, response);
     return *ret_code;
 }
 
-int32_t rpcMsgClientImp::recv_login(int32_t ret, const uint8_t* buff, uint32_t buff_len, cxx::function<void(int ret_code, const ::example::LoginRet& response)>& cb) {
-    ::example::LoginRet __response;
+int32_t rpcMsgClientImp::recv_login(int32_t ret, const uint8_t* buff, uint32_t buff_len, cxx::function<void(int ret_code, const ::example::playersInfo& response)>& cb) {
+    ::example::playersInfo __response;
     if (ret != ::pebble::kRPC_SUCCESS) {
         if (0 == buff_len) {
             cb(ret, __response);
@@ -610,7 +610,7 @@ int32_t rpcMsgClientImp::recv_login(int32_t ret, const uint8_t* buff, uint32_t b
     return ret != ::pebble::kRPC_SUCCESS ? ret : ::pebble::kRPC_SUCCESS;
 }
 
-int32_t rpcMsgClientImp::recv_modifyStatus_sync(int32_t ret, const uint8_t* buff, uint32_t buff_len, ::example::StatusResponse* response) {
+int32_t rpcMsgClientImp::recv_modifyStatus_sync(int32_t ret, const uint8_t* buff, uint32_t buff_len, ::example::commonResponse* response) {
     if (ret != ::pebble::kRPC_SUCCESS) {
         if (0 == buff_len) {
             return ret;
@@ -624,13 +624,13 @@ int32_t rpcMsgClientImp::recv_modifyStatus_sync(int32_t ret, const uint8_t* buff
     return ret != ::pebble::kRPC_SUCCESS ? ret : ::pebble::kRPC_SUCCESS;
 }
 
-int32_t rpcMsgClientImp::recv_modifyStatus_parallel(int32_t ret, const uint8_t* buff, uint32_t buff_len, int32_t* ret_code, ::example::StatusResponse* response) {
+int32_t rpcMsgClientImp::recv_modifyStatus_parallel(int32_t ret, const uint8_t* buff, uint32_t buff_len, int32_t* ret_code, ::example::commonResponse* response) {
     *ret_code = recv_modifyStatus_sync(ret, buff, buff_len, response);
     return *ret_code;
 }
 
-int32_t rpcMsgClientImp::recv_modifyStatus(int32_t ret, const uint8_t* buff, uint32_t buff_len, cxx::function<void(int ret_code, const ::example::StatusResponse& response)>& cb) {
-    ::example::StatusResponse __response;
+int32_t rpcMsgClientImp::recv_modifyStatus(int32_t ret, const uint8_t* buff, uint32_t buff_len, cxx::function<void(int ret_code, const ::example::commonResponse& response)>& cb) {
+    ::example::commonResponse __response;
     if (ret != ::pebble::kRPC_SUCCESS) {
         if (0 == buff_len) {
             cb(ret, __response);
@@ -645,7 +645,7 @@ int32_t rpcMsgClientImp::recv_modifyStatus(int32_t ret, const uint8_t* buff, uin
     return ret != ::pebble::kRPC_SUCCESS ? ret : ::pebble::kRPC_SUCCESS;
 }
 
-int32_t rpcMsgClientImp::recv_move_sync(int32_t ret, const uint8_t* buff, uint32_t buff_len, ::example::StatusResponse* response) {
+int32_t rpcMsgClientImp::recv_move_sync(int32_t ret, const uint8_t* buff, uint32_t buff_len, ::example::commonResponse* response) {
     if (ret != ::pebble::kRPC_SUCCESS) {
         if (0 == buff_len) {
             return ret;
@@ -659,13 +659,13 @@ int32_t rpcMsgClientImp::recv_move_sync(int32_t ret, const uint8_t* buff, uint32
     return ret != ::pebble::kRPC_SUCCESS ? ret : ::pebble::kRPC_SUCCESS;
 }
 
-int32_t rpcMsgClientImp::recv_move_parallel(int32_t ret, const uint8_t* buff, uint32_t buff_len, int32_t* ret_code, ::example::StatusResponse* response) {
+int32_t rpcMsgClientImp::recv_move_parallel(int32_t ret, const uint8_t* buff, uint32_t buff_len, int32_t* ret_code, ::example::commonResponse* response) {
     *ret_code = recv_move_sync(ret, buff, buff_len, response);
     return *ret_code;
 }
 
-int32_t rpcMsgClientImp::recv_move(int32_t ret, const uint8_t* buff, uint32_t buff_len, cxx::function<void(int ret_code, const ::example::StatusResponse& response)>& cb) {
-    ::example::StatusResponse __response;
+int32_t rpcMsgClientImp::recv_move(int32_t ret, const uint8_t* buff, uint32_t buff_len, cxx::function<void(int ret_code, const ::example::commonResponse& response)>& cb) {
+    ::example::commonResponse __response;
     if (ret != ::pebble::kRPC_SUCCESS) {
         if (0 == buff_len) {
             cb(ret, __response);
@@ -805,7 +805,7 @@ int32_t __rpcMsgSkeleton::process_login(const uint8_t* buff, uint32_t buff_len, 
         return ::pebble::kPEBBLE_RPC_DECODE_BODY_FAILED;
     }
 
-    cxx::function<void(int32_t ret_code, const ::example::LoginRet& response)> __rsp =
+    cxx::function<void(int32_t ret_code, const ::example::playersInfo& response)> __rsp =
         cxx::bind(&__rpcMsgSkeleton::return_login, this,
             rsp, cxx::placeholders::_1, cxx::placeholders::_2);
 
@@ -814,7 +814,7 @@ int32_t __rpcMsgSkeleton::process_login(const uint8_t* buff, uint32_t buff_len, 
     return ::pebble::kRPC_SUCCESS;
 }
 
-void __rpcMsgSkeleton::return_login(cxx::function<int32_t(int32_t ret, const uint8_t* buff, uint32_t buff_len)>& rsp, int32_t ret_code, const ::example::LoginRet& response) {
+void __rpcMsgSkeleton::return_login(cxx::function<int32_t(int32_t ret, const uint8_t* buff, uint32_t buff_len)>& rsp, int32_t ret_code, const ::example::playersInfo& response) {
     int __size = response.ByteSize();
     uint8_t* __buff = m_server->GetBuffer(__size);
     if (__buff == NULL) {
@@ -831,13 +831,13 @@ void __rpcMsgSkeleton::return_login(cxx::function<int32_t(int32_t ret, const uin
 }
 
 int32_t __rpcMsgSkeleton::process_modifyStatus(const uint8_t* buff, uint32_t buff_len, cxx::function<int32_t(int32_t ret, const uint8_t* buff, uint32_t buff_len)>& rsp) {
-    ::example::StatusRequest __request;
+    ::example::StatusReceive __request;
     if (!__request.ParseFromArray((const void*)buff, buff_len)) {
         rsp(::pebble::kPEBBLE_RPC_DECODE_BODY_FAILED, NULL, 0);
         return ::pebble::kPEBBLE_RPC_DECODE_BODY_FAILED;
     }
 
-    cxx::function<void(int32_t ret_code, const ::example::StatusResponse& response)> __rsp =
+    cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)> __rsp =
         cxx::bind(&__rpcMsgSkeleton::return_modifyStatus, this,
             rsp, cxx::placeholders::_1, cxx::placeholders::_2);
 
@@ -846,7 +846,7 @@ int32_t __rpcMsgSkeleton::process_modifyStatus(const uint8_t* buff, uint32_t buf
     return ::pebble::kRPC_SUCCESS;
 }
 
-void __rpcMsgSkeleton::return_modifyStatus(cxx::function<int32_t(int32_t ret, const uint8_t* buff, uint32_t buff_len)>& rsp, int32_t ret_code, const ::example::StatusResponse& response) {
+void __rpcMsgSkeleton::return_modifyStatus(cxx::function<int32_t(int32_t ret, const uint8_t* buff, uint32_t buff_len)>& rsp, int32_t ret_code, const ::example::commonResponse& response) {
     int __size = response.ByteSize();
     uint8_t* __buff = m_server->GetBuffer(__size);
     if (__buff == NULL) {
@@ -869,7 +869,7 @@ int32_t __rpcMsgSkeleton::process_move(const uint8_t* buff, uint32_t buff_len, c
         return ::pebble::kPEBBLE_RPC_DECODE_BODY_FAILED;
     }
 
-    cxx::function<void(int32_t ret_code, const ::example::StatusResponse& response)> __rsp =
+    cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)> __rsp =
         cxx::bind(&__rpcMsgSkeleton::return_move, this,
             rsp, cxx::placeholders::_1, cxx::placeholders::_2);
 
@@ -878,7 +878,7 @@ int32_t __rpcMsgSkeleton::process_move(const uint8_t* buff, uint32_t buff_len, c
     return ::pebble::kRPC_SUCCESS;
 }
 
-void __rpcMsgSkeleton::return_move(cxx::function<int32_t(int32_t ret, const uint8_t* buff, uint32_t buff_len)>& rsp, int32_t ret_code, const ::example::StatusResponse& response) {
+void __rpcMsgSkeleton::return_move(cxx::function<int32_t(int32_t ret, const uint8_t* buff, uint32_t buff_len)>& rsp, int32_t ret_code, const ::example::commonResponse& response) {
     int __size = response.ByteSize();
     uint8_t* __buff = m_server->GetBuffer(__size);
     if (__buff == NULL) {
@@ -895,7 +895,7 @@ void __rpcMsgSkeleton::return_move(cxx::function<int32_t(int32_t ret, const uint
 }
 
 int32_t __rpcMsgSkeleton::process_chat(const uint8_t* buff, uint32_t buff_len, cxx::function<int32_t(int32_t ret, const uint8_t* buff, uint32_t buff_len)>& rsp) {
-    ::example::chatBroadcast __request;
+    ::example::chatReceive __request;
     if (!__request.ParseFromArray((const void*)buff, buff_len)) {
         rsp(::pebble::kPEBBLE_RPC_DECODE_BODY_FAILED, NULL, 0);
         return ::pebble::kPEBBLE_RPC_DECODE_BODY_FAILED;

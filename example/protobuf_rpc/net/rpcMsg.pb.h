@@ -33,17 +33,123 @@ void  protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
 void protobuf_AssignDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
 void protobuf_ShutdownFile_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
 
+class baseInfo;
 class LoginInfo;
-class LoginRet;
+class playersInfo;
+class chatReceive;
 class chatBroadcast;
 class CalRequest;
 class CalResponse;
-class StatusRequest;
-class StatusResponse;
+class StatusReceive;
+class statusBroadcast;
 class moveRequest;
 class commonResponse;
 
 // ===================================================================
+
+class baseInfo : public ::google::protobuf::Message {
+ public:
+  baseInfo();
+  virtual ~baseInfo();
+
+  baseInfo(const baseInfo& from);
+
+  inline baseInfo& operator=(const baseInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const baseInfo& default_instance();
+
+  void Swap(baseInfo* other);
+
+  // implements Message ----------------------------------------------
+
+  baseInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const baseInfo& from);
+  void MergeFrom(const baseInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int32 roleid = 1;
+  inline bool has_roleid() const;
+  inline void clear_roleid();
+  static const int kRoleidFieldNumber = 1;
+  inline ::google::protobuf::int32 roleid() const;
+  inline void set_roleid(::google::protobuf::int32 value);
+
+  // optional string name = 2;
+  inline bool has_name() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 2;
+  inline const ::std::string& name() const;
+  inline void set_name(const ::std::string& value);
+  inline void set_name(const char* value);
+  inline void set_name(const char* value, size_t size);
+  inline ::std::string* mutable_name();
+  inline ::std::string* release_name();
+  inline void set_allocated_name(::std::string* name);
+
+  // optional int32 status = 3;
+  inline bool has_status() const;
+  inline void clear_status();
+  static const int kStatusFieldNumber = 3;
+  inline ::google::protobuf::int32 status() const;
+  inline void set_status(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:example.baseInfo)
+ private:
+  inline void set_has_roleid();
+  inline void clear_has_roleid();
+  inline void set_has_name();
+  inline void clear_has_name();
+  inline void set_has_status();
+  inline void clear_has_status();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::std::string* name_;
+  ::google::protobuf::int32 roleid_;
+  ::google::protobuf::int32 status_;
+  friend void  protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
+  friend void protobuf_AssignDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
+  friend void protobuf_ShutdownFile_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static baseInfo* default_instance_;
+};
+// -------------------------------------------------------------------
 
 class LoginInfo : public ::google::protobuf::Message {
  public:
@@ -134,14 +240,14 @@ class LoginInfo : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class LoginRet : public ::google::protobuf::Message {
+class playersInfo : public ::google::protobuf::Message {
  public:
-  LoginRet();
-  virtual ~LoginRet();
+  playersInfo();
+  virtual ~playersInfo();
 
-  LoginRet(const LoginRet& from);
+  playersInfo(const playersInfo& from);
 
-  inline LoginRet& operator=(const LoginRet& from) {
+  inline playersInfo& operator=(const playersInfo& from) {
     CopyFrom(from);
     return *this;
   }
@@ -155,17 +261,17 @@ class LoginRet : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const LoginRet& default_instance();
+  static const playersInfo& default_instance();
 
-  void Swap(LoginRet* other);
+  void Swap(playersInfo* other);
 
   // implements Message ----------------------------------------------
 
-  LoginRet* New() const;
+  playersInfo* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const LoginRet& from);
-  void MergeFrom(const LoginRet& from);
+  void CopyFrom(const playersInfo& from);
+  void MergeFrom(const playersInfo& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -187,29 +293,138 @@ class LoginRet : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional int32 status = 1;
-  inline bool has_status() const;
-  inline void clear_status();
-  static const int kStatusFieldNumber = 1;
-  inline ::google::protobuf::int32 status() const;
-  inline void set_status(::google::protobuf::int32 value);
+  // optional .example.commonResponse cr = 1;
+  inline bool has_cr() const;
+  inline void clear_cr();
+  static const int kCrFieldNumber = 1;
+  inline const ::example::commonResponse& cr() const;
+  inline ::example::commonResponse* mutable_cr();
+  inline ::example::commonResponse* release_cr();
+  inline void set_allocated_cr(::example::commonResponse* cr);
 
-  // @@protoc_insertion_point(class_scope:example.LoginRet)
+  // optional int32 roomHolder = 2;
+  inline bool has_roomholder() const;
+  inline void clear_roomholder();
+  static const int kRoomHolderFieldNumber = 2;
+  inline ::google::protobuf::int32 roomholder() const;
+  inline void set_roomholder(::google::protobuf::int32 value);
+
+  // repeated .example.baseInfo baseInfos = 3;
+  inline int baseinfos_size() const;
+  inline void clear_baseinfos();
+  static const int kBaseInfosFieldNumber = 3;
+  inline const ::example::baseInfo& baseinfos(int index) const;
+  inline ::example::baseInfo* mutable_baseinfos(int index);
+  inline ::example::baseInfo* add_baseinfos();
+  inline const ::google::protobuf::RepeatedPtrField< ::example::baseInfo >&
+      baseinfos() const;
+  inline ::google::protobuf::RepeatedPtrField< ::example::baseInfo >*
+      mutable_baseinfos();
+
+  // @@protoc_insertion_point(class_scope:example.playersInfo)
  private:
-  inline void set_has_status();
-  inline void clear_has_status();
+  inline void set_has_cr();
+  inline void clear_has_cr();
+  inline void set_has_roomholder();
+  inline void clear_has_roomholder();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::google::protobuf::int32 status_;
+  ::example::commonResponse* cr_;
+  ::google::protobuf::RepeatedPtrField< ::example::baseInfo > baseinfos_;
+  ::google::protobuf::int32 roomholder_;
   friend void  protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
   friend void protobuf_AssignDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
   friend void protobuf_ShutdownFile_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
 
   void InitAsDefaultInstance();
-  static LoginRet* default_instance_;
+  static playersInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class chatReceive : public ::google::protobuf::Message {
+ public:
+  chatReceive();
+  virtual ~chatReceive();
+
+  chatReceive(const chatReceive& from);
+
+  inline chatReceive& operator=(const chatReceive& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const chatReceive& default_instance();
+
+  void Swap(chatReceive* other);
+
+  // implements Message ----------------------------------------------
+
+  chatReceive* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const chatReceive& from);
+  void MergeFrom(const chatReceive& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string said = 1;
+  inline bool has_said() const;
+  inline void clear_said();
+  static const int kSaidFieldNumber = 1;
+  inline const ::std::string& said() const;
+  inline void set_said(const ::std::string& value);
+  inline void set_said(const char* value);
+  inline void set_said(const char* value, size_t size);
+  inline ::std::string* mutable_said();
+  inline ::std::string* release_said();
+  inline void set_allocated_said(::std::string* said);
+
+  // @@protoc_insertion_point(class_scope:example.chatReceive)
+ private:
+  inline void set_has_said();
+  inline void clear_has_said();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::std::string* said_;
+  friend void  protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
+  friend void protobuf_AssignDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
+  friend void protobuf_ShutdownFile_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static chatReceive* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -266,10 +481,17 @@ class chatBroadcast : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional string said = 1;
+  // optional int32 roleID = 1;
+  inline bool has_roleid() const;
+  inline void clear_roleid();
+  static const int kRoleIDFieldNumber = 1;
+  inline ::google::protobuf::int32 roleid() const;
+  inline void set_roleid(::google::protobuf::int32 value);
+
+  // optional string said = 2;
   inline bool has_said() const;
   inline void clear_said();
-  static const int kSaidFieldNumber = 1;
+  static const int kSaidFieldNumber = 2;
   inline const ::std::string& said() const;
   inline void set_said(const ::std::string& value);
   inline void set_said(const char* value);
@@ -280,6 +502,8 @@ class chatBroadcast : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:example.chatBroadcast)
  private:
+  inline void set_has_roleid();
+  inline void clear_has_roleid();
   inline void set_has_said();
   inline void clear_has_said();
 
@@ -288,6 +512,7 @@ class chatBroadcast : public ::google::protobuf::Message {
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
   ::std::string* said_;
+  ::google::protobuf::int32 roleid_;
   friend void  protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
   friend void protobuf_AssignDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
   friend void protobuf_ShutdownFile_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
@@ -465,14 +690,14 @@ class CalResponse : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class StatusRequest : public ::google::protobuf::Message {
+class StatusReceive : public ::google::protobuf::Message {
  public:
-  StatusRequest();
-  virtual ~StatusRequest();
+  StatusReceive();
+  virtual ~StatusReceive();
 
-  StatusRequest(const StatusRequest& from);
+  StatusReceive(const StatusReceive& from);
 
-  inline StatusRequest& operator=(const StatusRequest& from) {
+  inline StatusReceive& operator=(const StatusReceive& from) {
     CopyFrom(from);
     return *this;
   }
@@ -486,17 +711,17 @@ class StatusRequest : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StatusRequest& default_instance();
+  static const StatusReceive& default_instance();
 
-  void Swap(StatusRequest* other);
+  void Swap(StatusReceive* other);
 
   // implements Message ----------------------------------------------
 
-  StatusRequest* New() const;
+  StatusReceive* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StatusRequest& from);
-  void MergeFrom(const StatusRequest& from);
+  void CopyFrom(const StatusReceive& from);
+  void MergeFrom(const StatusReceive& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -525,7 +750,7 @@ class StatusRequest : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 cmd() const;
   inline void set_cmd(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:example.StatusRequest)
+  // @@protoc_insertion_point(class_scope:example.StatusReceive)
  private:
   inline void set_has_cmd();
   inline void clear_has_cmd();
@@ -540,18 +765,18 @@ class StatusRequest : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
 
   void InitAsDefaultInstance();
-  static StatusRequest* default_instance_;
+  static StatusReceive* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class StatusResponse : public ::google::protobuf::Message {
+class statusBroadcast : public ::google::protobuf::Message {
  public:
-  StatusResponse();
-  virtual ~StatusResponse();
+  statusBroadcast();
+  virtual ~statusBroadcast();
 
-  StatusResponse(const StatusResponse& from);
+  statusBroadcast(const statusBroadcast& from);
 
-  inline StatusResponse& operator=(const StatusResponse& from) {
+  inline statusBroadcast& operator=(const statusBroadcast& from) {
     CopyFrom(from);
     return *this;
   }
@@ -565,17 +790,17 @@ class StatusResponse : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StatusResponse& default_instance();
+  static const statusBroadcast& default_instance();
 
-  void Swap(StatusResponse* other);
+  void Swap(statusBroadcast* other);
 
   // implements Message ----------------------------------------------
 
-  StatusResponse* New() const;
+  statusBroadcast* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StatusResponse& from);
-  void MergeFrom(const StatusResponse& from);
+  void CopyFrom(const statusBroadcast& from);
+  void MergeFrom(const statusBroadcast& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -597,29 +822,39 @@ class StatusResponse : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional int32 status = 1;
-  inline bool has_status() const;
-  inline void clear_status();
-  static const int kStatusFieldNumber = 1;
-  inline ::google::protobuf::int32 status() const;
-  inline void set_status(::google::protobuf::int32 value);
+  // optional int32 roleID = 1;
+  inline bool has_roleid() const;
+  inline void clear_roleid();
+  static const int kRoleIDFieldNumber = 1;
+  inline ::google::protobuf::int32 roleid() const;
+  inline void set_roleid(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:example.StatusResponse)
+  // optional int32 cmd = 2;
+  inline bool has_cmd() const;
+  inline void clear_cmd();
+  static const int kCmdFieldNumber = 2;
+  inline ::google::protobuf::int32 cmd() const;
+  inline void set_cmd(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:example.statusBroadcast)
  private:
-  inline void set_has_status();
-  inline void clear_has_status();
+  inline void set_has_roleid();
+  inline void clear_has_roleid();
+  inline void set_has_cmd();
+  inline void clear_has_cmd();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::google::protobuf::int32 status_;
+  ::google::protobuf::int32 roleid_;
+  ::google::protobuf::int32 cmd_;
   friend void  protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
   friend void protobuf_AssignDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
   friend void protobuf_ShutdownFile_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
 
   void InitAsDefaultInstance();
-  static StatusResponse* default_instance_;
+  static statusBroadcast* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -784,6 +1019,134 @@ class commonResponse : public ::google::protobuf::Message {
 
 // ===================================================================
 
+// baseInfo
+
+// optional int32 roleid = 1;
+inline bool baseInfo::has_roleid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void baseInfo::set_has_roleid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void baseInfo::clear_has_roleid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void baseInfo::clear_roleid() {
+  roleid_ = 0;
+  clear_has_roleid();
+}
+inline ::google::protobuf::int32 baseInfo::roleid() const {
+  // @@protoc_insertion_point(field_get:example.baseInfo.roleid)
+  return roleid_;
+}
+inline void baseInfo::set_roleid(::google::protobuf::int32 value) {
+  set_has_roleid();
+  roleid_ = value;
+  // @@protoc_insertion_point(field_set:example.baseInfo.roleid)
+}
+
+// optional string name = 2;
+inline bool baseInfo::has_name() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void baseInfo::set_has_name() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void baseInfo::clear_has_name() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void baseInfo::clear_name() {
+  if (name_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    name_->clear();
+  }
+  clear_has_name();
+}
+inline const ::std::string& baseInfo::name() const {
+  // @@protoc_insertion_point(field_get:example.baseInfo.name)
+  return *name_;
+}
+inline void baseInfo::set_name(const ::std::string& value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+  // @@protoc_insertion_point(field_set:example.baseInfo.name)
+}
+inline void baseInfo::set_name(const char* value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+  // @@protoc_insertion_point(field_set_char:example.baseInfo.name)
+}
+inline void baseInfo::set_name(const char* value, size_t size) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    name_ = new ::std::string;
+  }
+  name_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:example.baseInfo.name)
+}
+inline ::std::string* baseInfo::mutable_name() {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    name_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:example.baseInfo.name)
+  return name_;
+}
+inline ::std::string* baseInfo::release_name() {
+  clear_has_name();
+  if (name_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = name_;
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void baseInfo::set_allocated_name(::std::string* name) {
+  if (name_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete name_;
+  }
+  if (name) {
+    set_has_name();
+    name_ = name;
+  } else {
+    clear_has_name();
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:example.baseInfo.name)
+}
+
+// optional int32 status = 3;
+inline bool baseInfo::has_status() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void baseInfo::set_has_status() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void baseInfo::clear_has_status() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void baseInfo::clear_status() {
+  status_ = 0;
+  clear_has_status();
+}
+inline ::google::protobuf::int32 baseInfo::status() const {
+  // @@protoc_insertion_point(field_get:example.baseInfo.status)
+  return status_;
+}
+inline void baseInfo::set_status(::google::protobuf::int32 value) {
+  set_has_status();
+  status_ = value;
+  // @@protoc_insertion_point(field_set:example.baseInfo.status)
+}
+
+// -------------------------------------------------------------------
+
 // LoginInfo
 
 // optional int32 roleid = 1;
@@ -836,45 +1199,220 @@ inline void LoginInfo::set_roomid(::google::protobuf::int32 value) {
 
 // -------------------------------------------------------------------
 
-// LoginRet
+// playersInfo
 
-// optional int32 status = 1;
-inline bool LoginRet::has_status() const {
+// optional .example.commonResponse cr = 1;
+inline bool playersInfo::has_cr() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void LoginRet::set_has_status() {
+inline void playersInfo::set_has_cr() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void LoginRet::clear_has_status() {
+inline void playersInfo::clear_has_cr() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void LoginRet::clear_status() {
-  status_ = 0;
-  clear_has_status();
+inline void playersInfo::clear_cr() {
+  if (cr_ != NULL) cr_->::example::commonResponse::Clear();
+  clear_has_cr();
 }
-inline ::google::protobuf::int32 LoginRet::status() const {
-  // @@protoc_insertion_point(field_get:example.LoginRet.status)
-  return status_;
+inline const ::example::commonResponse& playersInfo::cr() const {
+  // @@protoc_insertion_point(field_get:example.playersInfo.cr)
+  return cr_ != NULL ? *cr_ : *default_instance_->cr_;
 }
-inline void LoginRet::set_status(::google::protobuf::int32 value) {
-  set_has_status();
-  status_ = value;
-  // @@protoc_insertion_point(field_set:example.LoginRet.status)
+inline ::example::commonResponse* playersInfo::mutable_cr() {
+  set_has_cr();
+  if (cr_ == NULL) cr_ = new ::example::commonResponse;
+  // @@protoc_insertion_point(field_mutable:example.playersInfo.cr)
+  return cr_;
+}
+inline ::example::commonResponse* playersInfo::release_cr() {
+  clear_has_cr();
+  ::example::commonResponse* temp = cr_;
+  cr_ = NULL;
+  return temp;
+}
+inline void playersInfo::set_allocated_cr(::example::commonResponse* cr) {
+  delete cr_;
+  cr_ = cr;
+  if (cr) {
+    set_has_cr();
+  } else {
+    clear_has_cr();
+  }
+  // @@protoc_insertion_point(field_set_allocated:example.playersInfo.cr)
+}
+
+// optional int32 roomHolder = 2;
+inline bool playersInfo::has_roomholder() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void playersInfo::set_has_roomholder() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void playersInfo::clear_has_roomholder() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void playersInfo::clear_roomholder() {
+  roomholder_ = 0;
+  clear_has_roomholder();
+}
+inline ::google::protobuf::int32 playersInfo::roomholder() const {
+  // @@protoc_insertion_point(field_get:example.playersInfo.roomHolder)
+  return roomholder_;
+}
+inline void playersInfo::set_roomholder(::google::protobuf::int32 value) {
+  set_has_roomholder();
+  roomholder_ = value;
+  // @@protoc_insertion_point(field_set:example.playersInfo.roomHolder)
+}
+
+// repeated .example.baseInfo baseInfos = 3;
+inline int playersInfo::baseinfos_size() const {
+  return baseinfos_.size();
+}
+inline void playersInfo::clear_baseinfos() {
+  baseinfos_.Clear();
+}
+inline const ::example::baseInfo& playersInfo::baseinfos(int index) const {
+  // @@protoc_insertion_point(field_get:example.playersInfo.baseInfos)
+  return baseinfos_.Get(index);
+}
+inline ::example::baseInfo* playersInfo::mutable_baseinfos(int index) {
+  // @@protoc_insertion_point(field_mutable:example.playersInfo.baseInfos)
+  return baseinfos_.Mutable(index);
+}
+inline ::example::baseInfo* playersInfo::add_baseinfos() {
+  // @@protoc_insertion_point(field_add:example.playersInfo.baseInfos)
+  return baseinfos_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::example::baseInfo >&
+playersInfo::baseinfos() const {
+  // @@protoc_insertion_point(field_list:example.playersInfo.baseInfos)
+  return baseinfos_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::example::baseInfo >*
+playersInfo::mutable_baseinfos() {
+  // @@protoc_insertion_point(field_mutable_list:example.playersInfo.baseInfos)
+  return &baseinfos_;
+}
+
+// -------------------------------------------------------------------
+
+// chatReceive
+
+// optional string said = 1;
+inline bool chatReceive::has_said() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void chatReceive::set_has_said() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void chatReceive::clear_has_said() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void chatReceive::clear_said() {
+  if (said_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    said_->clear();
+  }
+  clear_has_said();
+}
+inline const ::std::string& chatReceive::said() const {
+  // @@protoc_insertion_point(field_get:example.chatReceive.said)
+  return *said_;
+}
+inline void chatReceive::set_said(const ::std::string& value) {
+  set_has_said();
+  if (said_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    said_ = new ::std::string;
+  }
+  said_->assign(value);
+  // @@protoc_insertion_point(field_set:example.chatReceive.said)
+}
+inline void chatReceive::set_said(const char* value) {
+  set_has_said();
+  if (said_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    said_ = new ::std::string;
+  }
+  said_->assign(value);
+  // @@protoc_insertion_point(field_set_char:example.chatReceive.said)
+}
+inline void chatReceive::set_said(const char* value, size_t size) {
+  set_has_said();
+  if (said_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    said_ = new ::std::string;
+  }
+  said_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:example.chatReceive.said)
+}
+inline ::std::string* chatReceive::mutable_said() {
+  set_has_said();
+  if (said_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    said_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:example.chatReceive.said)
+  return said_;
+}
+inline ::std::string* chatReceive::release_said() {
+  clear_has_said();
+  if (said_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = said_;
+    said_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void chatReceive::set_allocated_said(::std::string* said) {
+  if (said_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete said_;
+  }
+  if (said) {
+    set_has_said();
+    said_ = said;
+  } else {
+    clear_has_said();
+    said_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:example.chatReceive.said)
 }
 
 // -------------------------------------------------------------------
 
 // chatBroadcast
 
-// optional string said = 1;
-inline bool chatBroadcast::has_said() const {
+// optional int32 roleID = 1;
+inline bool chatBroadcast::has_roleid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void chatBroadcast::set_has_said() {
+inline void chatBroadcast::set_has_roleid() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void chatBroadcast::clear_has_said() {
+inline void chatBroadcast::clear_has_roleid() {
   _has_bits_[0] &= ~0x00000001u;
+}
+inline void chatBroadcast::clear_roleid() {
+  roleid_ = 0;
+  clear_has_roleid();
+}
+inline ::google::protobuf::int32 chatBroadcast::roleid() const {
+  // @@protoc_insertion_point(field_get:example.chatBroadcast.roleID)
+  return roleid_;
+}
+inline void chatBroadcast::set_roleid(::google::protobuf::int32 value) {
+  set_has_roleid();
+  roleid_ = value;
+  // @@protoc_insertion_point(field_set:example.chatBroadcast.roleID)
+}
+
+// optional string said = 2;
+inline bool chatBroadcast::has_said() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void chatBroadcast::set_has_said() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void chatBroadcast::clear_has_said() {
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline void chatBroadcast::clear_said() {
   if (said_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
@@ -1024,58 +1562,82 @@ inline void CalResponse::set_c(::google::protobuf::int32 value) {
 
 // -------------------------------------------------------------------
 
-// StatusRequest
+// StatusReceive
 
 // optional int32 cmd = 1;
-inline bool StatusRequest::has_cmd() const {
+inline bool StatusReceive::has_cmd() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void StatusRequest::set_has_cmd() {
+inline void StatusReceive::set_has_cmd() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void StatusRequest::clear_has_cmd() {
+inline void StatusReceive::clear_has_cmd() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void StatusRequest::clear_cmd() {
+inline void StatusReceive::clear_cmd() {
   cmd_ = 0;
   clear_has_cmd();
 }
-inline ::google::protobuf::int32 StatusRequest::cmd() const {
-  // @@protoc_insertion_point(field_get:example.StatusRequest.cmd)
+inline ::google::protobuf::int32 StatusReceive::cmd() const {
+  // @@protoc_insertion_point(field_get:example.StatusReceive.cmd)
   return cmd_;
 }
-inline void StatusRequest::set_cmd(::google::protobuf::int32 value) {
+inline void StatusReceive::set_cmd(::google::protobuf::int32 value) {
   set_has_cmd();
   cmd_ = value;
-  // @@protoc_insertion_point(field_set:example.StatusRequest.cmd)
+  // @@protoc_insertion_point(field_set:example.StatusReceive.cmd)
 }
 
 // -------------------------------------------------------------------
 
-// StatusResponse
+// statusBroadcast
 
-// optional int32 status = 1;
-inline bool StatusResponse::has_status() const {
+// optional int32 roleID = 1;
+inline bool statusBroadcast::has_roleid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void StatusResponse::set_has_status() {
+inline void statusBroadcast::set_has_roleid() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void StatusResponse::clear_has_status() {
+inline void statusBroadcast::clear_has_roleid() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void StatusResponse::clear_status() {
-  status_ = 0;
-  clear_has_status();
+inline void statusBroadcast::clear_roleid() {
+  roleid_ = 0;
+  clear_has_roleid();
 }
-inline ::google::protobuf::int32 StatusResponse::status() const {
-  // @@protoc_insertion_point(field_get:example.StatusResponse.status)
-  return status_;
+inline ::google::protobuf::int32 statusBroadcast::roleid() const {
+  // @@protoc_insertion_point(field_get:example.statusBroadcast.roleID)
+  return roleid_;
 }
-inline void StatusResponse::set_status(::google::protobuf::int32 value) {
-  set_has_status();
-  status_ = value;
-  // @@protoc_insertion_point(field_set:example.StatusResponse.status)
+inline void statusBroadcast::set_roleid(::google::protobuf::int32 value) {
+  set_has_roleid();
+  roleid_ = value;
+  // @@protoc_insertion_point(field_set:example.statusBroadcast.roleID)
+}
+
+// optional int32 cmd = 2;
+inline bool statusBroadcast::has_cmd() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void statusBroadcast::set_has_cmd() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void statusBroadcast::clear_has_cmd() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void statusBroadcast::clear_cmd() {
+  cmd_ = 0;
+  clear_has_cmd();
+}
+inline ::google::protobuf::int32 statusBroadcast::cmd() const {
+  // @@protoc_insertion_point(field_get:example.statusBroadcast.cmd)
+  return cmd_;
+}
+inline void statusBroadcast::set_cmd(::google::protobuf::int32 value) {
+  set_has_cmd();
+  cmd_ = value;
+  // @@protoc_insertion_point(field_set:example.statusBroadcast.cmd)
 }
 
 // -------------------------------------------------------------------

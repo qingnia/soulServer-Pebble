@@ -66,6 +66,9 @@ player gameMgr::getPlayer(int32_t roleID)
 	int32_t mapID = this->roleID2MapID[roleID];
 	gameMap* map = getMap(mapID);
 	player p = map->getPlayer(roleID);
+stringstream ss;
+ss<< "mapID:" << mapID << "roleID:" << p.getRoleID();
+logInfo(ss.str());
 	return p;
 }
 
@@ -116,15 +119,15 @@ gameMap* gameMgr::initNewMap(vector<int> roleIDList)
 	return nullptr;
 }
 
-retStatus gameMgr::roleLogin(int32_t roleID, int32_t mapID, list<playerBaseInfo>& baseInfos)
+retStatus gameMgr::roleLogin(int32_t roleID, int32_t mapID, list<playerBaseInfo>& baseInfos, int32_t& roomHolder)
 {
 	gameMap* map = getMap(mapID);
 	if (map == nullptr)
 	{
-		map = new gameMap();
+		map = new gameMap(mapID);
 	}
 	roleID2MapID[roleID] = mapID;
-	retStatus ret = map->addNewPlayer(roleID, baseInfos);
+	retStatus ret = map->addNewPlayer(roleID, baseInfos, roomHolder);
 cout << "gm login ret:" << ret << endl;
 	this->id2Map[mapID] = map;
 	return ret;

@@ -12,6 +12,12 @@ gameMap::gameMap()
     this->actionRoleID = 0;
 }
 
+gameMap::gameMap(int32_t mapID)
+{
+    this->actionRoleID = 0;
+	this->m_id = mapID;
+}
+
 gameMap::~gameMap()
 {
 }
@@ -21,14 +27,24 @@ int32_t gameMap::getActionRoleID()
     return this->actionRoleID;
 }
 
-retStatus gameMap::addNewPlayer(int32_t roleID, list<playerBaseInfo>& baseInfos)
+int32_t gameMap::getRoomHolder()
+{
+    return this->roomHolder;
+}
+
+retStatus gameMap::addNewPlayer(int32_t roleID, list<playerBaseInfo>& baseInfos, int32_t& roomHolder)
 {
 	if (this->actionRoleID > 0)
 	{
 		return rsFail;
 	}
+	if(this->playerList.size() == 0)
+	{
+		this->roomHolder = roleID;
+	}
     player p(roleID, this->m_id);
     this->playerList.push_back(p);
+	roomHolder = this->roomHolder;
 
     stringstream ss;
     ss<<"新玩家进入 roleid:" << roleID << "ret:" << rsSuccess;
@@ -221,18 +237,21 @@ list<int32_t> gameMap::getRoleIDList()
     return l;
 }
 
-player gameMap::getPlayer(int id)
+player gameMap::getPlayer(int32_t roleID)
 {
     list<player>::iterator iter;
     for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
     {
-        if ((*iter).getID() == id)
+        if (iter->getRoleID() == roleID)
         {
             return *iter;
         }
     }
     //错误处理
     //todo
+    stringstream ss;
+ss<< "can't find player:" << roleID;
+logInfo(ss.str());
 	return player();
 }
 
@@ -404,19 +423,26 @@ list<int> gameMap::getCanAttackRoleIDList(player* p)
 
 retStatus gameMap::tryStart()
 {
-	logStream << "尝试开始游戏";
-	logInfo(logStream.str());
-	logStream.clear();
+    stringstream ss;
+	ss << "尝试开始游戏, mapID:";
+	logInfo(ss.str());
+	ss.clear();
+ss<< "1111" << "count:" << this->playerList.size();
+	logInfo(ss.str());
+	ss.clear();
 	list<player>::iterator iter;
 	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
 	{
-		if (iter->getStatus() != psReady)
+printf("role:%d\n", iter->getRoleID());
+		if (iter->getStatus() != psReady && iter->getRoleID() != this->roomHolder)
 		{
 			return rsFail;
 		}
 	}
+printf("2222\n");
 
 	int first = random(this->playerList.size());
+printf("rand:%d\n", first);
 	int index = 0;
 	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
 	{
@@ -433,11 +459,11 @@ retStatus gameMap::tryStart()
 		{
 			iter->actionDone = false;
 		}
-		iter->modifyStatus(psStart);
+		iter->modifyStatus(psIngame);
 		index++;
-		logStream << "游戏开始了";
-		logInfo(logStream.str());
-		logStream.clear();
+		ss << "游戏开始了";
+		logInfo(ss.str());
+		ss.clear();
 	}
 	return rsSuccess;
 }

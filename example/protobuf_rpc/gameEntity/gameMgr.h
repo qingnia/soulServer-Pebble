@@ -48,7 +48,7 @@ public:
 
 	player getPlayer(int32_t roleID);
 
-	retStatus roleLogin(int32_t roleID, int32_t mapID, list<playerBaseInfo>&);
+	retStatus roleLogin(int32_t roleID, int32_t mapID, list<playerBaseInfo>&, int32_t& roomHolder);
 
 	list<int32_t> getBroadcastRoleIDList(int32_t roleID);
 

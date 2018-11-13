@@ -29,7 +29,7 @@ struct playerBaseInfo
 
 class gameMap{
     int m_id, m_width, m_length, m_height, m_infoNum, m_process;
-    int32_t actionRoleID;
+    int32_t actionRoleID, roomHolder;
     
     list<action>::iterator nextAction;
 
@@ -52,20 +52,20 @@ class gameMap{
     //等待输入函数
     position inputPosition();
 
-	stringstream logStream;
 public:
-    int32_t getActionRoleID();
+    int32_t getActionRoleID(), getRoomHolder();
 	retStatus tryStart();
 
 	gameMap();
+	gameMap(int32_t);
     bool init(int mapID, map<int, int> roleID2PartID);
 
-    retStatus addNewPlayer(int32_t roleID, list<playerBaseInfo>&);
+    retStatus addNewPlayer(int32_t roleID, list<playerBaseInfo>&, int32_t& roomHolder);
     list<int32_t> getRoleIDList();
 
     roomCard* getRoom(position pos);
     roomCard* getRoomByID(int roomID);
-    player getPlayer(int id);
+    player getPlayer(int32_t id);
 
     roomCard* bindNewRoom(int floor, position pos);
 	resCard* getNewRes();

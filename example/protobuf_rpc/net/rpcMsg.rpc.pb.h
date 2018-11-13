@@ -25,29 +25,29 @@ public:
     /* add异步调用，回调函数第一个参数为RPC调用结果，0为成功，非0失败 */
     virtual void add(const ::example::CalRequest& request, const cxx::function<void(int32_t ret_code, const ::example::CalResponse& response)>& cb);
     /* login同步调用，返回0时调用成功，非0失败 */
-    virtual int32_t login(const ::example::LoginInfo& request, ::example::LoginRet* response);
+    virtual int32_t login(const ::example::LoginInfo& request, ::example::playersInfo* response);
     /* login并行调用，一般通过Pebble并行模块(pebble::AddCall/WhenAll)来使用此接口 */
-    virtual int32_t Parallellogin(const ::example::LoginInfo& request, int32_t* ret_code, ::example::LoginRet* response, uint32_t* num_called, uint32_t* num_parallel);
+    virtual int32_t Parallellogin(const ::example::LoginInfo& request, int32_t* ret_code, ::example::playersInfo* response, uint32_t* num_called, uint32_t* num_parallel);
     /* login异步调用，回调函数第一个参数为RPC调用结果，0为成功，非0失败 */
-    virtual void login(const ::example::LoginInfo& request, const cxx::function<void(int32_t ret_code, const ::example::LoginRet& response)>& cb);
+    virtual void login(const ::example::LoginInfo& request, const cxx::function<void(int32_t ret_code, const ::example::playersInfo& response)>& cb);
     /* modifyStatus同步调用，返回0时调用成功，非0失败 */
-    virtual int32_t modifyStatus(const ::example::StatusRequest& request, ::example::StatusResponse* response);
+    virtual int32_t modifyStatus(const ::example::StatusReceive& request, ::example::commonResponse* response);
     /* modifyStatus并行调用，一般通过Pebble并行模块(pebble::AddCall/WhenAll)来使用此接口 */
-    virtual int32_t ParallelmodifyStatus(const ::example::StatusRequest& request, int32_t* ret_code, ::example::StatusResponse* response, uint32_t* num_called, uint32_t* num_parallel);
+    virtual int32_t ParallelmodifyStatus(const ::example::StatusReceive& request, int32_t* ret_code, ::example::commonResponse* response, uint32_t* num_called, uint32_t* num_parallel);
     /* modifyStatus异步调用，回调函数第一个参数为RPC调用结果，0为成功，非0失败 */
-    virtual void modifyStatus(const ::example::StatusRequest& request, const cxx::function<void(int32_t ret_code, const ::example::StatusResponse& response)>& cb);
+    virtual void modifyStatus(const ::example::StatusReceive& request, const cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)>& cb);
     /* move同步调用，返回0时调用成功，非0失败 */
-    virtual int32_t move(const ::example::moveRequest& request, ::example::StatusResponse* response);
+    virtual int32_t move(const ::example::moveRequest& request, ::example::commonResponse* response);
     /* move并行调用，一般通过Pebble并行模块(pebble::AddCall/WhenAll)来使用此接口 */
-    virtual int32_t Parallelmove(const ::example::moveRequest& request, int32_t* ret_code, ::example::StatusResponse* response, uint32_t* num_called, uint32_t* num_parallel);
+    virtual int32_t Parallelmove(const ::example::moveRequest& request, int32_t* ret_code, ::example::commonResponse* response, uint32_t* num_called, uint32_t* num_parallel);
     /* move异步调用，回调函数第一个参数为RPC调用结果，0为成功，非0失败 */
-    virtual void move(const ::example::moveRequest& request, const cxx::function<void(int32_t ret_code, const ::example::StatusResponse& response)>& cb);
+    virtual void move(const ::example::moveRequest& request, const cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)>& cb);
     /* chat同步调用，返回0时调用成功，非0失败 */
-    virtual int32_t chat(const ::example::chatBroadcast& request, ::example::commonResponse* response);
+    virtual int32_t chat(const ::example::chatReceive& request, ::example::commonResponse* response);
     /* chat并行调用，一般通过Pebble并行模块(pebble::AddCall/WhenAll)来使用此接口 */
-    virtual int32_t Parallelchat(const ::example::chatBroadcast& request, int32_t* ret_code, ::example::commonResponse* response, uint32_t* num_called, uint32_t* num_parallel);
+    virtual int32_t Parallelchat(const ::example::chatReceive& request, int32_t* ret_code, ::example::commonResponse* response, uint32_t* num_called, uint32_t* num_parallel);
     /* chat异步调用，回调函数第一个参数为RPC调用结果，0为成功，非0失败 */
-    virtual void chat(const ::example::chatBroadcast& request, const cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)>& cb);
+    virtual void chat(const ::example::chatReceive& request, const cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)>& cb);
 
 public:
     /* 功能接口 */
@@ -85,10 +85,10 @@ public:
     /*  �ӷ����� */
     /*  �������������ĺ� */
     virtual void add(const ::example::CalRequest& request, cxx::function<void(int32_t ret_code, const ::example::CalResponse& response)>& rsp) = 0;
-    virtual void login(const ::example::LoginInfo& request, cxx::function<void(int32_t ret_code, const ::example::LoginRet& response)>& rsp) = 0;
-    virtual void modifyStatus(const ::example::StatusRequest& request, cxx::function<void(int32_t ret_code, const ::example::StatusResponse& response)>& rsp) = 0;
-    virtual void move(const ::example::moveRequest& request, cxx::function<void(int32_t ret_code, const ::example::StatusResponse& response)>& rsp) = 0;
-    virtual void chat(const ::example::chatBroadcast& request, cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)>& rsp) = 0;
+    virtual void login(const ::example::LoginInfo& request, cxx::function<void(int32_t ret_code, const ::example::playersInfo& response)>& rsp) = 0;
+    virtual void modifyStatus(const ::example::StatusReceive& request, cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)>& rsp) = 0;
+    virtual void move(const ::example::moveRequest& request, cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)>& rsp) = 0;
+    virtual void chat(const ::example::chatReceive& request, cxx::function<void(int32_t ret_code, const ::example::commonResponse& response)>& rsp) = 0;
 
 
     typedef rpcMsgServerInterface __InterfaceType;

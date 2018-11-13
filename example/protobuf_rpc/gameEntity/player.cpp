@@ -13,6 +13,7 @@
 gameMap* player::getMyMap()
 {
 	gameMgr* gm = gameMgr::getGameMgr();
+printf("11111111 self mapID:%d", (int)(this->m_mapID));
 	gameMap* myMap = gm->getMap(this->m_mapID);
 	return myMap;
 }
@@ -636,7 +637,14 @@ retStatus player::modifyStatus(int32_t status)
 		break;
 	case psStart:
 		//需要所有人都准备好才能开始
-		rs = myMap->tryStart();
+		if (this->m_roleID == myMap->getRoomHolder())
+		{
+			rs = myMap->tryStart();
+		}
+		break;
+	case psIngame:
+		rs = rsSuccess;
+		this->m_ps = ps;
 		break;
 	default:
 		break;
