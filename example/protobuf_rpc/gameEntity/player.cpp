@@ -354,44 +354,46 @@ int player::start()
 	return 0;
 }
 
-int player::move()
+retStatus player::move(direction dir, ::example::moveBroadcast sendMove)
 {
 	stringstream ss;
 	ss << "轮到玩家" << this->m_roleID << "移动,玩家速度：" << this->getETValue(etSpeed) << "当前移动步数：" << this->moveNum;
 	logInfo(ss.str());
 	ss.clear();
-    //行动值在停止行动时清零
-    //一次移动一格，移动距离达到速度停止
-	while (this->moveNum < this->getETValue(etSpeed))
-	{
-		direction dir = this->inputDir();
-		if (dir == dirStop)
-		{
-			break;
-		}
-		gameMap* myMap = getMyMap();
-		roomCard* thisRoom = myMap->getRoom(this->pos);
 
-		//检查这个位置从当前房间能不能通过
-		if (!thisRoom->canPass(dir))
-		{
-			return -1;
-		}
-		bool canPass = false;
-		if (this->moveNum == 0)
-		{
-			canPass = this->leaveRoom(thisRoom);
-		}
-		else
-		{
-			canPass = this->passRoom(thisRoom);
-		}
-		if (canPass)
-		{
-			this->moveTo(dir);
-		}
+	if (dir == dirStop)
+	{
+		//切换行动玩家
+		this->actionDone = true;
 	}
-	return 0;
+	//行动值在停止行动时清零
+    //一次移动一格，移动距离达到速度停止
+	if (this->moveNum > this->getETValue(etSpeed))
+	{
+		return rsFail;
+	}
+	gameMap *myMap = getMyMap();
+	roomCard *thisRoom = myMap->getRoom(this->pos);
+
+	//检查这个位置从当前房间能不能通过
+	if (!thisRoom->canPass(dir))
+	{
+		return rsFail;
+	}
+	bool canPass = false;
+	if (this->moveNum == 0)
+	{
+		canPass = this->leaveRoom(thisRoom);
+	}
+	else
+	{
+		canPass = this->passRoom(thisRoom);
+	}
+	if (canPass)
+	{
+		this->moveTo(dir, sendMove);
+	}
+	return rsSuccess;
 }
 
 int player::stop()
@@ -408,7 +410,7 @@ int player::stop()
 	return 0;
 }
 
-int player::moveTo(direction dir)
+int player::moveTo(direction dir, ::example::moveBroadcast)
 {
 	stringstream ss;
 

@@ -4,8 +4,7 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}",
-                "${workspaceRoot}",
-                "${workspaceRoot}/example",
+                "${workspaceFolder}/Pebble/example",
                 "${workspaceRoot}/src",
                 "${workspaceRoot}/thirdparty/protobuf/include"
             ],

@@ -107,7 +107,23 @@ void rpcMsg::move(const ::example::moveRequest& moveCMD,
 {
 	int32_t dir = moveCMD.direction();
 	int32_t roleID = _server->getLastMsgRoleID();
-	gm->inputRoleDir(roleID, dir);
+	::example::moveBroadcast sendMove;
+	retStatus rs = gm->inputRoleDir(roleID, dir, sendMove);
+	if (rs == rsSuccess)
+	{
+		std::cout << roleID << "move send to all, dir:" << dir << endl;
+
+		int __size = sendMove.ByteSize();
+		pebble::PebbleRpc* rpc = _server->getBinaryRpc();
+		uint8_t *__buff = rpc->GetBuffer(__size);
+		sendMove.SerializeToArray(__buff, __size);
+		list<int32_t> roleIDList = gm->getBroadcastRoleIDList(roleID);
+		_server->broadcastMsg("moveBroad", roleIDList, __buff, __size);
+	}
+
+	::example::commonResponse ret;
+	ret.set_status(rs);
+	rsp(pebble::kRPC_SUCCESS, ret);
 }
 
 
@@ -127,11 +143,6 @@ void rpcMsg::chat(const ::example::chatReceive& chatInfo,
 	pebble::PebbleRpc* rpc = _server->getBinaryRpc();
 	uint8_t *__buff = rpc->GetBuffer(__size);
 	sendChat.SerializeToArray(__buff, __size);
-
-for(int i = 0; i < (int)__size; i++)
-{
-printf("______send Chat:---%d\n", int(__buff[i]));
-}
 
 	std::cout << "ssssssssssssssss " << mySaid << std::endl;
 

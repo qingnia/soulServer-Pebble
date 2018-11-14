@@ -14,6 +14,7 @@
 #include "position.h"
 
 #include "../utils/diyType.h"
+#include "../net/rpcMsg.pb.h"
 #include "resCard.h"
 #include "roomCard.h"
 
@@ -39,6 +40,7 @@ class player {
 	list<int> rollDice(examType, int forceDiceNum = 0);
 	template<class Type> Type inputFromList(const list<Type>&);
     int useWeapon();
+    int moveTo(direction, ::example::moveBroadcast);
 
     int gainNewItem(configType);
 
@@ -60,7 +62,7 @@ public:
 //    oper getOperate();
     bool isMyTurn();
     int start();
-	int move();
+	retStatus move(direction, ::example::moveBroadcast);
     int stop();
 
     bool isActionDone();
@@ -71,7 +73,6 @@ public:
 	bool enterRoom(roomCard*, bool isNewRoom);
 	bool leaveRoom(roomCard*);   //从上一回合进入，这一回合离开，是“离开房间”
     bool passRoom(roomCard*);    //这一回合进入，这一回合离开，是“通过房间”
-    int moveTo(direction);
 
     int excuteExam(examine);
     int excutePunish(examType, int);

@@ -55,7 +55,12 @@ message statusBroadcast {
 message moveRequest {
     optional int32 direction = 1;
 }
-
+message moveBroadcast {
+    optional int32 roleID = 1;
+    optional int32 cmd = 2;
+    optional int32 roomID = 3;
+    optional int32 cardID = 4;
+}
 
 message commonResponse {
     optional int32 status = 1;
@@ -73,3 +78,5 @@ service rpcMsg { // ��ʱֻ�ṩ�ӷ�����
 
 //以下是服务器主动发给客户端的消息
 //rpc chatBroad(chatBroadcast) returns (commonResponse);
+//rpc statusBroad(statusBroadcast) returns (commonResponse);
+//rpc moveBroad(moveBroadcast) returns (commonResponse);

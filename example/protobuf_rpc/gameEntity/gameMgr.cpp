@@ -140,15 +140,14 @@ retStatus gameMgr::modifyRoleStatus(int32_t roleID, int32_t cmd)
 	return rs;
 }
 	
-int32_t gameMgr::inputRoleDir(int32_t roleID, int32_t dir)
+retStatus gameMgr::inputRoleDir(int32_t roleID, int32_t dir, ::example::moveBroadcast& sendMove)
 {
 	player p = getPlayer(roleID);
 	if (!p.isMyTurn())
 	{
-		return -1;
+		return rsFail;
 	}
-	p.modifyStatus(dir);
-	return 0;
+	return p.move((direction)dir, sendMove);
 }
 
 map<string, string> gameMgr::getLegalInput(int msgID)
