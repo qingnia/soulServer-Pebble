@@ -111,6 +111,8 @@ void rpcMsg::move(const ::example::moveRequest& moveCMD,
 	retStatus rs = gm->inputRoleDir(roleID, dir, sendMove);
 	if (rs == rsSuccess)
 	{
+		sendMove.set_roleid(roleID);
+		sendMove.set_cmd(dir);
 		std::cout << roleID << "move send to all, dir:" << dir << endl;
 
 		int __size = sendMove.ByteSize();

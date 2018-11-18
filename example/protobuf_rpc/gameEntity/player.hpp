@@ -14,13 +14,14 @@
 #include "position.h"
 
 #include "../utils/diyType.h"
-#include "../net/rpcMsg.pb.h"
+#include "example/protobuf_rpc//net/rpcMsg.pb.h"
 #include "resCard.h"
 #include "roomCard.h"
 
 class gameMap;
 class gameMgr;
 using namespace std;
+using namespace example;
 class player {
     playerStatus m_ps;
     position pos;
@@ -40,7 +41,7 @@ class player {
 	list<int> rollDice(examType, int forceDiceNum = 0);
 	template<class Type> Type inputFromList(const list<Type>&);
     int useWeapon();
-    int moveTo(direction, ::example::moveBroadcast);
+    int moveTo(direction, ::example::moveBroadcast&);
 
     int gainNewItem(configType);
 
@@ -49,7 +50,7 @@ class player {
 public:
     player();
     player(int32_t roleID, int32_t mapID);
-    player(int roleID, int mapID, map<string, string>);
+    retStatus init(int32_t characterID);
 
     gameMap* getMyMap();
 
@@ -62,7 +63,7 @@ public:
 //    oper getOperate();
     bool isMyTurn();
     int start();
-	retStatus move(direction, ::example::moveBroadcast);
+	retStatus move(direction, ::example::moveBroadcast&);
     int stop();
 
     bool isActionDone();
@@ -70,7 +71,7 @@ public:
     int attack(int id);
     int useSkill(int id);
 
-	bool enterRoom(roomCard*, bool isNewRoom);
+	int enterRoom(roomCard*, bool isNewRoom);
 	bool leaveRoom(roomCard*);   //从上一回合进入，这一回合离开，是“离开房间”
     bool passRoom(roomCard*);    //这一回合进入，这一回合离开，是“通过房间”
 

@@ -113,7 +113,7 @@ gameMap* gameMgr::initNewMap(vector<int> roleIDList)
 	gm->mapIncrValue++;
 	map<int, int> roleID2Part = this->choosePart(roleIDList);	
 	gameMap* newMap = new gameMap();
-	newMap->init(gm->mapIncrValue, roleID2Part);
+	//newMap->init(gm->mapIncrValue, roleID2Part);
 	gm->id2Map.insert(pair<int, gameMap*>(gm->mapIncrValue, newMap));
 	
 	return nullptr;
@@ -125,6 +125,7 @@ retStatus gameMgr::roleLogin(int32_t roleID, int32_t mapID, list<playerBaseInfo>
 	if (map == nullptr)
 	{
 		map = new gameMap(mapID);
+		map->init();
 	}
 	roleID2MapID[roleID] = mapID;
 	retStatus ret = map->addNewPlayer(roleID, baseInfos, roomHolder);

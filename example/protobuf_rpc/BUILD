@@ -32,6 +32,9 @@ gen_rule(
 cc_library(
     name = 'rpcMsg',
     srcs = [
+        'net/rpcMsg.pb.cc',
+        'net/rpcMsg.rpc.pb.cc',
+        'net/rpcMsg.cpp',
 	'gameEntity/player.cpp',
 	'gameEntity/card.cpp',
 	'gameEntity/resCard.cpp',
@@ -44,9 +47,6 @@ cc_library(
 	'utils/commonFun.cpp',
 	'utils/log.cpp',
 	'gameEntity/gameMap.cpp',
-        'net/rpcMsg.pb.cc',
-        'net/rpcMsg.rpc.pb.cc',
-        'net/rpcMsg.cpp',
 	'gameEntity/gameMgr.cpp',
     ],
     incs = [

@@ -28,7 +28,11 @@ roomCard::roomCard(map<string, string> roomConfig)
 	{
 		key = iter->first;
 		value = iter->second;
-		if (key == "name")
+		if (key == "id")
+		{
+			this->m_id = stringToNum<int>(value);
+		}
+		else if (key == "name")
 		{
 			this->m_name = value;
 		}

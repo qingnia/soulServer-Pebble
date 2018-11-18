@@ -58,7 +58,7 @@ public:
 
 	gameMap();
 	gameMap(int32_t);
-    bool init(int mapID, map<int, int> roleID2PartID);
+    bool init();
 
     retStatus addNewPlayer(int32_t roleID, list<playerBaseInfo>&, int32_t& roomHolder);
     list<int32_t> getRoleIDList();

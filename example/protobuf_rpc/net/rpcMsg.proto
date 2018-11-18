@@ -62,6 +62,7 @@ message moveBroadcast {
     optional int32 cardID = 4;
 }
 
+
 message commonResponse {
     optional int32 status = 1;
 }

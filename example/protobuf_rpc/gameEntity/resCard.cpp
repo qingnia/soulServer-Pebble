@@ -23,6 +23,7 @@ resCard::resCard(map<string, string> resConfig)
 	{
 		key = iter->first;
 		value = iter->second;
+cout << key << "value:" << value << endl;
 		if (key == "id")
 		{
 			this->m_id = stringToNum<int>(value);
@@ -35,7 +36,7 @@ resCard::resCard(map<string, string> resConfig)
 		{
 			this->m_enlishName = value;
 		}
-		else if (key == "cardClassType")
+		else if (key == "cardType")
 		{
 			this->m_cct = (cardClassType)stringToNum<int>(value);
 		}
@@ -77,6 +78,10 @@ resCard::resCard(map<string, string> resConfig)
 		}
 		else if (key == "examID")
 		{
+if (value == "-1")
+{
+continue;
+}
 			this->cardExam = examine(stringToNum<int>(value));
 		}
 	}

@@ -74,9 +74,9 @@ enum cardUseType
 
 enum cardClassType
 {
+	ccsInfo,
 	ccsUnlimitRes,
 	ccsOnceRes,
-	ccsInfo,
 };
 
 enum playerStatus

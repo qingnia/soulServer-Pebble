@@ -43,6 +43,7 @@ class CalResponse;
 class StatusReceive;
 class statusBroadcast;
 class moveRequest;
+class moveBroadcast;
 class commonResponse;
 
 // ===================================================================
@@ -937,6 +938,115 @@ class moveRequest : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class moveBroadcast : public ::google::protobuf::Message {
+ public:
+  moveBroadcast();
+  virtual ~moveBroadcast();
+
+  moveBroadcast(const moveBroadcast& from);
+
+  inline moveBroadcast& operator=(const moveBroadcast& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const moveBroadcast& default_instance();
+
+  void Swap(moveBroadcast* other);
+
+  // implements Message ----------------------------------------------
+
+  moveBroadcast* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const moveBroadcast& from);
+  void MergeFrom(const moveBroadcast& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int32 roleID = 1;
+  inline bool has_roleid() const;
+  inline void clear_roleid();
+  static const int kRoleIDFieldNumber = 1;
+  inline ::google::protobuf::int32 roleid() const;
+  inline void set_roleid(::google::protobuf::int32 value);
+
+  // optional int32 cmd = 2;
+  inline bool has_cmd() const;
+  inline void clear_cmd();
+  static const int kCmdFieldNumber = 2;
+  inline ::google::protobuf::int32 cmd() const;
+  inline void set_cmd(::google::protobuf::int32 value);
+
+  // optional int32 roomID = 3;
+  inline bool has_roomid() const;
+  inline void clear_roomid();
+  static const int kRoomIDFieldNumber = 3;
+  inline ::google::protobuf::int32 roomid() const;
+  inline void set_roomid(::google::protobuf::int32 value);
+
+  // optional int32 cardID = 4;
+  inline bool has_cardid() const;
+  inline void clear_cardid();
+  static const int kCardIDFieldNumber = 4;
+  inline ::google::protobuf::int32 cardid() const;
+  inline void set_cardid(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:example.moveBroadcast)
+ private:
+  inline void set_has_roleid();
+  inline void clear_has_roleid();
+  inline void set_has_cmd();
+  inline void clear_has_cmd();
+  inline void set_has_roomid();
+  inline void clear_has_roomid();
+  inline void set_has_cardid();
+  inline void clear_has_cardid();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::int32 roleid_;
+  ::google::protobuf::int32 cmd_;
+  ::google::protobuf::int32 roomid_;
+  ::google::protobuf::int32 cardid_;
+  friend void  protobuf_AddDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
+  friend void protobuf_AssignDesc_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
+  friend void protobuf_ShutdownFile_example_2fprotobuf_5frpc_2fnet_2frpcMsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static moveBroadcast* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class commonResponse : public ::google::protobuf::Message {
  public:
   commonResponse();
@@ -1666,6 +1776,106 @@ inline void moveRequest::set_direction(::google::protobuf::int32 value) {
   set_has_direction();
   direction_ = value;
   // @@protoc_insertion_point(field_set:example.moveRequest.direction)
+}
+
+// -------------------------------------------------------------------
+
+// moveBroadcast
+
+// optional int32 roleID = 1;
+inline bool moveBroadcast::has_roleid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void moveBroadcast::set_has_roleid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void moveBroadcast::clear_has_roleid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void moveBroadcast::clear_roleid() {
+  roleid_ = 0;
+  clear_has_roleid();
+}
+inline ::google::protobuf::int32 moveBroadcast::roleid() const {
+  // @@protoc_insertion_point(field_get:example.moveBroadcast.roleID)
+  return roleid_;
+}
+inline void moveBroadcast::set_roleid(::google::protobuf::int32 value) {
+  set_has_roleid();
+  roleid_ = value;
+  // @@protoc_insertion_point(field_set:example.moveBroadcast.roleID)
+}
+
+// optional int32 cmd = 2;
+inline bool moveBroadcast::has_cmd() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void moveBroadcast::set_has_cmd() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void moveBroadcast::clear_has_cmd() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void moveBroadcast::clear_cmd() {
+  cmd_ = 0;
+  clear_has_cmd();
+}
+inline ::google::protobuf::int32 moveBroadcast::cmd() const {
+  // @@protoc_insertion_point(field_get:example.moveBroadcast.cmd)
+  return cmd_;
+}
+inline void moveBroadcast::set_cmd(::google::protobuf::int32 value) {
+  set_has_cmd();
+  cmd_ = value;
+  // @@protoc_insertion_point(field_set:example.moveBroadcast.cmd)
+}
+
+// optional int32 roomID = 3;
+inline bool moveBroadcast::has_roomid() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void moveBroadcast::set_has_roomid() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void moveBroadcast::clear_has_roomid() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void moveBroadcast::clear_roomid() {
+  roomid_ = 0;
+  clear_has_roomid();
+}
+inline ::google::protobuf::int32 moveBroadcast::roomid() const {
+  // @@protoc_insertion_point(field_get:example.moveBroadcast.roomID)
+  return roomid_;
+}
+inline void moveBroadcast::set_roomid(::google::protobuf::int32 value) {
+  set_has_roomid();
+  roomid_ = value;
+  // @@protoc_insertion_point(field_set:example.moveBroadcast.roomID)
+}
+
+// optional int32 cardID = 4;
+inline bool moveBroadcast::has_cardid() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void moveBroadcast::set_has_cardid() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void moveBroadcast::clear_has_cardid() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void moveBroadcast::clear_cardid() {
+  cardid_ = 0;
+  clear_has_cardid();
+}
+inline ::google::protobuf::int32 moveBroadcast::cardid() const {
+  // @@protoc_insertion_point(field_get:example.moveBroadcast.cardID)
+  return cardid_;
+}
+inline void moveBroadcast::set_cardid(::google::protobuf::int32 value) {
+  set_has_cardid();
+  cardid_ = value;
+  // @@protoc_insertion_point(field_set:example.moveBroadcast.cardID)
 }
 
 // -------------------------------------------------------------------

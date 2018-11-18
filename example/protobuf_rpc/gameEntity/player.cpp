@@ -13,7 +13,7 @@
 gameMap* player::getMyMap()
 {
 	gameMgr* gm = gameMgr::getGameMgr();
-printf("11111111 self mapID:%d", (int)(this->m_mapID));
+printf("self mapID:%d\n", (int)(this->m_mapID));
 	gameMap* myMap = gm->getMap(this->m_mapID);
 	return myMap;
 }
@@ -36,7 +36,6 @@ bool player::isMyTurn()
 /***************************内部常用函数end**********************************/
 player::player()
 {
-	this->moveNum = 0;
 	this->m_floor = 1;
     this->pos = position(50, 50);
 	this->actionDone = false;
@@ -51,15 +50,16 @@ player::player(int32_t roleID, int32_t mapID)
 	this->m_name = "";
 }
 
-player::player(int roleID, int mapID, map<string, string> playerConfig)
+retStatus player::init(int characterID)
 {
+config* conf = config::getSingleConfig();
+map<string, string> playerConfig = conf->playerConfig[characterID];
+
 	stringstream ss;
-	ss<<"初始化玩家 roleID:"<<roleID;
+	ss<<"初始化玩家 roleID:"<< this->m_roleID;
 	logInfo(ss.str());
 	ss.str("");
 	this->moveNum = 0;
-	this->m_mapID = mapID;
-    this->m_roleID = roleID;
 	this->m_floor = 1;
  	this->pos = position(50, 50);
 	this->et2level[etDice] = 0;
@@ -110,6 +110,7 @@ player::player(int roleID, int mapID, map<string, string> playerConfig)
 	ss << "玩家速度：" << this->getETValue(etSpeed) <<"，力量："<< this->getETValue(etStrength);
 	ss <<"，知识："<< this->getETValue(etKnowledge) <<"精神："<< this->getETValue(etSpirit);
 	logInfo(ss.str());
+return rsSuccess;
 }
 
 /****************************玩家输入***********************************************/
@@ -284,23 +285,28 @@ bool player::getReality()
 	logInfo(ss.str());
     return false;
 }
-bool player::enterRoom(roomCard* room, bool isNewRoom)
+
+int player::enterRoom(roomCard* room, bool isNewRoom)
 {
+	int cardID = 0;
 	//执行房间事件、考验、
 	if (room->needExam(mrtEnter))
 	{
+		cout << "进房间，执行事件" << endl;
 		this->excuteExam(room->cardExam);
 	}
 
 	if (isNewRoom)
 	{
+		cout << "拿东西" << endl;
 		//进新房间要拿东西
-		this->gainNewItem(room->type);
+		cardID = this->gainNewItem(room->type);
 		//新房间的事件、考验等
 		this->moveNum = this->getETValue(etSpeed);
 	}
 	else
 	{
+		cout << "其他" << endl;
 		gameMap* myMap = getMyMap();
 		list<int> canAttackList = myMap->getCanAttackRoleIDList(this);
 		if (canAttackList.size() > 0)
@@ -319,7 +325,8 @@ bool player::enterRoom(roomCard* room, bool isNewRoom)
 		}
 		this->moveNum++;
 	}
-	return true;
+		cout << "结束" << endl;
+	return cardID;
 }
 
 bool player::leaveRoom(roomCard* room)
@@ -354,7 +361,7 @@ int player::start()
 	return 0;
 }
 
-retStatus player::move(direction dir, ::example::moveBroadcast sendMove)
+retStatus player::move(direction dir, ::example::moveBroadcast& sendMove)
 {
 	stringstream ss;
 	ss << "轮到玩家" << this->m_roleID << "移动,玩家速度：" << this->getETValue(etSpeed) << "当前移动步数：" << this->moveNum;
@@ -410,7 +417,7 @@ int player::stop()
 	return 0;
 }
 
-int player::moveTo(direction dir, ::example::moveBroadcast)
+int player::moveTo(direction dir, ::example::moveBroadcast& mb)
 {
 	stringstream ss;
 
@@ -443,13 +450,15 @@ int player::moveTo(direction dir, ::example::moveBroadcast)
 		}
 		ss << "这个房间已经被人开发过，可以进入";
 	}
+	mb.set_roomid(nextRoom->getID());
 	ss << "，剩余移动步数：" << this->getETValue(etSpeed) - this->moveNum << "房间名：" << nextRoom->getName() << "\n\t   " << nextRoom->getDesc();
 	logInfo(ss.str());
 
 	this->pos.x = nextPos->x;
 	this->pos.y = nextPos->y;
 
-	this->enterRoom(nextRoom, enterNewRoom);
+	int cardID = this->enterRoom(nextRoom, enterNewRoom);
+	mb.set_cardid(cardID);
 
 	return 0;
 }
@@ -473,12 +482,15 @@ int player::gainNewItem(configType ct)
 	issueCard* newIssue;
 	resCard* newRes;
 	resCard* newInfo;
+	int cardID = 0;
+cout << "房间类型：" << ct << endl;
 
 	stringstream ss;
 	switch (ct)
 	{
 	case ctIssue:
 		newIssue = myMap->getNewIssue();
+		cardID = newIssue->getID();
 		ss<<"房间类型为：事件\n\t     "<<newIssue->getName()<<"\n\t  "<<newIssue->getDesc();
 		logInfo(ss.str());
 		//一次性的考验直接不保存，如果是持续性的，需要保存状态
@@ -488,6 +500,7 @@ int player::gainNewItem(configType ct)
 		break;
 	case ctRes:
 		newRes = myMap->getNewRes();
+		cardID = newRes->getID();
 		ss<<"房间类型为：物品\n\t     "<<newRes->getName()<<"\n\t  "<<newRes->getDesc();
 		logInfo(ss.str());
 		this->resList.push_back(newRes);
@@ -495,6 +508,7 @@ int player::gainNewItem(configType ct)
 		break;
 	case ctInfo:
 		newInfo = myMap->getNewInfo();
+		cardID = newInfo->getID();
 		ss<<"房间类型为：预兆\n\t     "<<newInfo->getName()<<"\n\t  "<<newInfo->getDesc();
 		logInfo(ss.str());
 		this->infoList.push_back(newInfo);
@@ -505,7 +519,7 @@ int player::gainNewItem(configType ct)
 	default:
 		break;
 	};
-	return 0;
+	return cardID;
 }
 
 int player::getID()
@@ -559,8 +573,11 @@ int player::incrETLevel(examType et, int num)
 
 int player::getETValue(examType et)
 {
+cout << "类型：" << et << endl;
 	int level = this->et2level[et];
+cout << "等级：" << level << endl;
 	vector<int> Level2value = this->etLevel2value[et];
+cout << "数值：" << Level2value[level] << endl;
 	return Level2value[level];
 }
 
