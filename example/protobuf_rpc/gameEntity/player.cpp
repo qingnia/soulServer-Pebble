@@ -641,10 +641,12 @@ retStatus player::modifyStatus(int32_t status)
 	switch(ps)
 	{
 	case psReady:
+cout << "尝试准备" << endl;
 		if (this->m_ps == psEnter)
 		{
 			rs = rsSuccess;
 			this->m_ps = ps;
+cout << "准备!!新状态：" << this->m_ps << endl;
 		}
 		break;
 	case psEnter:
@@ -668,5 +670,6 @@ retStatus player::modifyStatus(int32_t status)
 	default:
 		break;
 	}
+cout << "准备!!新状态：" << this->getStatus() << endl;
 	return rs;
 }

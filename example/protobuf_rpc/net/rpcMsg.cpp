@@ -24,7 +24,6 @@ void rpcMsg::login(const ::example::LoginInfo& loginInfo,
 	// 处理请求时记录请求的来源，用于反向RPC调用，不过注意这个handle是可能失效的
 	_server->bindRole2Handle(roleID);
 	std::cout << "bind success" << roomID << std::endl;
-
 	list<playerBaseInfo> baseInfos;
 	int32_t roomHolder;
 	retStatus status = gm->roleLogin(roleID, roomID, baseInfos, roomHolder);
@@ -45,6 +44,7 @@ void rpcMsg::login(const ::example::LoginInfo& loginInfo,
 			::example::baseInfo* playerBaseInfo = loginRet.add_baseinfos();
 			if (!playerBaseInfo)
 			{
+				cout << "登陆单播协议组织失败";
 				return;
 			}
 			playerBaseInfo->set_roleid(iter->roleID);
@@ -53,6 +53,27 @@ void rpcMsg::login(const ::example::LoginInfo& loginInfo,
 		}
 	}
 	rsp(pebble::kRPC_SUCCESS, loginRet);
+
+	//将新玩家进入的消息通知到其他人
+	::example::playersInfo newLoginBroad;
+	::example::commonResponse* newCR = newLoginBroad.mutable_cr();
+	newCR->set_status(rsSuccess);
+	::example::baseInfo* newBaseInfo = newLoginBroad.add_baseinfos();
+	if (!newBaseInfo)
+	{
+cout << "登陆广播协议组织失败";
+		return;
+	}
+	newBaseInfo->set_roleid(roleID);
+	newBaseInfo->set_name("");
+	newBaseInfo->set_status(psEnter);
+	list<int32_t> roleIDList = gm->getBroadcastRoleIDList(roleID);
+	int __size = newLoginBroad.ByteSize();
+	pebble::PebbleRpc* rpc = _server->getBinaryRpc();
+	uint8_t *__buff = rpc->GetBuffer(__size);
+	newLoginBroad.SerializeToArray(__buff, __size);
+	roleIDList.pop_back();
+	_server->broadcastMsg("newJoin", roleIDList, __buff, __size);
 }
 
 void rpcMsg::add(const ::example::CalRequest& request,

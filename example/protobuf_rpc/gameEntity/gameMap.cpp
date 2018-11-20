@@ -438,7 +438,7 @@ ss<< "1111" << "count:" << this->playerList.size();
 	list<player>::iterator iter;
 	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
 	{
-printf("role:%d\n", iter->getRoleID());
+printf("role:%d, status:%d\n", iter->getRoleID(), iter->getStatus());
 		if (iter->getStatus() != psReady && iter->getRoleID() != this->roomHolder)
 		{
 			return rsFail;
