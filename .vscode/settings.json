@@ -12,6 +12,7 @@
         "set": "cpp",
         "string": "cpp",
         "unordered_map": "cpp",
-        "hashtable": "cpp"
+        "hashtable": "cpp",
+        "iterator": "cpp"
     }
 }

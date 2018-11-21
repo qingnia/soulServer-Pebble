@@ -46,7 +46,7 @@ public:
 	gameMap* getMap(int32_t mapID);
 	gameMap* initNewMap(vector<int> roleIDList);
 
-	player getPlayer(int32_t roleID);
+	player* getPlayer(int32_t roleID);
 
 	retStatus roleLogin(int32_t roleID, int32_t mapID, list<playerBaseInfo>&, int32_t& roomHolder);
 

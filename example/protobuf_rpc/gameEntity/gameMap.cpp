@@ -42,7 +42,7 @@ retStatus gameMap::addNewPlayer(int32_t roleID, list<playerBaseInfo>& baseInfos,
 	{
 		this->roomHolder = roleID;
 	}
-    player p(roleID, this->m_id);
+    player* p = new player(roleID, this->m_id);
 p.init(this->playerList.size() + 1);
     this->playerList.push_back(p);
 	roomHolder = this->roomHolder;
@@ -51,13 +51,13 @@ p.init(this->playerList.size() + 1);
     ss<<"新玩家进入 roleid:" << roleID << "ret:" << rsSuccess;
     logInfo(ss.str());
 
-	list<player>::iterator iter;
+	list<player*>::iterator iter;
 	for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
 	{
 		playerBaseInfo p;
-		p.roleID = iter->getRoleID();
-		p.name = iter->getName();
-		p.ps = iter->getStatus();
+		p.roleID = *iter->getRoleID();
+		p.name = *iter->getName();
+		p.ps = *iter->getStatus();
 		baseInfos.push_back(p);
 	}
     return rsSuccess;
@@ -147,10 +147,10 @@ int gameMap::initActionList()
 		iter != playerList.end(); iter++)
 	{
         //actionType at = move;
-        action startAct(atMove, &(*iter));
+        action startAct(atMove, *iter);
         this->actionList.push_back(startAct);
 
-        action stopAct(atStop, &(*iter));
+        action stopAct(atStop, *iter);
         this->actionList.push_back(stopAct);
 	}
 
@@ -231,20 +231,20 @@ roomCard* gameMap::getRoom(position pos)
 list<int32_t> gameMap::getRoleIDList()
 {
     list<int32_t> l;
-    list<player>::iterator iter;
+    list<player*>::iterator iter;
     for(iter = playerList.begin(); iter != playerList.end(); iter++)
     {
-        l.push_back(iter->getRoleID());
+        l.push_back(*iter->getRoleID());
     }
     return l;
 }
 
-player gameMap::getPlayer(int32_t roleID)
+player* gameMap::getPlayer(int32_t roleID)
 {
-    list<player>::iterator iter;
+    list<player*>::iterator iter;
     for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
     {
-        if (iter->getRoleID() == roleID)
+        if (*iter->getRoleID() == roleID)
         {
             return *iter;
         }
@@ -254,7 +254,7 @@ player gameMap::getPlayer(int32_t roleID)
     stringstream ss;
 ss<< "can't find player:" << roleID;
 logInfo(ss.str());
-	return player();
+	return nullptr;
 }
 
 roomCard* gameMap::bindNewRoom(int floor, position pos)
@@ -324,18 +324,18 @@ int gameMap::run()
 {
 	stringstream ss;
     //放弃回调式处理，简单分为：开始、移动、结束，每个阶段循环处理每个玩家
-    list<player>::iterator iter;
+    list<player*>::iterator iter;
     //开始阶段
     ss << "新一轮开始，开始阶段："; 
 	logInfo(ss.str());
     ss.clear();
     for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
     {
-        iter->start();
+        *iter->start();
     }
     for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
     {
-        //iter->move();
+        //*iter->move();
     }
 	ss << "本轮结束";
 	logInfo(ss.str());
@@ -352,10 +352,10 @@ void gameMap::newRun()
 	//定时器只需要检查玩家状态就行
 	//当所有玩家都标记已行动，就开始本轮结算，然后开始新一轮
 	stringstream ss;
-	list<player>::iterator iter;
+	list<player*>::iterator iter;
 	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
 	{
-		if (!iter->isActionDone())
+		if (! *iter->isActionDone())
 		{
 			this->actionRoleID = iter->getID();
 			break;
@@ -363,7 +363,7 @@ void gameMap::newRun()
 	}
 	if (iter == this->playerList.end())
 	{
-		this->actionRoleID = this->playerList.begin()->getRoleID();
+		this->actionRoleID = *(this->playerList.begin())->getRoleID();
 		//开始阶段
 		ss << "新一轮开始";
 		logInfo(ss.str());
@@ -410,15 +410,15 @@ bool gameMap::tryEnd()
 list<int> gameMap::getCanAttackRoleIDList(player* p)
 {
 	list<int> roleIDList;
-	list<player>::iterator iter;
+	list<player*>::iterator iter;
 	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
 	{
-		if (iter->getRoleID() == p->getRoleID())
+		if (*iter->getRoleID() == p->getRoleID())
 		{
 			continue;
 		}
 		//目前只考虑没武器的情况，即必须有玩家在相同房间才可以攻击
-		if (iter->getMyRoom() == p->getMyRoom())
+		if (*iter->getMyRoom() == p->getMyRoom())
 		{
 			roleIDList.push_back(iter->getRoleID());
 		}
@@ -435,11 +435,11 @@ retStatus gameMap::tryStart()
 ss<< "1111" << "count:" << this->playerList.size();
 	logInfo(ss.str());
 	ss.clear();
-	list<player>::iterator iter;
+	list<player*>::iterator iter;
 	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
 	{
 printf("role:%d, status:%d\n", iter->getRoleID(), iter->getStatus());
-		if (iter->getStatus() != psReady && iter->getRoleID() != this->roomHolder)
+		if (*iter->getStatus() != psReady && *iter->getRoleID() != this->roomHolder)
 		{
 			return rsFail;
 		}
@@ -453,18 +453,18 @@ printf("rand:%d\n", first);
 	{
 		if (index < first)
 		{
-			iter->actionDone = true;
+			*iter->actionDone = true;
 		}
 		else if (index == first)
 		{
-			iter->actionDone = false;
-			this->actionRoleID = iter->getRoleID();
+			*iter->actionDone = false;
+			this->actionRoleID = *iter->getRoleID();
 		}
 		else
 		{
-			iter->actionDone = false;
+			*iter->actionDone = false;
 		}
-		iter->modifyStatus(psIngame);
+		*iter->modifyStatus(psIngame);
 		index++;
 	}
 	ss << "游戏开始了";

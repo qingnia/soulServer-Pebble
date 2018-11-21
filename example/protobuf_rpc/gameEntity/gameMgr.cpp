@@ -61,13 +61,13 @@ gameMap* gameMgr::getMap(int32_t mapID)
 	return nullptr;
 }
 
-player gameMgr::getPlayer(int32_t roleID)
+player* gameMgr::getPlayer(int32_t roleID)
 {
 	int32_t mapID = this->roleID2MapID[roleID];
 	gameMap* map = getMap(mapID);
-	player p = map->getPlayer(roleID);
+	player* p = map->getPlayer(roleID);
 stringstream ss;
-ss<< "mapID:" << mapID << "roleID:" << p.getRoleID();
+ss<< "mapID:" << mapID << "roleID:" << p->getRoleID();
 logInfo(ss.str());
 	return p;
 }
@@ -136,19 +136,19 @@ cout << "gm login ret:" << ret << endl;
 	
 retStatus gameMgr::modifyRoleStatus(int32_t roleID, int32_t cmd)
 {
-	player p = getPlayer(roleID);
-	retStatus rs = p.modifyStatus(cmd);
+	player* p = getPlayer(roleID);
+	retStatus rs = p->modifyStatus(cmd);
 	return rs;
 }
 	
 retStatus gameMgr::inputRoleDir(int32_t roleID, int32_t dir, ::example::moveBroadcast& sendMove)
 {
-	player p = getPlayer(roleID);
-	if (!p.isMyTurn())
+	player* p = getPlayer(roleID);
+	if (!p->isMyTurn())
 	{
 		return rsFail;
 	}
-	return p.move((direction)dir, sendMove);
+	return p->move((direction)dir, sendMove);
 }
 
 map<string, string> gameMgr::getLegalInput(int msgID)

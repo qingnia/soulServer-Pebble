@@ -38,7 +38,7 @@ class gameMap{
 
     map<int, card* > id2room, id2issue, id2res, id2info;
 
-    list<player> playerList;
+    list<player*> playerList;
     list<action> actionList;
 
     list<int>::iterator roomIter, resIter, issueIter, infoIter;
@@ -65,7 +65,7 @@ public:
 
     roomCard* getRoom(position pos);
     roomCard* getRoomByID(int roomID);
-    player getPlayer(int32_t id);
+    player* getPlayer(int32_t id);
 
     roomCard* bindNewRoom(int floor, position pos);
 	resCard* getNewRes();
