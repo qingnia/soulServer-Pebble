@@ -43,7 +43,7 @@ retStatus gameMap::addNewPlayer(int32_t roleID, list<playerBaseInfo>& baseInfos,
 		this->roomHolder = roleID;
 	}
     player* p = new player(roleID, this->m_id);
-p.init(this->playerList.size() + 1);
+p->init(this->playerList.size() + 1);
     this->playerList.push_back(p);
 	roomHolder = this->roomHolder;
 
@@ -55,9 +55,9 @@ p.init(this->playerList.size() + 1);
 	for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
 	{
 		playerBaseInfo p;
-		p.roleID = *iter->getRoleID();
-		p.name = *iter->getName();
-		p.ps = *iter->getStatus();
+		p.roleID = (*iter)->getRoleID();
+		p.name = (*iter)->getName();
+		p.ps = (*iter)->getStatus();
 		baseInfos.push_back(p);
 	}
     return rsSuccess;
@@ -142,7 +142,7 @@ int gameMap::initActionList()
 {
     action act = action(atStart);
     this->actionList.push_back(act);
-	list<player>::iterator iter;
+	list<player*>::iterator iter;
 	for (iter = playerList.begin();
 		iter != playerList.end(); iter++)
 	{
@@ -234,7 +234,7 @@ list<int32_t> gameMap::getRoleIDList()
     list<player*>::iterator iter;
     for(iter = playerList.begin(); iter != playerList.end(); iter++)
     {
-        l.push_back(*iter->getRoleID());
+        l.push_back((*iter)->getRoleID());
     }
     return l;
 }
@@ -244,7 +244,7 @@ player* gameMap::getPlayer(int32_t roleID)
     list<player*>::iterator iter;
     for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
     {
-        if (*iter->getRoleID() == roleID)
+        if ((*iter)->getRoleID() == roleID)
         {
             return *iter;
         }
@@ -331,17 +331,17 @@ int gameMap::run()
     ss.clear();
     for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
     {
-        *iter->start();
+        (*iter)->start();
     }
     for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
     {
-        //*iter->move();
+        //(*iter)->move();
     }
 	ss << "本轮结束";
 	logInfo(ss.str());
     for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
     {
-        iter->stop();
+        (*iter)->stop();
     }
     return 0;
 }
@@ -355,15 +355,15 @@ void gameMap::newRun()
 	list<player*>::iterator iter;
 	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
 	{
-		if (! *iter->isActionDone())
+		if (! (*iter)->isActionDone())
 		{
-			this->actionRoleID = iter->getID();
+			this->actionRoleID = (*iter)->getID();
 			break;
 		}
 	}
 	if (iter == this->playerList.end())
 	{
-		this->actionRoleID = *(this->playerList.begin())->getRoleID();
+		this->actionRoleID = (*this->playerList.begin())->getRoleID();
 		//开始阶段
 		ss << "新一轮开始";
 		logInfo(ss.str());
@@ -413,14 +413,14 @@ list<int> gameMap::getCanAttackRoleIDList(player* p)
 	list<player*>::iterator iter;
 	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
 	{
-		if (*iter->getRoleID() == p->getRoleID())
+		if ((*iter)->getRoleID() == p->getRoleID())
 		{
 			continue;
 		}
 		//目前只考虑没武器的情况，即必须有玩家在相同房间才可以攻击
-		if (*iter->getMyRoom() == p->getMyRoom())
+		if ((*iter)->getMyRoom() == p->getMyRoom())
 		{
-			roleIDList.push_back(iter->getRoleID());
+			roleIDList.push_back((*iter)->getRoleID());
 		}
 	}
 	return roleIDList;
@@ -438,8 +438,8 @@ ss<< "1111" << "count:" << this->playerList.size();
 	list<player*>::iterator iter;
 	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
 	{
-printf("role:%d, status:%d\n", iter->getRoleID(), iter->getStatus());
-		if (*iter->getStatus() != psReady && *iter->getRoleID() != this->roomHolder)
+printf("role:%d, status:%d\n", (*iter)->getRoleID(), (*iter)->getStatus());
+		if ((*iter)->getStatus() != psReady && (*iter)->getRoleID() != this->roomHolder)
 		{
 			return rsFail;
 		}
@@ -453,18 +453,18 @@ printf("rand:%d\n", first);
 	{
 		if (index < first)
 		{
-			*iter->actionDone = true;
+			(*iter)->actionDone = true;
 		}
 		else if (index == first)
 		{
-			*iter->actionDone = false;
-			this->actionRoleID = *iter->getRoleID();
+			(*iter)->actionDone = false;
+			this->actionRoleID = (*iter)->getRoleID();
 		}
 		else
 		{
-			*iter->actionDone = false;
+			(*iter)->actionDone = false;
 		}
-		*iter->modifyStatus(psIngame);
+		(*iter)->modifyStatus(psIngame);
 		index++;
 	}
 	ss << "游戏开始了";
