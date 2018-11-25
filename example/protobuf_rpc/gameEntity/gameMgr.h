@@ -52,7 +52,7 @@ public:
 
 	list<int32_t> getBroadcastRoleIDList(int32_t roleID);
 
-	retStatus modifyRoleStatus(int32_t roleID, int32_t cmd);
+	retStatus modifyRoleStatus(int32_t roleID, int32_t cmd, int32_t& actionRoleID);
 	retStatus inputRoleDir(int32_t roleID, int32_t dir, ::example::moveBroadcast&);
 
 	map<string, string> getLegalInput(int msgID);

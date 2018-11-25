@@ -162,7 +162,6 @@ void PebbleRpc::SendRequestParallel(int64_t handle,
 int32_t PebbleRpc::HeadEncode(const RpcHead& rpc_head, uint8_t* buff, uint32_t buff_len) {
     if (m_rpc_plugin) {
         int len = m_rpc_plugin->HeadEncode(rpc_head, buff, buff_len);
-printf("------------------thrift len: %d\n", len);
         if (m_code_type != kCODE_JSON) {
             return len;
         }

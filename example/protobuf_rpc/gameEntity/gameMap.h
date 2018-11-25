@@ -36,7 +36,10 @@ class gameMap{
     //int** pos2room;
 	map<int, map<int, int> > pos2room;
 
-    map<int, card* > id2room, id2issue, id2res, id2info;
+    //map<int, card* > id2room, id2issue, id2res, id2info;
+    map<int, card* > id2room;
+    map<int, resCard* > id2res, id2info;
+    map<int, issueCard* > id2issue;
 
     list<player*> playerList;
     list<action> actionList;
@@ -53,8 +56,8 @@ class gameMap{
     position inputPosition();
 
 public:
-    int32_t getActionRoleID(), getRoomHolder();
-	retStatus tryStart();
+    int32_t getActionRoleID(), getRoomHolder(), changeActionRole();
+	retStatus tryStart(int32_t&);
 
 	gameMap();
 	gameMap(int32_t);

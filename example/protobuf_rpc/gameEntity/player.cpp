@@ -30,6 +30,7 @@ bool player::isMyTurn()
 	{
 		return true;
 	}
+cout << "当前行动玩家：" << map->getActionRoleID() << "self:" << this->m_roleID << endl;
 	return false;
 }
 
@@ -371,11 +372,11 @@ retStatus player::move(direction dir, ::example::moveBroadcast& sendMove)
 	if (dir == dirStop)
 	{
 		//切换行动玩家
-		this->actionDone = true;
+		this->stop(sendMove);
 	}
 	//行动值在停止行动时清零
     //一次移动一格，移动距离达到速度停止
-	if (this->moveNum > this->getETValue(etSpeed))
+	if (this->moveNum >= this->getETValue(etSpeed))
 	{
 		return rsFail;
 	}
@@ -403,7 +404,7 @@ retStatus player::move(direction dir, ::example::moveBroadcast& sendMove)
 	return rsSuccess;
 }
 
-int player::stop()
+int player::stop(::example::moveBroadcast& mb)
 {
 	//检查房间，看是否有停止时生效的
 	roomCard* room = this->getMyRoom();
@@ -412,8 +413,11 @@ int player::stop()
 		this->excuteExam(room->cardExam);
 	}
 	//移动结束后把行动力恢复
-	this->moveNum = 0;
+	gameMap* myMap = getMyMap();
+	int32_t nextActionRoleID = myMap->changeActionRole();
+	mb.set_nextactionroleid(nextActionRoleID);
 	this->actionDone = true;
+	this->moveNum = 0;
 	return 0;
 }
 
@@ -437,7 +441,7 @@ int player::moveTo(direction dir, ::example::moveBroadcast& mb)
 		}
 		this->changeNewRoomRotation(dir, nextRoom);
 		enterNewRoom = true;
-		ss << "玩家进入新房间";
+		ss << "玩家" << this->m_roleID << "进入新房间";
 	}
 	else
 	{
@@ -459,6 +463,10 @@ int player::moveTo(direction dir, ::example::moveBroadcast& mb)
 
 	int cardID = this->enterRoom(nextRoom, enterNewRoom);
 	mb.set_cardid(cardID);
+	if (this->moveNum >= this->getETValue(etSpeed))
+	{
+		this->stop(mb);
+	}
 
 	return 0;
 }
@@ -500,6 +508,7 @@ cout << "房间类型：" << ct << endl;
 		break;
 	case ctRes:
 		newRes = myMap->getNewRes();
+cout << "拿到，返回" << endl;
 		cardID = newRes->getID();
 		ss<<"房间类型为：物品\n\t     "<<newRes->getName()<<"\n\t  "<<newRes->getDesc();
 		logInfo(ss.str());
@@ -508,6 +517,7 @@ cout << "房间类型：" << ct << endl;
 		break;
 	case ctInfo:
 		newInfo = myMap->getNewInfo();
+cout << "拿到，返回" << endl;
 		cardID = newInfo->getID();
 		ss<<"房间类型为：预兆\n\t     "<<newInfo->getName()<<"\n\t  "<<newInfo->getDesc();
 		logInfo(ss.str());
@@ -633,7 +643,7 @@ int player::useWeapon()
 }
 /************************攻击相关**************************************/
 
-retStatus player::modifyStatus(int32_t status)
+retStatus player::modifyStatus(int32_t status, int32_t& actionRoleID)
 {
 	playerStatus ps = (playerStatus)status;
 	retStatus rs = rsFail;
@@ -660,7 +670,7 @@ cout << "准备!!新状态：" << this->m_ps << endl;
 		//需要所有人都准备好才能开始
 		if (this->m_roleID == myMap->getRoomHolder())
 		{
-			rs = myMap->tryStart();
+			rs = myMap->tryStart(actionRoleID);
 		}
 		break;
 	case psIngame:

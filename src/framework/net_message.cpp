@@ -747,7 +747,6 @@ int32_t NetMessage::RecvTcpData(uint64_t netaddr) {
     }
 
     uint32_t old_len = connection->_recv_len; // 已经收取的数据长度
-printf("1111111111reve len: %d, cur_msg_len:%d\n", (int)old_len, (int)connection->_cur_msg_len);
     uint32_t need_read = 0;     // 还需要读取的长度
     bool get_msg_len = false;   // 是否需要解析头获取数据部分长度
     if (old_len < m_msg_head_len) {
@@ -769,7 +768,6 @@ printf("1111111111reve len: %d, cur_msg_len:%d\n", (int)old_len, (int)connection
         return kMESSAGE_RECV_FAILED;
     }
     connection->_recv_len += recv_len;
-printf("2222222222222rec len: %d, cur_msg_len:%d this recv_len:%d\n", (int)old_len, (int)connection->_cur_msg_len, (int)recv_len);
     if (recv_len < (int32_t)need_read) {
         // 未收完期望的数据，等待下次再收
         return RECV_END_PART;
@@ -784,9 +782,7 @@ printf("2222222222222rec len: %d, cur_msg_len:%d this recv_len:%d\n", (int)old_l
         }
         connection->_cur_msg_len = m_msg_head_len + msg_data_len;
         connection->_arrived_ms  = TimeUtility::GetCurrentMS();
-printf("4444444444444  cur_msg_len:%d\n", (int)msg_data_len);
     }
-printf("33333333333333 len: %d, cur_msg_len:%d\n", (int)old_len, (int)connection->_cur_msg_len);
 
     if (connection->HasNewMsg()) {
         return RECV_END_PKG;

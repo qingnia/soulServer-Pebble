@@ -94,17 +94,22 @@ void rpcMsg::modifyStatus(const ::example::StatusReceive& statusReq,
 	int32_t cmd = statusReq.cmd();
 	int32_t roleID = _server->getLastMsgRoleID();
 	std::cout << "receive rpc cmd: " << cmd << std::endl;
-	retStatus rs = gm->modifyRoleStatus(roleID, cmd);
+	int32_t actionRoleID = 0;
+	retStatus rs = gm->modifyRoleStatus(roleID, cmd, actionRoleID);
 	std::cout << "receive rpc cmd: " << cmd << ", rs:" << rs << std::endl;
 
 	//如果状态修改成功了，要向所有人更新，如果是start，要通知所有人开始游戏
 	if (rs == rsSuccess)
 	{
-		std::cout << "status modify send to all " << std::endl;
+		std::cout << "status modify send to all Action:" << actionRoleID << std::endl;
 		//消息层直接拿到同房玩家列表，转发，效率更高
 		::example::statusBroadcast sendStatus;
 		sendStatus.set_roleid(roleID);
 		sendStatus.set_cmd(cmd);
+		if (actionRoleID > 0)
+		{
+			sendStatus.set_actionroleid(actionRoleID);
+		}
 		int __size = sendStatus.ByteSize();
 		pebble::PebbleRpc* rpc = _server->getBinaryRpc();
 		uint8_t *__buff = rpc->GetBuffer(__size);

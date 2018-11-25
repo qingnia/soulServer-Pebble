@@ -7,6 +7,7 @@
 
 #include "gameMgr.h"
 #include "../net/singleServer.hpp"
+#include <unistd.h>
 
 gameMgr* gameMgr::gm = new gameMgr();
 
@@ -134,10 +135,10 @@ cout << "gm login ret:" << ret << endl;
 	return ret;
 }
 	
-retStatus gameMgr::modifyRoleStatus(int32_t roleID, int32_t cmd)
+retStatus gameMgr::modifyRoleStatus(int32_t roleID, int32_t cmd, int32_t& actionRoleID)
 {
 	player* p = getPlayer(roleID);
-	retStatus rs = p->modifyStatus(cmd);
+	retStatus rs = p->modifyStatus(cmd, actionRoleID);
 	return rs;
 }
 	
@@ -209,6 +210,7 @@ void gameMgr::update()
 			thisMap->newRun();
 		}
 	}
+	sleep(3);
 
 	return;
 }

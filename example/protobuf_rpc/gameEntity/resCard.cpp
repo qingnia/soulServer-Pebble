@@ -23,10 +23,10 @@ resCard::resCard(map<string, string> resConfig)
 	{
 		key = iter->first;
 		value = iter->second;
-cout << key << "value:" << value << endl;
 		if (key == "id")
 		{
 			this->m_id = stringToNum<int>(value);
+cout << "id:" << this->m_id << endl;
 		}
 		else if (key == "name")
 		{

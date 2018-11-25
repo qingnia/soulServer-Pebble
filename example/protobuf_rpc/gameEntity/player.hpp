@@ -64,7 +64,7 @@ public:
     bool isMyTurn();
     int start();
 	retStatus move(direction, ::example::moveBroadcast&);
-    int stop();
+    int stop(::example::moveBroadcast& mb);
 
     bool isActionDone();
 
@@ -86,7 +86,7 @@ public:
 
     ////////////组队房///////////////
 	playerStatus getStatus();
-    retStatus modifyStatus(int32_t);
+    retStatus modifyStatus(int32_t, int32_t&);
 };
 
 #endif /* player_hpp */

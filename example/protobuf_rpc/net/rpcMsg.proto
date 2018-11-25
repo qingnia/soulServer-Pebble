@@ -50,6 +50,7 @@ message StatusReceive {
 message statusBroadcast {
     optional int32 roleID = 1;
     optional int32 cmd = 2;
+    optional int32 actionRoleID = 3;
 }
 
 message moveRequest {
@@ -60,6 +61,7 @@ message moveBroadcast {
     optional int32 cmd = 2;
     optional int32 roomID = 3;
     optional int32 cardID = 4;
+    optional int32 nextActionRoleID = 5;
 }
 
 

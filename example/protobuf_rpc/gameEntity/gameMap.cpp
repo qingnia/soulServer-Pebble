@@ -83,13 +83,11 @@ int gameMap::initPlayerList(map<int, int> roleID2PartID)
 
 int gameMap::initCardList()
 {
-cout << "初始化牌堆" << endl;
 	map<int, map<string, string> >::iterator confIter;
 //    card* newCard;
 	config* conf = config::getSingleConfig();
     
     //房间初始化
-cout << "初始化房间牌堆" << endl;
     this->roomList = myShuffle2List(conf->roomConfig.size());
     for(confIter = conf->roomConfig.begin(); confIter != conf->roomConfig.end(); confIter++)
     {
@@ -98,42 +96,35 @@ cout << "初始化房间牌堆" << endl;
     this->roomIter = this->roomList.begin();
 
 	//事件初始化
-cout << "初始化事件牌堆" << endl;
 	this->issueList = myShuffle2List(conf->issueConfig.size());
 	for (confIter = conf->issueConfig.begin(); confIter != conf->issueConfig.end(); confIter++)
 	{
 		
-		this->id2issue[confIter->first] = (card*) new issueCard(confIter->second);
+		this->id2issue[confIter->first] = new issueCard(confIter->second);
 	}
 	this->issueIter = this->issueList.begin();
     
     //物品初始化
-cout << "初始化物品牌堆" << endl;
 	map<string, string> oneConfig;
     for(confIter = conf->resConfig.begin(); confIter != conf->resConfig.end(); confIter++)
     {
 		oneConfig = confIter->second;
+		resCard* card;
 		if (oneConfig["cardType"] == "0")
 		{
-cout << "预兆" << endl;
-			this->id2info[confIter->first] = (card*) new resCard(confIter->second);
+			card = new resCard(confIter->second);
+			this->id2info[confIter->first] = card;
+this->infoList.push_back(card->getID());
 		}
 		else
 		{
-cout << "物品" << endl;
-			this->id2res[confIter->first] = (card*) new resCard(confIter->second);
+			card = new resCard(confIter->second);
+			this->id2res[confIter->first] = card;
+this->resList.push_back(card->getID());
 		}
     }
-cout << "初始化牌堆结束" << endl;
-    this->resList = myShuffle2List(this->id2res.size());
-    this->infoList = myShuffle2List(this->id2info.size());
-    
-	/**
-    this->infoList = myShuffle2List(conf->infoConfig.size());
-	for (confIter = conf->infoConfig.begin(); confIter != conf->infoConfig.end(); confIter++)
-	{
-		
-	} */
+   // this->resList = myShuffle2List(this->id2res.size());
+   // this->infoList = myShuffle2List(this->id2info.size());
     
     return 0;
 }
@@ -277,43 +268,47 @@ roomCard* gameMap::bindNewRoom(int floor, position pos)
 
 issueCard* gameMap::getNewIssue()
 {
-    issueCard* newIssue;
+    //issueCard* newIssue;
 	int issueID = this->issueList.front();
 cout << "issue id : " << issueID << endl;
 	this->issueList.pop_front();
-    
+	return this->id2issue[issueID];
+    /*
     config* conf = config::getSingleConfig();
     map<string, string> issueConfig = conf->getConfig(ctIssue, issueID);
     newIssue = new issueCard(issueConfig);
-    return newIssue;
+    return newIssue;*/
 }
 
 resCard* gameMap::getNewInfo()
 {
-    resCard* newInfo;
+    //resCard* newInfo;
 	int infoID = this->infoList.front();
 cout << "info id : " << infoID << endl;
 	this->infoList.pop_front();
 
     this->m_infoNum++;
+	return this->id2info[infoID];
 
+/*
     config* conf = config::getSingleConfig();
     map<string, string> infoConfig = conf->getConfig(ctInfo, infoID);
     newInfo = new resCard(infoConfig);
-    return newInfo;
+    return newInfo;*/
 }
 
 resCard* gameMap::getNewRes()
 {
-	resCard* newRes;
+//	resCard* newRes;
 	int resID = this->resList.front();
 cout << "res id : " << resID << endl;
 	this->resList.pop_front();
-
+	return this->id2res[resID];
+/*
 	config* conf = config::getSingleConfig();
 	map<string, string> resConfig = conf->getConfig(ctRes, resID);
 	newRes = new resCard(resConfig);
-	return newRes;
+	return newRes;*/
 }
 
 
@@ -341,7 +336,7 @@ int gameMap::run()
 	logInfo(ss.str());
     for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
     {
-        (*iter)->stop();
+        //(*iter)->stop();
     }
     return 0;
 }
@@ -357,7 +352,7 @@ void gameMap::newRun()
 	{
 		if (! (*iter)->isActionDone())
 		{
-			this->actionRoleID = (*iter)->getID();
+			this->actionRoleID = (*iter)->getRoleID();
 			break;
 		}
 	}
@@ -368,6 +363,30 @@ void gameMap::newRun()
 		ss << "新一轮开始";
 		logInfo(ss.str());
 	}
+}
+
+int32_t gameMap::changeActionRole()
+{
+	//当所有玩家都标记已行动，就开始本轮结算，然后开始新一轮
+	stringstream ss;
+	list<player*>::iterator iter;
+	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
+	{
+		if (! (*iter)->isActionDone())
+		{
+			this->actionRoleID = (*iter)->getRoleID();
+cout << "换人行动,接下来：" << this->actionRoleID << endl;
+			break;
+		}
+	}
+	if (iter == this->playerList.end())
+	{
+		this->actionRoleID = (*this->playerList.begin())->getRoleID();
+		//开始阶段
+		ss << "新一轮开始";
+		logInfo(ss.str());
+	}
+	return this->actionRoleID;
 }
 
 position gameMap::inputPosition()
@@ -426,7 +445,7 @@ list<int> gameMap::getCanAttackRoleIDList(player* p)
 	return roleIDList;
 }
 
-retStatus gameMap::tryStart()
+retStatus gameMap::tryStart(int32_t& actionRoleID)
 {
     stringstream ss;
 	ss << "尝试开始游戏, mapID:";
@@ -459,12 +478,15 @@ printf("rand:%d\n", first);
 		{
 			(*iter)->actionDone = false;
 			this->actionRoleID = (*iter)->getRoleID();
+			actionRoleID = this->actionRoleID;
+cout << "第一个行动玩家：" << actionRoleID << endl;
 		}
 		else
 		{
 			(*iter)->actionDone = false;
 		}
-		(*iter)->modifyStatus(psIngame);
+		int32_t noUseRoleID = 0;
+		(*iter)->modifyStatus(psIngame, noUseRoleID);
 		index++;
 	}
 	ss << "游戏开始了";

@@ -91,11 +91,6 @@ int32_t ProtoBufRpcPlugin::HeadDecode(const uint8_t* buff, uint32_t buff_len, Rp
         return kPEBBLE_RPC_DECODE_HEAD_FAILED;
     }
 
-for(int i = 0; i < (int)buff_len; i++)
-{
-printf("sss: %d\n", (int)buff[i]);
-}
-
     if (rpc_head->m_message_type < kRPC_CALL
         || rpc_head->m_message_type > kRPC_ONEWAY) {
 printf("nnnnnnnnnnnnn msg type : %d\n", (int)rpc_head->m_message_type);
