@@ -45,9 +45,12 @@ class player {
 
     int gainNewItem(configType);
 
-    int incrETLevel(examType, int);
     int getETValue(examType);
+
+    bool canAttack(int32_t targetID);
 public:
+    int incrETLevel(examType, int);
+
     player();
     player(int32_t roleID, int32_t mapID);
     retStatus init(int32_t characterID);
@@ -68,10 +71,10 @@ public:
 
     bool isActionDone();
 
-    int attack(int id);
+    retStatus attack(int32_t targetID, ::example::attackBroadcast& attackBroad);
     int useSkill(int id);
 
-	int enterRoom(roomCard*, bool isNewRoom);
+	int enterRoom(roomCard*, bool isNewRoom, ::example::moveBroadcast& mb);
 	bool leaveRoom(roomCard*);   //从上一回合进入，这一回合离开，是“离开房间”
     bool passRoom(roomCard*);    //这一回合进入，这一回合离开，是“通过房间”
 

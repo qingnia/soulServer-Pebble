@@ -287,7 +287,7 @@ bool player::getReality()
     return false;
 }
 
-int player::enterRoom(roomCard* room, bool isNewRoom)
+int player::enterRoom(roomCard* room, bool isNewRoom, ::example::moveBroadcast& mb)
 {
 	int cardID = 0;
 	//执行房间事件、考验、
@@ -308,22 +308,6 @@ int player::enterRoom(roomCard* room, bool isNewRoom)
 	else
 	{
 		cout << "其他" << endl;
-		gameMap* myMap = getMyMap();
-		list<int> canAttackList = myMap->getCanAttackRoleIDList(this);
-		if (canAttackList.size() > 0)
-		{
-			//询问玩家是否要攻击
-			stringstream ss;
-			ss << "你当前可以攻击 " << list2String(canAttackList) << " 这些玩家，请输入要攻击目标，0为放弃攻击";
-			logInfo(ss.str());
-
-			canAttackList.push_back(0);
-			int target = this->inputFromList(canAttackList);
-			if (target != 0)
-			{
-				this->attack(target);
-			}
-		}
 		this->moveNum++;
 	}
 		cout << "结束" << endl;
@@ -414,10 +398,10 @@ int player::stop(::example::moveBroadcast& mb)
 	}
 	//移动结束后把行动力恢复
 	gameMap* myMap = getMyMap();
-	int32_t nextActionRoleID = myMap->changeActionRole();
-	mb.set_nextactionroleid(nextActionRoleID);
 	this->actionDone = true;
 	this->moveNum = 0;
+	int32_t nextActionRoleID = myMap->changeActionRole();
+	mb.set_nextactionroleid(nextActionRoleID);
 	return 0;
 }
 
@@ -461,7 +445,7 @@ int player::moveTo(direction dir, ::example::moveBroadcast& mb)
 	this->pos.x = nextPos->x;
 	this->pos.y = nextPos->y;
 
-	int cardID = this->enterRoom(nextRoom, enterNewRoom);
+	int cardID = this->enterRoom(nextRoom, enterNewRoom, mb);
 	mb.set_cardid(cardID);
 	if (this->moveNum >= this->getETValue(etSpeed))
 	{
@@ -610,14 +594,53 @@ bool player::gainBuff(cardUseType cut, card* c)
 /*************************属性相关***********************************/
 
 /************************攻击相关**************************************/
-int player::attack(int roleID)
+bool player::canAttack(int32_t targetID)
+{
+	if (targetID == this->m_roleID)
+	{
+		stringstream ss;
+		ss << "不能攻击自己 ";
+		logInfo(ss.str());
+		return false;
+	}
+	gameMap* myMap = getMyMap();
+	player* target = myMap->getPlayer(targetID);
+	if (this->getMyRoom() == target->getMyRoom())
+	{
+		return true;
+	}
+	return false;
+}
+
+retStatus player::attack(int32_t targetID, ::example::attackBroadcast& attackBroad)
 {
 	//1.先检查能不能攻击，考虑特殊道具（枪）影响攻击范围
+	if (targetID == this->m_roleID)
+	{
+		stringstream ss;
+		ss << "不能攻击自己 ";
+		logInfo(ss.str());
+		return rsFail;
+	}
+	gameMap* myMap = getMyMap();
+	player* target = myMap->getPlayer(targetID);
+	if (this->getMyRoom() != target->getMyRoom())
+	{
+		return rsFail;
+	}
+	stringstream ss;
+	ss << "你当前可以攻击 ";
+	logInfo(ss.str());
+
+	target->incrETLevel(etStrength, -1);
+
+	attackBroad.set_et(etStrength);
+	attackBroad.set_value(-1);
+	return rsSuccess;
 	//1.选择要不要使用武器
 	//2.掷骰，检查物品和特殊房间，看是否影响骰数
 	//3.被攻击方掷骰
 	//4.判定结果，根据攻击类型对输的一方惩罚物理/精神损伤
-	return 0;
 }
 
 int player::useWeapon()

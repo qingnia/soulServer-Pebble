@@ -62,8 +62,20 @@ message moveBroadcast {
     optional int32 roomID = 3;
     optional int32 cardID = 4;
     optional int32 nextActionRoleID = 5;
+    optional bool needAttack = 6;
 }
 
+message attackRequest {
+    optional int32 targetID = 1;
+    optional int32 type = 2;
+}
+message attackBroadcast {
+    optional int32 roleID = 1;
+    optional int32 targetID = 2;
+    optional int32 type = 3;
+    optional int32 et = 4;
+    optional int32 value = 5;
+}
 
 message commonResponse {
     optional int32 status = 1;
@@ -76,6 +88,7 @@ service rpcMsg { // ��ʱֻ�ṩ�ӷ�����
     rpc modifyStatus(StatusReceive) returns (commonResponse);
     rpc move(moveRequest) returns (commonResponse);
     rpc chat(chatReceive) returns (commonResponse);
+    rpc attack(attackRequest) returns (commonResponse);
 }
 
 

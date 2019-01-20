@@ -54,6 +54,7 @@ public:
 
 	retStatus modifyRoleStatus(int32_t roleID, int32_t cmd, int32_t& actionRoleID);
 	retStatus inputRoleDir(int32_t roleID, int32_t dir, ::example::moveBroadcast&);
+	retStatus attack(int32_t roleID, int32_t targetID, int32_t option, ::example::attackBroadcast&);
 
 	map<string, string> getLegalInput(int msgID);
 	

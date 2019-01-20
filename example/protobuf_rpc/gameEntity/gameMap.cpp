@@ -381,6 +381,11 @@ cout << "换人行动,接下来：" << this->actionRoleID << endl;
 	}
 	if (iter == this->playerList.end())
 	{
+		//将所有人都重置为未行动
+		for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
+		{
+			(*iter)->actionDone = false;
+		}
 		this->actionRoleID = (*this->playerList.begin())->getRoleID();
 		//开始阶段
 		ss << "新一轮开始";
@@ -439,6 +444,7 @@ list<int> gameMap::getCanAttackRoleIDList(player* p)
 		//目前只考虑没武器的情况，即必须有玩家在相同房间才可以攻击
 		if ((*iter)->getMyRoom() == p->getMyRoom())
 		{
+cout << "his room:" << (*iter)->getMyRoom() << ", my room:" << p->getMyRoom();
 			roleIDList.push_back((*iter)->getRoleID());
 		}
 	}

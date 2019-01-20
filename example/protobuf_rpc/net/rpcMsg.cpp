@@ -173,14 +173,8 @@ void rpcMsg::chat(const ::example::chatReceive& chatInfo,
 	sendChat.SerializeToArray(__buff, __size);
 
 	std::cout << "ssssssssssssssss " << mySaid << std::endl;
-
 	list<int32_t> roleIDList = gm->getBroadcastRoleIDList(roleID);
-	list<int32_t>::iterator iter;
-	for(iter = roleIDList.begin(); iter != roleIDList.end(); iter++)
-	{
-		_server->sendMsg("chatBroad", *iter, __buff, __size);
-	}
-
+	_server->broadcastMsg("chatBroad", roleIDList, __buff, __size);
 	int32_t status = 0;
 	::example::commonResponse ret;
 	ret.set_status(status);
@@ -191,3 +185,34 @@ void rpcMsg::chatBroad(const ::example::chatBroadcast& chatInfo,
         cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp)
 {
 }
+
+void rpcMsg::attack(const ::example::attackRequest& attackCMD,
+		cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp)
+{
+	int32_t targetID = attackCMD.targetid();
+	int32_t type = attackCMD.type();
+	int32_t roleID = _server->getLastMsgRoleID();
+	std::cout << "receive rpc role: " << roleID << "attack: " << targetID << std::endl;
+
+	::example::attackBroadcast attackBroad;
+	retStatus rs = gm->attack(roleID, targetID, type, attackBroad);
+	if (rs == rsSuccess)
+	{
+		attackBroad.set_roleid(roleID);
+		attackBroad.set_targetid(targetID);
+		attackBroad.set_type(type);
+		std::cout << roleID << "attack send to all," << "role:" << roleID <<  "target:" << targetID << endl;
+
+		int __size = attackBroad.ByteSize();
+		pebble::PebbleRpc* rpc = _server->getBinaryRpc();
+		uint8_t *__buff = rpc->GetBuffer(__size);
+		attackBroad.SerializeToArray(__buff, __size);
+		list<int32_t> roleIDList = gm->getBroadcastRoleIDList(roleID);
+		_server->broadcastMsg("attackBroad", roleIDList, __buff, __size);
+	}
+
+	::example::commonResponse ret;
+	ret.set_status(rs);
+	rsp(pebble::kRPC_SUCCESS, ret);
+}
+

@@ -65,5 +65,8 @@ public:
 
     virtual void chatBroad(const ::example::chatBroadcast& chatInfo,
         cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp);
+
+    virtual void attack(const ::example::attackRequest& attackCMD,
+        cxx::function<void(int32_t ret_code, const ::example::commonResponse& ret)>& rsp);
 };
 #endif

@@ -152,6 +152,16 @@ retStatus gameMgr::inputRoleDir(int32_t roleID, int32_t dir, ::example::moveBroa
 	return p->move((direction)dir, sendMove);
 }
 
+retStatus gameMgr::attack(int32_t roleID, int32_t targetID, int32_t option, ::example::attackBroadcast& attackBroad)
+{
+	player* p = getPlayer(roleID);
+	if (!p->isMyTurn())
+	{
+		return rsFail;
+	}
+	return p->attack(targetID, attackBroad);
+}
+
 map<string, string> gameMgr::getLegalInput(int msgID)
 {
 	std::lock_guard<std::mutex> guard(*recMutex);
