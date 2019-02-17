@@ -134,6 +134,8 @@ void rpcMsg::move(const ::example::moveRequest& moveCMD,
 	int32_t dir = moveCMD.direction();
 	int32_t roleID = _server->getLastMsgRoleID();
 	::example::moveBroadcast sendMove;
+
+	//进入新房间的考验信息
 	retStatus rs = gm->inputRoleDir(roleID, dir, sendMove);
 	if (rs == rsSuccess)
 	{

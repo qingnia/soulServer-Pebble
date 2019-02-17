@@ -61,7 +61,7 @@ public:
 	//异步
 	void setRetMsg(string function, list<int32_t> roleIDList, int size, uint8_t* buff);
 	//同步
-	void broadcastMsg(string function, list<int32_t> roleIDList, uint8_t* buff, int32_t buff_len);
+	void broadcastMsg(string function, int32_t, ::google::protobuf::Message*);
 
 	int setRecQueue(list< map<string, string>* >*);
 	int setRecMutex(mutex*);

@@ -256,6 +256,12 @@ int player::excutePunish(examType et, int num)
         //选择
         attribute = etSpirit;
     }
+	::example::attackBroadcast ab;
+	ab.set_roleid(0);
+	ab.set_targetid(this->m_roleID);
+	ab.set_type(et);
+	ab.set_value(num);
+	gameMgr::getGameMgr()->broadcastMsg("attack", this->m_mapID, &ab);
 	this->incrETLevel(attribute, num);
     return true;
 }

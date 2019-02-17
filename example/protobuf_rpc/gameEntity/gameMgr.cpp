@@ -204,9 +204,19 @@ void gameMgr::setRetMsg(string function, list<int32_t> roleIDList, int size, uin
 	this->retQueue->push_back(nsm);
 }
 
-void gameMgr::broadcastMsg(string function, list<int32_t> roleIDList, uint8_t* buff, int32_t buff_len)
+void gameMgr::broadcastMsg(string function, int mapID, ::google::protobuf::Message* msg)
 {
-	ss->broadcastMsg(function, roleIDList, buff, buff_len);
+	printf("gm broadcast map: %d\n", (int)mapID);
+	gameMap* map = this->getMap(mapID);
+	list<int32_t> roleIDList = map->getRoleIDList();
+
+	//组消息体，根据https://blog.csdn.net/u010542395/article/details/53857746猜测，bytesize()和serializeToArray应该是多态的
+	int __size = msg->ByteSize();
+	pebble::PebbleRpc* rpc = ss->getBinaryRpc();
+	uint8_t *__buff = rpc->GetBuffer(__size);
+	msg->SerializeToArray(__buff, __size);
+	ss->broadcastMsg(function, roleIDList, __buff, __size);
+	printf("gm broadcast over");
 }
 
 void gameMgr::update()

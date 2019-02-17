@@ -25,7 +25,7 @@
 
 void usage() {
     std::cout << "usage   : ./server url" << std::endl
-              << "default : url = tcp://127.0.0.1:9000" << std::endl;
+              << "default : url = tcp://127.0.0.1:8888" << std::endl;
 }
 
 singleServer* singleServer::ss = new singleServer();
@@ -187,7 +187,7 @@ int singleServer::serverStart()
     const char** argv;
     usage();
 
-    std::string url("tcp://0.0.0.0:9000");
+    std::string url("tcp://0.0.0.0:8888");
     if (argc > 1) url.assign(argv[1]);
 
     int ret = server.Init();
