@@ -149,7 +149,9 @@ retStatus singleServer::broadcastMsg(string function, list<int32_t> roleIDList, 
 	list<int32_t>::iterator iter;
 	for (iter = roleIDList.begin(); iter != roleIDList.end(); iter++)
 	{
+std::cout << *iter << "start" << endl;
 		this->sendMsg(function, *iter, buff, buff_len);
+std::cout << *iter << "end" << endl;
 	}
 	return rsSuccess;
 }

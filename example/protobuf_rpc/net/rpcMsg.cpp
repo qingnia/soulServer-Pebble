@@ -137,6 +137,7 @@ void rpcMsg::move(const ::example::moveRequest& moveCMD,
 
 	//进入新房间的考验信息
 	retStatus rs = gm->inputRoleDir(roleID, dir, sendMove);
+		std::cout << "\nmove send to all, status:" << endl;
 	if (rs == rsSuccess)
 	{
 		sendMove.set_roleid(roleID);
@@ -150,6 +151,7 @@ void rpcMsg::move(const ::example::moveRequest& moveCMD,
 		list<int32_t> roleIDList = gm->getBroadcastRoleIDList(roleID);
 		_server->broadcastMsg("moveBroad", roleIDList, __buff, __size);
 	}
+		std::cout << "\nmove send to all, end:" << endl;
 
 	::example::commonResponse ret;
 	ret.set_status(rs);

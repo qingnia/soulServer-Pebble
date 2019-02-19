@@ -261,7 +261,7 @@ int player::excutePunish(examType et, int num)
 	ab.set_targetid(this->m_roleID);
 	ab.set_type(et);
 	ab.set_value(num);
-	gameMgr::getGameMgr()->broadcastMsg("attack", this->m_mapID, &ab);
+	gameMgr::getGameMgr()->broadcastMsg("attackBroad", this->m_mapID, &ab);
 	this->incrETLevel(attribute, num);
     return true;
 }

@@ -215,7 +215,7 @@ void gameMgr::broadcastMsg(string function, int mapID, ::google::protobuf::Messa
 	pebble::PebbleRpc* rpc = ss->getBinaryRpc();
 	uint8_t *__buff = rpc->GetBuffer(__size);
 	msg->SerializeToArray(__buff, __size);
-	ss->broadcastMsg(function, roleIDList, __buff, __size);
+	//ss->broadcastMsg(function, roleIDList, __buff, __size);
 	printf("gm broadcast over");
 }
 
